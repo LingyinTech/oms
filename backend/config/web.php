@@ -12,9 +12,16 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
     ],
+    'as access' => [
+        'class' => \backend\components\admin\AccessControl::class,
+        'allowActions' => [
+            'user/login',
+            'user/register',
+            'site/error'
+        ]
+    ],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'OQU4_eWEuJ2HnvLfgRgNXS8I4FtVOKLo',
         ],
         'cache' => [
