@@ -1,7 +1,5 @@
 <?php
 
-$db = require __DIR__ . '/db.php';
-
 return [
     'bootstrap' => ['debug', 'gii'],
     'as access' => [
@@ -10,7 +8,16 @@ return [
         ]
     ],
     'components' => [
-        'db' => $db,
+        'db' => [
+            'dsn' => 'mysql:host=127.0.0.1;dbname=db_twinkle_ucenter',
+            'username' => 'root',
+            'password' => 'qqWW1019!@#',
+        ],
+        'userDb' => [
+            'dsn' => 'mysql:host=127.0.0.1;dbname=db_twinkle_ucenter',
+            'username' => 'root',
+            'password' => 'qqWW1019!@#',
+        ],
     ],
     'modules' => [
         'debug' => [

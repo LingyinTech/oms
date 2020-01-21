@@ -13,11 +13,12 @@ $config = [
         '@npm' => '@vendor/npm-asset',
     ],
     'as access' => [
-        'class' => \backend\components\admin\AccessControl::class,
+        'class' => \lingyin\admin\components\AccessControl::class,
         'allowActions' => [
             'user/login',
             'user/register',
-            'site/error'
+            'user/logout',
+            'site/error',
         ]
     ],
     'components' => [
@@ -28,8 +29,9 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => \lingyin\admin\models\User::class,
             'enableAutoLogin' => true,
+            'loginUrl' => ['user/login'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -50,17 +52,22 @@ $config = [
         'db' => [
             'class' => 'yii\db\Connection',
         ],
+        'userDb' => [
+            'class' => 'yii\db\Connection',
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<controller:[\w-]+>/<action:[\w-]+><nouse:(.*)>' => '<controller>/<action>',
+                '<controller:[\w-]+><nouse:(.*)>' => '<controller>/index',
             ],
         ],
     ],
     'params' => $params,
 ];
 
-if (is_file($file = __DIR__ . '/'.YII_ENV.'/web.php')) {
+if (file_exists($file = __DIR__ . '/'.YII_ENV.'/web.php')) {
     $config = yii\helpers\ArrayHelper::merge($config, require($file));
 }
 

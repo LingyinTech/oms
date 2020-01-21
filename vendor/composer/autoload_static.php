@@ -41,6 +41,10 @@ class ComposerStaticInit88bb735c14103ce7271d30bd0882d4e9
         array (
             'phpDocumentor\\Reflection\\' => 25,
         ),
+        'l' => 
+        array (
+            'lingyin\\admin\\' => 14,
+        ),
         'd' => 
         array (
             'dmstr\\' => 6,
@@ -145,6 +149,10 @@ class ComposerStaticInit88bb735c14103ce7271d30bd0882d4e9
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'lingyin\\admin\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/admin',
         ),
         'dmstr\\' => 
         array (
