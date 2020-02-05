@@ -13,7 +13,11 @@ class AccessControl extends ActionFilter
 
     public $allowActions = [];
 
+    public $supperAdmin = [];
 
+    /**
+     * @return User
+     */
     public function getUser()
     {
         return app()->getUser();
@@ -24,10 +28,17 @@ class AccessControl extends ActionFilter
      */
     public function beforeAction($action)
     {
-        $actionId = $action->getUniqueId();
         $user = $this->getUser();
 
-        $pathInfo = app()->getRequest()->getPathInfo();
+        if (!$user->getIsGuest()) {
+            if (in_array($user->getIdentity()->getUsername(), $this->supperAdmin)) {
+                return true;
+            }
+
+            $actionId = $action->getUniqueId();
+            $pathInfo = app()->getRequest()->getPathInfo();
+
+        }
 
         $this->denyAccess($user);
     }

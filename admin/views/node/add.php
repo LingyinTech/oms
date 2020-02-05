@@ -1,0 +1,85 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: huanjin
+ * Date: 2018/6/2
+ * Time: 0:37
+ */
+
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+
+?>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title"><?=$action ?></h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <?php $form = ActiveForm::begin([
+                'id' => 'NodeForm',
+                'class' => 'form-group has-feedback',
+                'fieldConfig' => [
+                    'template' => "{input}<span class='form-control-feedback'></span>",
+                ],
+            ]); ?>
+                <div class="box-body">
+                    <?= $form->field($model, 'id')->input('hidden') ?>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">父级菜单</label>
+
+                        <div class="col-sm-8">
+                            <?= $form->field($model, 'pid')->input('text', ['maxlength' => '128','placeholder'=>'父级菜单']) ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">菜单名称</label>
+
+                        <div class="col-sm-8">
+                            <?= $form->field($model, 'label')->input('text', ['maxlength' => '128','placeholder'=>'菜单名称']) ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">路径</label>
+
+                        <div class="col-sm-8">
+                            <?= $form->field($model, 'url')->input('text', ['maxlength' => '128','placeholder'=>'路径']) ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">图标</label>
+
+                        <div class="col-sm-8">
+                            <?= $form->field($model, 'icon')->input('text', ['maxlength' => '128','placeholder'=>'图标']) ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label">菜单类型</label>
+
+                        <div class="col-sm-8">
+                            <?= $form->field($model, 'status')->dropDownList([10 => '菜单', 2 => '动作', 0 => '未开放']) ?>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="reset" class="btn btn-default">重置</button>
+                    <button type="button" onclick="window.admin.node.save()" class="btn btn-info pull-right">提交</button>
+                </div>
+                <!-- /.box-footer -->
+            <?php ActiveForm::end(); ?>
+        </div>
+    </div>
+</div>
+
+<?php
+$this->registerJsFile(Url::to('@web/js/layer-3.1.1/dist/layer.js'), ['depends' => 'dmstr\web\AdminLteAsset']);
+$this->registerJsFile(Url::to('@web/static/admin/js/node.js'), ['depends' => 'dmstr\web\AdminLteAsset']);
+?>

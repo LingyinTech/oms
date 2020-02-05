@@ -5,6 +5,9 @@ return [
     'as access' => [
         'allowActions' => [
             'debug/*',
+        ],
+        'supperAdmin' => [
+            'admin','actors315'
         ]
     ],
     'components' => [
@@ -13,10 +16,13 @@ return [
             'username' => 'root',
             'password' => 'qqWW1019!@#',
         ],
-        'userDb' => [
+        'authDb' => [
             'dsn' => 'mysql:host=127.0.0.1;dbname=db_twinkle_ucenter',
             'username' => 'root',
             'password' => 'qqWW1019!@#',
+        ],
+        'cache' => [
+            'keyPrefix' => 'lingyin:oms:',
         ],
     ],
     'modules' => [
@@ -30,5 +36,5 @@ return [
             // uncomment the following to add your IP if you are not connecting from localhost.
             'allowedIPs' => ['127.0.0.1', '::1', '192.168.96.1'],
         ]
-    ]
+    ],
 ];

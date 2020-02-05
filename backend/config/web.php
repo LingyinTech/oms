@@ -19,7 +19,12 @@ $config = [
             'user/register',
             'user/logout',
             'site/error',
-        ]
+        ],
+    ],
+    'modules' => [
+        'admin' => [
+            'class' => 'lingyin\admin\Module',
+        ],
     ],
     'components' => [
         'request' => [
@@ -52,13 +57,14 @@ $config = [
         'db' => [
             'class' => 'yii\db\Connection',
         ],
-        'userDb' => [
+        'authDb' => [
             'class' => 'yii\db\Connection',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<module:(admin)>/<controller:[\w-]+>/<action:[\w-]+><nouse:(.*)>' => '<module>/<controller>/<action>',
                 '<controller:[\w-]+>/<action:[\w-]+><nouse:(.*)>' => '<controller>/<action>',
                 '<controller:[\w-]+><nouse:(.*)>' => '<controller>/index',
             ],
@@ -67,7 +73,7 @@ $config = [
     'params' => $params,
 ];
 
-if (file_exists($file = __DIR__ . '/'.YII_ENV.'/web.php')) {
+if (file_exists($file = __DIR__ . '/' . YII_ENV . '/web.php')) {
     $config = yii\helpers\ArrayHelper::merge($config, require($file));
 }
 

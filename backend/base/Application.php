@@ -8,7 +8,7 @@ use yii\db\Connection;
 /**
  * Class Application
  * @package backend\base
- * @property Connection $userDb
+ * @property Connection $authDb
  */
 class Application extends \yii\web\Application
 {

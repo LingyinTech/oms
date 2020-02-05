@@ -2,10 +2,9 @@
 
 namespace lingyin\admin\models;
 
-use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
+use lingyin\admin\base\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
@@ -129,6 +128,11 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->getPrimaryKey();
     }
 
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
     /**
      * @inheritdoc
      */
@@ -189,10 +193,5 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
-    }
-
-    public static function getDb()
-    {
-        return app()->userDb;
     }
 }

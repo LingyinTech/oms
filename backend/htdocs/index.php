@@ -15,7 +15,11 @@ $config = yii\helpers\ArrayHelper::merge(
     require __DIR__ . '/../config/web.php'
 );
 
-(new Application($config))->run();
+try {
+    (new Application($config))->run();
+} catch (\yii\base\InvalidConfigException $e) {
+    throw new \yii\web\NotFoundHttpException('404 Not Found.');
+}
 
 /**
  * @return Application
