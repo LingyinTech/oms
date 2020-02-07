@@ -29,14 +29,14 @@ use yii\helpers\Url;
                 <div class="box-body">
                     <?= $form->field($model, 'id')->input('hidden') ?>
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-3 control-label">父级菜单</label>
+                        <label class="col-sm-3 control-label">父级菜单</label>
 
                         <div class="col-sm-8">
                             <?= $form->field($model, 'pid')->input('text', ['maxlength' => '128','placeholder'=>'父级菜单']) ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">菜单名称</label>
+                        <label class="col-sm-3 control-label">菜单名称</label>
 
                         <div class="col-sm-8">
                             <?= $form->field($model, 'label')->input('text', ['maxlength' => '128','placeholder'=>'菜单名称']) ?>
@@ -44,7 +44,7 @@ use yii\helpers\Url;
                     </div>
 
                     <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">路径</label>
+                        <label class="col-sm-3 control-label">路径</label>
 
                         <div class="col-sm-8">
                             <?= $form->field($model, 'url')->input('text', ['maxlength' => '128','placeholder'=>'路径']) ?>
@@ -52,7 +52,7 @@ use yii\helpers\Url;
                     </div>
 
                     <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">图标</label>
+                        <label class="col-sm-3 control-label">图标</label>
 
                         <div class="col-sm-8">
                             <?= $form->field($model, 'icon')->input('text', ['maxlength' => '128','placeholder'=>'图标']) ?>
@@ -60,10 +60,26 @@ use yii\helpers\Url;
                     </div>
 
                     <div class="form-group">
-                        <label for="inputPassword3" class="col-sm-3 control-label">菜单类型</label>
+                        <label class="col-sm-3 control-label">排序</label>
+
+                        <div class="col-sm-8">
+                            <?= $form->field($model, 'sort')->input('text', ['maxlength' => '2','placeholder'=>'排序']) ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">菜单类型</label>
 
                         <div class="col-sm-8">
                             <?= $form->field($model, 'status')->dropDownList([10 => '菜单', 2 => '动作', 0 => '未开放']) ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">备注</label>
+
+                        <div class="col-sm-8">
+                            <?= $form->field($model, 'remark')->textarea(['style' => 'width: 100%;line-height: 30px;']) ?>
                         </div>
                     </div>
 

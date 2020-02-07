@@ -33,15 +33,16 @@ use yii\helpers\Url;
                             </thead>
                             <tbody>
                             <?php foreach ($list as $item): ?>
-                                <tr class="">
-                                    <td data-name="id" data-value="<?= $item['id'] ?>"><?= $item['id'] ?></td>
-                                    <td data-name="label" data-value="<?= $item['label'] ?>"><?= $item['label'] ?></td>
-                                    <td data-name="url" data-value="<?= $item['url'] ?>"><?= $item['url'] ?></td>
+                                <tr data-node_id="<?=$item['id']?>">
+                                    <td><?= $item['id'] ?></td>
+                                    <td><?= $item['label'] ?></td>
+                                    <td><?= $item['url'] ?></td>
                                     <td><?= $item['icon'] ?></td>
                                     <td><?= isset($statusList[$item['status']]) ? $statusList[$item['status']] : ''; ?></td>
                                     <td><?= $item['sort'] ?></td>
                                     <td>
-
+                                        <a href="/admin/node/add?id=<?=$item['id']?>" class="glyphicon glyphicon-pencil action-edit mr5"></a>
+                                        <a class="glyphicon glyphicon-trash action-delete"></a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

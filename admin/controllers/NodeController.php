@@ -22,8 +22,9 @@ class NodeController extends Controller
             'statusList' => [
                 Node::STATUS_INACTIVE => '未开放',
                 Node::STATUS_ACTION => '动作',
+                Node::STATUS_ELEMENT => '元素',
                 Node::STATUS_MENU => '菜单',
-            ]
+            ],
         ]);
     }
 
@@ -41,7 +42,25 @@ class NodeController extends Controller
 
     public function actionDelete()
     {
+        $id = app()->getRequest()->post('id');
+        if ($id) {
+            $child = Node::findOne(['pid' => $id]);
+            if ($child) {
+                return $this->fail('当前菜单下有子菜单，不允许删除');
+            }
 
+            if (!$model = Node::findOne($id)) {
+                return $this->fail('菜单不存在');
+            }
+
+            if ($model->delete()) {
+                return $this->success('删除成功');
+            }
+
+            return $this->fail('删除失败');
+        }
+
+        return $this->fail('非法请求');
     }
 
 

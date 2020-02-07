@@ -3,17 +3,14 @@
 
 namespace lingyin\admin\models\vo;
 
-use lingyin\admin\models\Node;
+use lingyin\admin\models\Role;
 use yii\base\Model;
 
-class NodeForm extends Model
+class RoleForm extends Model
 {
 
     public $id;
-    public $pid;
-    public $label;
-    public $url;
-    public $icon;
+    public $name;
     public $remark;
     public $sort;
     public $status;
@@ -22,19 +19,18 @@ class NodeForm extends Model
     {
         return [
             ['id', 'filter', 'filter' => 'intval', 'skipOnEmpty' => true],
-            ['pid', 'default', 'value' => 0],
             ['sort','default','value' => 99],
-            [['label','icon','remark'], 'filter', 'filter' => 'trim'],
-            [['label', 'url'], 'required'],
-            ['status', 'default', 'value' => Node::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [Node::STATUS_INACTIVE, Node::STATUS_ACTION, Node::STATUS_MENU]],
+            [['remark','name'], 'filter', 'filter' => 'trim'],
+            ['name', 'required'],
+            ['status', 'default', 'value' => Role::STATUS_INACTIVE],
+            ['status', 'in', 'range' => [Role::STATUS_INACTIVE, Role::STATUS_DELETE, Role::STATUS_ACTIVE]],
         ];
     }
 
-    public function saveNode()
+    public function saveRole()
     {
         if ($this->validate()) {
-            $model = new Node();
+            $model = new Role();
             $data = [];
             foreach ($model->filterInputAttributes() as $attribute) {
                 if (isset($this->{$attribute})) {
@@ -47,10 +43,4 @@ class NodeForm extends Model
         return false;
     }
 
-    public function initData($id)
-    {
-        if ($model = Node::findOne($id)) {
-            $this->attributes = $model->attributes;
-        }
-    }
 }
