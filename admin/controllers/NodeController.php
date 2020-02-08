@@ -3,6 +3,7 @@
 namespace lingyin\admin\controllers;
 
 use lingyin\admin\base\Controller;
+use lingyin\admin\logic\RoleLogic;
 use lingyin\admin\models\Node;
 use lingyin\admin\models\vo\NodeForm;
 
@@ -40,6 +41,9 @@ class NodeController extends Controller
         ]);
     }
 
+    /**
+     * @return false|string
+     */
     public function actionDelete()
     {
         $id = app()->getRequest()->post('id');
@@ -53,7 +57,7 @@ class NodeController extends Controller
                 return $this->fail('菜单不存在');
             }
 
-            if ($model->delete()) {
+            if ($model->saveData(['id' => $model, 'status' => Node::STATUS_DELETE])) {
                 return $this->success('删除成功');
             }
 
@@ -62,7 +66,6 @@ class NodeController extends Controller
 
         return $this->fail('非法请求');
     }
-
 
     public function actionSave()
     {
@@ -74,6 +77,19 @@ class NodeController extends Controller
             'status' => 1,
             'msg' => '保存失败',
             'errors' => $model->getErrors(),
+        ]);
+    }
+
+    public function actionSelect()
+    {
+        $list = (new Node())->setWhere([
+            'status' => Node::STATUS_MENU
+        ])->orderBy('sort ASC,id DESC')->asArray()->all();
+
+        $list = (new RoleLogic())->list2Tree($list);
+
+        return $this->renderPartial('select', [
+            'list' => $list,
         ]);
     }
 }

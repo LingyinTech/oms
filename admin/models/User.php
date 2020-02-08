@@ -2,9 +2,9 @@
 
 namespace lingyin\admin\models;
 
+use lingyin\admin\base\ActiveRecord;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
-use lingyin\admin\base\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
@@ -28,6 +28,8 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 0;
     const STATUS_DELETE = 1;
     const STATUS_ACTIVE = 10;
+
+    protected $supperAdmin = false;
 
     /**
      * @inheritdoc
@@ -131,6 +133,19 @@ class User extends ActiveRecord implements IdentityInterface
     public function getUsername()
     {
         return $this->username;
+    }
+
+    public function getSupperAdmin()
+    {
+        return $this->supperAdmin;
+    }
+
+    /**
+     * 设置超级管理员标识
+     * @param bool $supperAdmin
+     */
+    public function setSupperAdmin($supperAdmin) {
+        $this->supperAdmin = $supperAdmin;
     }
 
     /**

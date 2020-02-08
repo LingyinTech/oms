@@ -5,6 +5,8 @@ namespace lingyin\admin\controllers;
 
 
 use lingyin\admin\base\Controller;
+use lingyin\admin\logic\RoleLogic;
+use lingyin\admin\models\Node;
 use lingyin\admin\models\Role;
 use lingyin\admin\models\RoleNode;
 use lingyin\admin\models\vo\RoleForm;
@@ -50,21 +52,27 @@ class RoleController extends Controller
         if (app()->getRequest()->isAjax) {
             $roleId = app()->getRequest()->get('role_id');
             if ($roleId) {
-                $data = (new RoleNode())->getAllNodeByRoleId($roleId);
-                return $this->format(implode(',', $data));
+                $data = (new RoleNode())->getAllNodeByRoleIds([$roleId]);
+                $nodeIdStr = isset($data[$roleId]) ? implode(',', $data) : '';
+                return $this->format($nodeIdStr);
             }
             return $this->fail('非法请求');
         }
 
-        $model = new Role();
-
-        $list = $model->getList([
+        $list = (new Role())->getList([
             'status' => Role::STATUS_ACTIVE
         ]);
+
+        $nodeList = (new RoleLogic())->getAccessNodeByUser(app()->user);
 
         return $this->render('node', [
             'list' => $list['list'],
             'model' => new RoleNodeForm(),
+            'nodeList' => $nodeList,
+            'nodeStatusList' => [
+                Node::STATUS_ACTION => '动作',
+                Node::STATUS_ELEMENT => '元素',
+            ],
         ]);
     }
 

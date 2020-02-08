@@ -32,6 +32,7 @@ class AccessControl extends ActionFilter
 
         if (!$user->getIsGuest()) {
             if (in_array($user->getIdentity()->getUsername(), $this->supperAdmin)) {
+                $user->getIdentity()->setSupperAdmin(true);
                 return true;
             }
 
@@ -42,6 +43,8 @@ class AccessControl extends ActionFilter
 
         $this->denyAccess($user);
     }
+
+
 
 
     /**

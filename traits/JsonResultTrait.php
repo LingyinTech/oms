@@ -9,6 +9,10 @@ trait JsonResultTrait
 
     public $result = ['status' => 0, 'msg' => 'success'];
 
+    /**
+     * @param null $data
+     * @return false|string
+     */
     protected function format($data = null)
     {
         $result = [];

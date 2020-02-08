@@ -6,7 +6,7 @@
         let that = this;
         if (confirm('确认要删除？')) {
             let load = layer.load(2, {time: 3 * 1000});
-            $.post(url,{id:id}, function (data) {
+            $.post(url, {id: id}, function (data) {
                 if (data.status == 0) {
                     $(that).parents('tr').remove();
                 }
@@ -15,6 +15,23 @@
             }, 'json');
         }
     });
+
+    function selectParent() {
+        let url = '/admin/node/select';
+        layer.open({
+            type: 2,
+            content: url,
+            title: false,
+            area: ['450px', '500px']
+        });
+    }
+
+    function selectNode(pid,label) {
+        console.log(pid,label);
+        $('#nodeform-pid').val(pid);
+        $('#nodeform-pname').val(label);
+        layer.closeAll();
+    }
 
     function save() {
 
@@ -32,4 +49,6 @@
     window.admin.node = window.admin.node || {};
 
     window.admin.node.save = save;
+    window.admin.node.pop = selectParent;
+    window.admin.node.select = selectNode;
 })();

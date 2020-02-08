@@ -8,14 +8,14 @@ use lingyin\admin\base\ActiveRecord;
 
 class RoleNode extends ActiveRecord
 {
-    public function getAllNodeByRoleId($roleId)
+    public function getAllNodeByRoleIds($roleIdArr)
     {
         $data = $this->setWhere([
-            'role_id' => $roleId,
+            'in' => ['role_id' => $roleIdArr],
         ])->asArray()->all();
 
         if ($data) {
-            return array_column($data, 'role_id');
+            return array_column($data, 'node_id', 'role_id');
         }
 
         return [];

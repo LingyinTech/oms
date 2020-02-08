@@ -86,7 +86,7 @@ trait ActiveRecordTrait
      * @param array $params
      * @return \yii\db\ActiveQuery
      */
-    protected function setWhere($params = [])
+    public function setWhere($params = [])
     {
         $obj = self::find();
 

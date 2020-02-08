@@ -20,11 +20,12 @@ class Node extends ActiveRecord
     {
         $data = app()->cache->get('admin:node');
         if (empty($data)) {
-            $list = $this->setWhere(['status' => 10])->asArray()->all();
+            $list = $this->setWhere([])->asArray()->all();
             $data = [];
             foreach ($list as $item) {
-                $data[$item['code']] = $item['label'];
+                $data[$item['id']] = $item;
             }
+            app()->cache->set('admin:node', $data);
         }
         return $data;
     }

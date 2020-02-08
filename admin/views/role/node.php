@@ -11,57 +11,96 @@ use yii\helpers\Url;
 
 ?>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <h3 class="box-title">权限组</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <div class="table-responsive">
-                    <table class="table role-node-grid">
-                        <thead>
-                        <tr>
-                            <th>名称</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($list as $item): ?>
-                            <tr data-role_id="<?=$item['id']?>">
-                                <td data-name="name" data-value="<?=$item['name']?>"><?=$item['name']?></td>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">权限组</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table role-node-grid">
+                            <thead>
+                            <tr>
+                                <th>名称</th>
                             </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($list as $item): ?>
+                                <tr data-role_id="<?= $item['id'] ?>">
+                                    <td data-name="name" data-value="<?= $item['name'] ?>"><?= $item['name'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
                 </div>
-                <!-- /.table-responsive -->
+                <!-- /.box-body -->
             </div>
-            <!-- /.box-body -->
         </div>
-    </div>
-    <div class="col-md-6">
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <h3 class="box-title">权限组管理</h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <?php $form = ActiveForm::begin([
-                'id' => 'RoleNodeForm',
-                'class' => '',
-                'fieldConfig' => [
-                    'template' => "{input}",
-                ],
-            ]); ?>
-                <div class="box-footer">
-                    <button type="reset" class="btn btn-default">重置</button>
-                    <button type="button" class="btn btn-info pull-right" onclick="window.admin.role.save()">提交</button>
+        <div class="col-md-9">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">权限分配</h3>
                 </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <?php $form = ActiveForm::begin([
+                    'id' => 'RoleNodeForm',
+                    'class' => '',
+                    'fieldConfig' => [
+                        'template' => "{input}",
+                    ],
+                ]); ?>
 
                 <div class="box-body">
-                    <?= $form->field($model, 'role_id')->input('hidden') ?>
-                    <?= $form->field($model, 'node_id')->input('hidden') ?>
+                    <?= $form->field($model, 'role_id')->input('text') ?>
+                    <?= $form->field($model, 'node_id')->input('text') ?>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input type="checkbox"> 全选
+                        </div>
+                        <div class="col-md-10">
+                            <?php foreach ($nodeList as $item): ?>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input type="checkbox"> <?= $item['label'] ?>
+                                        <?php if (isset($nodeStatusList[$item['status']])): ?>
+                                        (<?=$nodeStatusList[$item['status']]?>)
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <?php if (!empty($item['items'])): ?>
+                                            <?php foreach ($item['items'] as $v): ?>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <input type="checkbox"> <?= $v['label'] ?>
+                                                        <?php if (isset($nodeStatusList[$v['status']])): ?>
+                                                            (<?=$nodeStatusList[$v['status']]?>)
+                                                        <?php endif; ?>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <?php if (!empty($v['items'])): ?>
+                                                            <?php foreach ($v['items'] as $vv): ?>
+                                                                <input type="checkbox"> <?= $vv['label'] ?>
+                                                                <?php if (isset($nodeStatusList[$vv['status']])): ?>
+                                                                    (<?=$nodeStatusList[$vv['status']]?>)
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
@@ -69,10 +108,10 @@ use yii\helpers\Url;
                     <button type="button" class="btn btn-info pull-right" onclick="window.admin.role.save()">提交</button>
                 </div>
                 <!-- /.box-footer -->
-            <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
+            </div>
         </div>
     </div>
-</div>
 
 <?php
 $this->registerJsFile(Url::to('@web/js/layer-3.1.1/dist/layer.js'), ['depends' => 'dmstr\web\AdminLteAsset']);
