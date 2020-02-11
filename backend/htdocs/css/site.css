@@ -125,3 +125,7 @@ a.desc:after {
 .none {
     display: none;
 }
+
+.nowrap {
+    white-space: nowrap;
+}

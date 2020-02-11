@@ -14,14 +14,14 @@ class RoleLogic
 
     /**
      * @param User $user
-     * @param array $status
+     * @param array $filterStatus
      * @return array|ActiveRecord[]
      */
-    public function getAccessNodeByUser($user, $status = [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_MENU])
+    public function getAccessNodeByUser($user, $filterStatus = [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_MENU])
     {
 
         $params = [
-            'in' => ['status' => $status],
+            'in' => ['status' => [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_MENU]],
         ];
 
         try {
@@ -46,7 +46,7 @@ class RoleLogic
 
         $list = (new Node())->setWhere($params)->orderBy('sort ASC,pid ASC,id ASC')->asArray()->all();
 
-        return $this->list2Tree($list);
+        return $this->list2Tree($list, $filterStatus);
     }
 
     /**
@@ -56,10 +56,10 @@ class RoleLogic
      */
     public function getAccessMenuByUser($user)
     {
-        return $this->getAccessNodeByUser($user,[Node::STATUS_MENU]);
+        return $this->getAccessNodeByUser($user, [Node::STATUS_MENU]);
     }
 
-    public function list2Tree($list)
+    public function list2Tree($list, $filterStatus = null)
     {
         if (empty($list)) {
             return [];
@@ -78,6 +78,11 @@ class RoleLogic
         }
 
         foreach ($list as $key => $data) {
+            if (!in_array($data['status'], $filterStatus)) {
+                unset($list[$key]);
+                continue;
+            }
+
             if (0 == $data['pid']) {
                 $tree[] = &$list[$key];
             } else {

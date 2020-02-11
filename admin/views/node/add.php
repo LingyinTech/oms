@@ -34,7 +34,7 @@ use yii\helpers\Url;
                         <div class="col-sm-8">
                             <?= $form->field($model, 'pid', [
                                 'template' => '<div class="input-group">{input}
-                                <input type="text" class="form-control" id="nodeform-pname">
+                                <input type="text" value="'.$parentLabel.'" class="form-control" id="nodeform-pname" readonly="readonly">
 							    <span class="input-group-btn">
 							    <button class="btn btn-primary" onclick="window.admin.node.pop()" type="button">选择</button>
 							    </span>
@@ -78,7 +78,7 @@ use yii\helpers\Url;
                         <label class="col-sm-3 control-label">菜单类型</label>
 
                         <div class="col-sm-8">
-                            <?= $form->field($model, 'status')->dropDownList([10 => '菜单', 2 => '动作', 0 => '未开放']) ?>
+                            <?= $form->field($model, 'status')->dropDownList($statusList) ?>
                         </div>
                     </div>
 

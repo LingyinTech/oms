@@ -21,7 +21,7 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  *
- * @property UserProfile $profile
+ * @property UserInfo $profile
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -130,6 +130,11 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->getPrimaryKey();
     }
 
+    public function getEmail()
+    {
+        return $this->getProfile()->email;
+    }
+
     public function getUsername()
     {
         return $this->username;
@@ -144,8 +149,17 @@ class User extends ActiveRecord implements IdentityInterface
      * 设置超级管理员标识
      * @param bool $supperAdmin
      */
-    public function setSupperAdmin($supperAdmin) {
+    public function setSupperAdmin($supperAdmin)
+    {
         $this->supperAdmin = $supperAdmin;
+    }
+
+    /**
+     * @return UserInfo|null
+     */
+    public function getProfile()
+    {
+        return UserInfo::findOne($this->getId());
     }
 
     /**
@@ -208,5 +222,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function filterInputAttributes()
+    {
+        return ['username', 'status'];
     }
 }

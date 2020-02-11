@@ -40,7 +40,7 @@
             if (data.status == 0) {
                 layer.msg('保存成功')
             } else {
-                layer.msg('保存存失败');
+                layer.msg('保存失败');
             }
         }, 'json');
     }

@@ -56,20 +56,17 @@ use yii\helpers\Url;
                 ]); ?>
 
                 <div class="box-body">
-                    <?= $form->field($model, 'role_id')->input('text') ?>
-                    <?= $form->field($model, 'node_id')->input('text') ?>
+                    <?= $form->field($model, 'role_id')->input('hidden') ?>
 
                     <div class="row">
-                        <div class="col-md-2">
-                            <input type="checkbox"> 全选
-                        </div>
-                        <div class="col-md-10">
+                        <div class="col-md-12">
                             <?php foreach ($nodeList as $item): ?>
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <input type="checkbox"> <?= $item['label'] ?>
+                                        <input type="checkbox" name="check_node[]" class="check_node"
+                                               value="<?= $item['id'] ?>"> <?= $item['label'] ?>
                                         <?php if (isset($nodeStatusList[$item['status']])): ?>
-                                        (<?=$nodeStatusList[$item['status']]?>)
+                                            (<?= $nodeStatusList[$item['status']] ?>)
                                         <?php endif; ?>
                                     </div>
                                     <div class="col-md-9">
@@ -77,18 +74,21 @@ use yii\helpers\Url;
                                             <?php foreach ($item['items'] as $v): ?>
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                        <input type="checkbox"> <?= $v['label'] ?>
+                                                        <input type="checkbox" name="check_node[]" class="check_node"
+                                                               value="<?= $v['id'] ?>"> <?= $v['label'] ?>
                                                         <?php if (isset($nodeStatusList[$v['status']])): ?>
-                                                            (<?=$nodeStatusList[$v['status']]?>)
+                                                            (<?= $nodeStatusList[$v['status']] ?>)
                                                         <?php endif; ?>
                                                     </div>
                                                     <div class="col-md-8">
                                                         <?php if (!empty($v['items'])): ?>
                                                             <?php foreach ($v['items'] as $vv): ?>
-                                                                <input type="checkbox"> <?= $vv['label'] ?>
-                                                                <?php if (isset($nodeStatusList[$vv['status']])): ?>
-                                                                    (<?=$nodeStatusList[$vv['status']]?>)
-                                                                <?php endif; ?>
+                                                                <span class="nowrap">
+                                                                    <input type="checkbox" name="check_node[]" class="check_node" value="<?= $vv['id'] ?>"> <?= $vv['label'] ?>
+                                                                    <?php if (isset($nodeStatusList[$vv['status']])): ?>
+                                                                        (<?= $nodeStatusList[$vv['status']] ?>)
+                                                                    <?php endif; ?>
+                                                                </span>
                                                             <?php endforeach; ?>
                                                         <?php endif; ?>
                                                     </div>
@@ -105,7 +105,8 @@ use yii\helpers\Url;
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <button type="reset" class="btn btn-default">重置</button>
-                    <button type="button" class="btn btn-info pull-right" onclick="window.admin.role.save()">提交</button>
+                    <button type="button" class="btn btn-info pull-right" onclick="window.admin.role.saveNode()">提交
+                    </button>
                 </div>
                 <!-- /.box-footer -->
                 <?php ActiveForm::end(); ?>

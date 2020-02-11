@@ -36,7 +36,6 @@ class AccessControl extends ActionFilter
                 return true;
             }
 
-            $actionId = $action->getUniqueId();
             $pathInfo = app()->getRequest()->getPathInfo();
 
         }

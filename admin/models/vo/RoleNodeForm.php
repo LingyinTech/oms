@@ -3,7 +3,7 @@
 
 namespace lingyin\admin\models\vo;
 
-use lingyin\admin\models\Role;
+use lingyin\admin\models\RoleNode;
 use yii\base\Model;
 
 class RoleNodeForm extends Model
@@ -15,21 +15,31 @@ class RoleNodeForm extends Model
     public function rules()
     {
         return [
-            [['role_id','node_id'], 'required'],
+            ['role_id', 'required'],
+            ['node_id', 'filterNode']
         ];
     }
 
-    public function saveRole()
+    public function filterNode($attribute, $params)
+    {
+        if ($this->node_id) {
+            $nodeArr = array_map(function ($v) {
+                return intval($v);
+            }, explode(',', $this->node_id));
+            return implode(',', array_unique($nodeArr));
+        }
+    }
+
+    public function batchSaveRoleNode()
     {
         if ($this->validate()) {
-            $model = new Role();
-            $data = [];
-            foreach ($model->filterInputAttributes() as $attribute) {
-                if (isset($this->{$attribute})) {
-                    $data[$attribute] = $this->{$attribute};
-                }
+            $nodeArr = explode(',', $this->node_id);
+            $model = new RoleNode();
+            $result = $model->batchSaveData($this->role_id, $nodeArr);
+            if (!$result) {
+                $this->addErrors($model->getErrors());
             }
-            return $model->saveData($data);
+            return $result;
         }
 
         return false;

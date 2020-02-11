@@ -53,7 +53,7 @@ class RoleController extends Controller
             $roleId = app()->getRequest()->get('role_id');
             if ($roleId) {
                 $data = (new RoleNode())->getAllNodeByRoleIds([$roleId]);
-                $nodeIdStr = isset($data[$roleId]) ? implode(',', $data) : '';
+                $nodeIdStr = isset($data[$roleId]) ? implode(',', $data[$roleId]) : '';
                 return $this->format($nodeIdStr);
             }
             return $this->fail('非法请求');
@@ -73,6 +73,21 @@ class RoleController extends Controller
                 Node::STATUS_ACTION => '动作',
                 Node::STATUS_ELEMENT => '元素',
             ],
+        ]);
+    }
+
+    public function actionSaveNode()
+    {
+        $model = new RoleNodeForm();
+        $model->role_id = app()->request->post('role_id');
+        $model->node_id = app()->request->post('node_id');
+        if ($model->batchSaveRoleNode()) {
+            return $this->success('保存成功');
+        }
+        return $this->format([
+            'status' => 1,
+            'msg' => '保存失败',
+            'errors' => $model->getErrors(),
         ]);
     }
 

@@ -30,9 +30,11 @@ trait JsonResultTrait
         return json_encode(array_merge($this->result, $result));
     }
 
-    protected function fail($msg)
+    protected function fail($msg, $errors = null)
     {
-        return $this->format(['status' => 1, 'msg' => $msg]);
+        $result = ['status' => 1, 'msg' => $msg];
+        if ($errors) $result['errors'] = $errors;
+        return $this->format($result);
     }
 
     protected function success($msg)

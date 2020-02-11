@@ -32,12 +32,24 @@ class NodeController extends Controller
     public function actionAdd()
     {
         $model = new NodeForm();
+        $parentLabel = '根结点';
         if ($id = app()->getRequest()->get('id')) {
             $model->initData($id);
+            if(!empty($model->pid)) {
+                $parent = Node::findOne($model->pid);
+                $parentLabel = $parent->label;
+            }
         }
         return $this->render('add', [
             'model' => $model,
-            'action' => '添加菜单'
+            'action' => '添加菜单',
+            'parentLabel' => $parentLabel,
+            'statusList' => [
+                Node::STATUS_MENU => '菜单',
+                Node::STATUS_ACTION => '动作',
+                Node::STATUS_ELEMENT => '元素',
+                Node::STATUS_INACTIVE => '未开放',
+            ]
         ]);
     }
 
@@ -88,7 +100,8 @@ class NodeController extends Controller
 
         $list = (new RoleLogic())->list2Tree($list);
 
-        return $this->renderPartial('select', [
+        $this->layout = '//main-login';
+        return $this->render('select', [
             'list' => $list,
         ]);
     }
