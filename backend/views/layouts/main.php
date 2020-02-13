@@ -32,7 +32,7 @@ if (Yii::$app->controller->action->id === 'login') {
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
-    <body class="hold-transition skin-blue sidebar-mini">
+    <body class="hold-transition skin-blue sidebar-mini <?php if(isset($_COOKIE['sidebar-toggle-control'])):?>sidebar-collapse<?php endif;?>">
     <?php $this->beginBody() ?>
     <div class="wrapper">
 
