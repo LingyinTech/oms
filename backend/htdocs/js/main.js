@@ -1,3 +1,17 @@
+namespace = function() {
+    var argus = arguments;
+    for (var i = 0; i < argus.length; i++) {
+        var objs = argus[i].split(".");
+        var obj = window;
+        for (var j = 0; j < objs.length; j++) {
+            obj[objs[j]] = obj[objs[j]] || {};
+            obj = obj[objs[j]];
+        }
+    }
+    return obj;
+}
+
+namespace('admin.main.cookie')
 ;(function () {
     // 写cookie
     function setCookie(name, value, day) {
@@ -26,12 +40,21 @@
             document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
     }
 
-    window.admin = window.admin || {};
-    window.admin.main = window.main || {};
-    window.admin.main.cookie = window.admin.main.cookie || {};
+    function resetForm() {
+        $("input[type='hidden']").each(function () {
+            if ('_csrf' !== $(this).attr('name')) {
+                $(this).val('');
+            }
+        })
+    }
+
     window.admin.main.cookie.set = setCookie;
     window.admin.main.cookie.get = getCookie;
     window.admin.main.cookie.delete = delCookie;
+
+    window.admin.main.form = window.admin.main.form || {};
+    window.admin.main.form.reset = resetForm;
+
 })();
 
 
@@ -43,5 +66,7 @@
             window.admin.main.cookie.set('sidebar-toggle-control', 1, 7);
         }
     });
+
+    $('form button.action-reset').on('click', window.admin.main.form.reset);
 
 })();

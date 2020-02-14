@@ -1,3 +1,4 @@
+namespace('admin.node')
 ;(function () {
 
     $('.action-delete').on('click', function () {
@@ -44,9 +45,6 @@
             }
         }, 'json');
     }
-
-    window.admin = window.admin || {};
-    window.admin.node = window.admin.node || {};
 
     window.admin.node.save = save;
     window.admin.node.pop = selectParent;

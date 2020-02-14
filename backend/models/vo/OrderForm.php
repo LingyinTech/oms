@@ -12,5 +12,7 @@ class OrderForm extends Model
     public $id;
     public $shop_id;
     public $customer_name;
+    public $pay_method;
+    public $order_type;
 
 }

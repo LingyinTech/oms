@@ -32,7 +32,7 @@ class NodeController extends Controller
     public function actionAdd()
     {
         $model = new NodeForm();
-        $parentLabel = '根结点';
+        $parentLabel = '根节点';
         if ($id = app()->getRequest()->get('id')) {
             $model->initData($id);
             if(!empty($model->pid)) {
@@ -94,11 +94,7 @@ class NodeController extends Controller
 
     public function actionSelect()
     {
-        $list = (new Node())->setWhere([
-            'status' => Node::STATUS_MENU
-        ])->orderBy('sort ASC,id DESC')->asArray()->all();
-
-        $list = (new RoleLogic())->list2Tree($list);
+        $list = (new RoleLogic())->getAccessMenuByUser(app()->user);
 
         $this->layout = '//main-login';
         return $this->render('select', [

@@ -1,3 +1,4 @@
+namespace('admin.role')
 ;(function () {
 
     $('table.role-grid tbody tr').on('click', function () {
@@ -70,9 +71,6 @@
             }
         }, 'json');
     }
-
-    window.admin = window.admin || {};
-    window.admin.role = window.admin.role || {};
 
     window.admin.role.save = save;
     window.admin.role.saveNode = saveNode;

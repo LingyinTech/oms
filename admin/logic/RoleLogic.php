@@ -55,7 +55,7 @@ class RoleLogic
      * @return array
      */
     public function getAccessMenuByUser($user)
-    {return [];
+    {
         return $this->getAccessNodeByUser($user, [Node::STATUS_MENU]);
     }
 

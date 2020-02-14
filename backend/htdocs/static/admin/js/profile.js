@@ -1,3 +1,4 @@
+namespace('admin.profile')
 ;(function () {
 
     function savePassword() {
@@ -11,9 +12,6 @@
             layer.msg(data.msg);
         }, 'json');
     }
-
-    window.admin = window.admin || {};
-    window.admin.profile = window.admin.profile || {};
 
     window.admin.profile.password = savePassword;
 })();

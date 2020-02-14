@@ -7,6 +7,7 @@
 
 namespace backend\assets;
 
+use dmstr\web\AdminLteAsset;
 use yii\web\AssetBundle;
 
 /**
@@ -23,10 +24,12 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
+        'js/layer-3.1.1/dist/layer.js',
         'js/main.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
+        AdminLteAsset::class,
     ];
 }

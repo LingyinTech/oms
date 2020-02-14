@@ -43,16 +43,20 @@ use yii\helpers\Url;
             <tbody style="">
 
             <tr>
+
+                
+            </tr>
+            <tr>
                 <td>店铺名称</td>
                 <td>
-                    <?=$form->field($model,'shop_id')->dropDownList(['1' => 'xxxx1店','2' => '京东商城'])?>
+                    <?= $form->field($model, 'shop_id')->dropDownList(['1' => 'xxxx1店', '2' => '京东商城']) ?>
                 </td>
                 <td>客户名称</td>
-                <td><?=$form->field($model,'customer_name')->input('text')?></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td><?= $form->field($model, 'customer_name')->input('text') ?></td>
+                <td>付款方式</td>
+                <td><?= $form->field($model, 'pay_method')->dropDownList($payMethodList) ?></td>
+                <td>订单类型</td>
+                <td><?= $form->field($model, 'order_type')->dropDownList($orderTypeList) ?></td>
             </tr>
 
             <tr>

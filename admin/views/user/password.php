@@ -57,6 +57,5 @@ use yii\helpers\Url;
     </div>
 
 <?php
-$this->registerJsFile(Url::to('@web/js/layer-3.1.1/dist/layer.js'), ['depends' => 'dmstr\web\AdminLteAsset']);
-$this->registerJsFile(Url::to('@web/static/admin/js/user.js'), ['depends' => 'dmstr\web\AdminLteAsset']);
+$this->registerJsFile(Url::to('@web/static/admin/js/user.js'), ['depends' => 'backend\assets\AppAsset']);
 ?>

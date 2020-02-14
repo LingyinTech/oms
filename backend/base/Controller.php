@@ -4,11 +4,11 @@
 namespace backend\base;
 
 
-use Yii;
+use lingyin\traits\JsonResultTrait;
 
 class Controller extends \yii\web\Controller
 {
 
-
+    use JsonResultTrait;
 
 }

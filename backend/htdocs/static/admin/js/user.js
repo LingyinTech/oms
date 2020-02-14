@@ -1,3 +1,4 @@
+namespace('admin.user')
 ;(function () {
 
     $('.action-password').on('click', function () {
@@ -34,9 +35,6 @@
             layer.msg(data.msg);
         }, 'json');
     }
-
-    window.admin = window.admin || {};
-    window.admin.user = window.admin.user || {};
 
     window.admin.user.password = savePassword;
     window.admin.user.save = save;
