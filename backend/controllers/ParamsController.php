@@ -31,7 +31,8 @@ class ParamsController extends Controller
 
         return $this->render('pay-method', [
             'model' => $model,
-            'list' => $list,
+            'list' => $list['list'],
+            'pages' => $list['pages'],
             'statusList' => [
                 PayMethod::STATUS_ACTIVE => '有效',
                 PayMethod::STATUS_INACTIVE => '无效',
@@ -55,7 +56,8 @@ class ParamsController extends Controller
 
         return $this->render('order-type', [
             'model' => $model,
-            'list' => $list,
+            'list' => $list['list'],
+            'pages' => $list['pages'],
             'statusList' => [
                 PayMethod::STATUS_ACTIVE => '有效',
                 PayMethod::STATUS_INACTIVE => '无效',

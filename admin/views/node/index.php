@@ -50,7 +50,6 @@ use yii\helpers\Url;
                         </table>
 
                         <div class="text-right paginationWrap">
-
                             <?= \yii\widgets\LinkPager::widget(['pagination' => $pages, 'maxButtonCount' => 6, 'hideOnSinglePage' => false]); ?>
                         </div>
                     </div>

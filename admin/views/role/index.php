@@ -42,6 +42,10 @@ use yii\helpers\Url;
                         <?php endforeach; ?>
                         </tbody>
                     </table>
+
+                    <div class="text-right paginationWrap">
+                        <?= \yii\widgets\LinkPager::widget(['pagination' => $pages, 'maxButtonCount' => 6]); ?>
+                    </div>
                 </div>
                 <!-- /.table-responsive -->
             </div>

@@ -3,6 +3,8 @@
 
 namespace lingyin\traits\db;
 
+use yii\data\Pagination;
+
 /**
  * Trait ActiveRecordTrait
  * @package lingyin\traits\db
@@ -78,6 +80,49 @@ trait ActiveRecordTrait
         }
 
         return $result;
+    }
+
+    /**
+     * 列表分页查询
+     * @param $params
+     * @return array
+     */
+    public function getList($params)
+    {
+        $data = $this->setWhere($params);
+
+        $page = app()->getRequest()->get('page', 1);
+        $pageSize = app()->getRequest()->get('page_size', 20);
+        $pages = new Pagination([
+            'totalCount' => $data->count(),
+            'pageSizeParam' => 'page_size',
+            'pageSize' => $pageSize,
+        ]);
+
+        $data->limit($pageSize);
+        $data->offset(($page - 1) * $pageSize);
+        isset($params['select']) && $data->select($params['select']);
+        isset($params['orderBy']) && $data->orderBy($params['orderBy']);
+
+        return [
+            'list' => $data->asArray()->all(),
+            'pages' => $pages,
+        ];
+    }
+
+    /**
+     * 查询所有记录
+     * @param $params
+     * @return array
+     */
+    public function getAll($params)
+    {
+        $data = $this->setWhere($params);
+
+        isset($params['select']) && $data->select($params['select']);
+        isset($params['orderBy']) && $data->orderBy($params['orderBy']);
+
+        return $data->asArray()->all();
     }
 
     /**

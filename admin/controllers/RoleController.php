@@ -25,6 +25,7 @@ class RoleController extends Controller
 
         return $this->render('index', [
             'list' => $list['list'],
+            'pages' => $list['pages'],
             'model' => $model,
             'statusList' => [
                 Role::STATUS_INACTIVE => '未开放',
@@ -67,6 +68,7 @@ class RoleController extends Controller
 
         return $this->render('node', [
             'list' => $list['list'],
+            'pages' => $list['pages'],
             'model' => new RoleNodeForm(),
             'nodeList' => $nodeList,
             'nodeStatusList' => [
@@ -93,6 +95,6 @@ class RoleController extends Controller
 
     public function actionUser()
     {
-        return $this->render('node');
+        return $this->render('user');
     }
 }

@@ -30,11 +30,13 @@ class PayMethod extends ActiveRecord
     {
         $data = app()->cache->get('admin:pay:method');
         if (empty($data)) {
-            $list = $this->getList(['status' => self::STATUS_ACTIVE], 'code,name');
+            $list = $this->setWhere(['status' => self::STATUS_ACTIVE])->select('code,name')->asArray()->all();
             $data = [];
             foreach ($list as $item) {
                 $data[$item['code']] = $item['name'];
             }
+
+            app()->cache->set('admin:pay:method',$data);
         }
         return $data;
     }
@@ -42,17 +44,5 @@ class PayMethod extends ActiveRecord
     public function deleteCache()
     {
         return app()->cache->delete('admin:pay:method');
-    }
-
-    /**
-     * 查询列表
-     *
-     * @param array $params
-     * @param array | string $fields
-     * @return array | false
-     */
-    public function getList($params = [], $fields = '*')
-    {
-        return $this->setWhere($params)->select($fields)->asArray()->all();
     }
 }
