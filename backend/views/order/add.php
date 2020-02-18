@@ -44,7 +44,7 @@ use yii\helpers\Url;
 
             <tr>
 
-                
+
             </tr>
             <tr>
                 <td>店铺名称</td>
