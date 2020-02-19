@@ -15,4 +15,10 @@ class OrderForm extends Model
     public $pay_method;
     public $order_type;
 
+    public $real_name;
+
+    public $barCode = '';
+
+    public $skuList = [];
+
 }

@@ -1,5 +1,6 @@
 namespace('admin.params.payMethod')
 namespace('admin.params.orderType')
+namespace('admin.params.invoiceType')
 ;(function () {
 
     $('table.data-grid tbody tr').on('click', function () {
@@ -35,6 +36,19 @@ namespace('admin.params.orderType')
         }, 'json');
     }
 
+    function saveInvoiceType() {
+        let url = '/params/invoice-type';
+        $.post(url, $("#InvoiceType").serialize(), function (data) {
+            if (data.status == 0) {
+                layer.msg('保存成功')
+                $('#OrderType')[0].reset();
+            } else {
+                layer.msg('保存存失败');
+            }
+        }, 'json');
+    }
+
     window.admin.params.payMethod.save = savePayMethod;
     window.admin.params.orderType.save = saveOrderType;
+    window.admin.params.invoiceType.save = saveInvoiceType;
 })();

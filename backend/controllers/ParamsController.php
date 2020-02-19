@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use backend\base\Controller;
+use backend\models\InvoiceType;
 use backend\models\OrderType;
 use backend\models\PayMethod;
 
@@ -59,10 +60,33 @@ class ParamsController extends Controller
             'list' => $list['list'],
             'pages' => $list['pages'],
             'statusList' => [
-                PayMethod::STATUS_ACTIVE => '有效',
-                PayMethod::STATUS_INACTIVE => '无效',
+                OrderType::STATUS_ACTIVE => '有效',
+                OrderType::STATUS_INACTIVE => '无效',
             ]
         ]);
     }
 
+    public function actionInvoiceType()
+    {
+        $model = new InvoiceType();
+        if (app()->request->isPost) {
+            $data = app()->request->post('InvoiceType');
+            if ($model->saveData($data)) {
+                return $this->success('保存成功');
+            }
+            return $this->fail('保存失败',$model->getErrors());
+        }
+
+        $list = $model->getList([]);
+
+        return $this->render('invoice-type', [
+            'model' => $model,
+            'list' => $list['list'],
+            'pages' => $list['pages'],
+            'statusList' => [
+                InvoiceType::STATUS_ACTIVE => '有效',
+                InvoiceType::STATUS_INACTIVE => '无效',
+            ]
+        ]);
+    }
 }
