@@ -26,6 +26,11 @@ class UserInfo extends ActiveRecord
     {
         $params['alias'] = 'ui';
         $params['join'] = ['user u' => 'u.id = ui.user_id'];
+
+        if (!app()->user->getIdentity()->getSupperAdmin()) {
+            $params['partner_id'] = app()->user->getIdentity()->partner_id;
+        }
+
         $data = $this->setWhere($params);
         $page = app()->getRequest()->get('page', 1);
         $pageSize = app()->getRequest()->get('page_size', 20);

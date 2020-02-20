@@ -4,6 +4,7 @@
 namespace lingyin\admin\models;
 
 use lingyin\admin\base\ActiveRecord;
+use lingyin\admin\logic\PartnerLogic;
 use yii\data\Pagination;
 
 class Role extends ActiveRecord
@@ -18,4 +19,9 @@ class Role extends ActiveRecord
         return app()->cache->delete('admin:role');
     }
 
+    public function getList($params)
+    {
+        PartnerLogic::setPartnerId($params);
+        return parent::getList($params);
+    }
 }

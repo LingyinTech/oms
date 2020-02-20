@@ -1,4 +1,4 @@
-namespace = function() {
+namespace = function () {
     var argus = arguments;
     for (var i = 0; i < argus.length; i++) {
         var objs = argus[i].split(".");
@@ -40,7 +40,11 @@ namespace('admin.main.cookie')
             document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
     }
 
-    function resetForm() {
+    function resetForm(formId) {
+        if (formId) {
+            $('#' + formId)[0].reset();
+        }
+
         $("input[type='hidden']").each(function () {
             if ('_csrf' !== $(this).attr('name')) {
                 $(this).val('');
@@ -59,6 +63,16 @@ namespace('admin.main.cookie')
 
 
 ;(function () {
+
+    $('table.data-grid-check tbody tr').on('click', function () {
+        let formName = $('table.data-grid').data('form');
+        $(this).children('td').each(function (i, v) {
+            let name = $(this).data('name');
+            let value = $(this).data('value');
+            $('#' + formName + '-' + name).val(value);
+        })
+    });
+
     $('.sidebar-toggle').on('click', function () {
         if ($('body').hasClass('sidebar-collapse')) {
             window.admin.main.cookie.delete('sidebar-toggle-control');

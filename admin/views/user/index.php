@@ -22,7 +22,7 @@ use yii\helpers\Url;
                         <table class="table no-margin param-data">
                             <thead>
                             <tr>
-                                <th>ID</th>
+                                <th class="none">ID</th>
                                 <th>员工编号</th>
                                 <th>姓名</th>
                                 <th>邮箱</th>
@@ -33,7 +33,7 @@ use yii\helpers\Url;
                             <tbody>
                             <?php foreach ($list as $item): ?>
                                 <tr data-user_id="<?=$item['user_id']?>">
-                                    <td><?= $item['user_id'] ?></td>
+                                    <td class="none"><?= $item['user_id'] ?></td>
                                     <td><?= $item['username'] ?></td>
                                     <td><?= $item['real_name'] ?></td>
                                     <td><?= $item['email'] ?></td>
