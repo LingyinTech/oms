@@ -20,7 +20,7 @@ use yii\helpers\Url;
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table no-margin data-grid" data-form="paymethod">
+                        <table class="table no-margin data-grid data-grid-check" data-form="paymethod">
                             <thead>
                             <tr>
                                 <th>ID</th>

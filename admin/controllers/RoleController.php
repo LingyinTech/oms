@@ -9,6 +9,7 @@ use lingyin\admin\logic\RoleLogic;
 use lingyin\admin\models\Node;
 use lingyin\admin\models\Role;
 use lingyin\admin\models\RoleNode;
+use lingyin\admin\models\vo\PartnerForm;
 use lingyin\admin\models\User;
 use lingyin\admin\models\UserInfo;
 use lingyin\admin\models\vo\RoleForm;
@@ -34,7 +35,8 @@ class RoleController extends Controller
                 Role::STATUS_INACTIVE => '未开放',
                 Role::STATUS_ACTIVE => '启用',
                 Role::STATUS_DELETE => '禁用',
-            ]
+            ],
+            'partnerList' => (new PartnerForm())->getPartnerList(),
         ]);
     }
 

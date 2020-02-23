@@ -75,6 +75,16 @@ use yii\helpers\Url;
                         </div>
                     </div>
 
+                    <?php if (app()->user->getIdentity()->getSupperAdmin()): ?>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">合作伙伴</label>
+
+                            <div class="col-sm-8">
+                                <?= $form->field($model, 'partner_id')->dropDownList(array_merge(['请选择'],$partnerList)) ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">

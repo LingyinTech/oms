@@ -7,6 +7,7 @@ namespace lingyin\admin\controllers;
 use lingyin\admin\base\Controller;
 use lingyin\admin\models\User;
 use lingyin\admin\models\UserInfo;
+use lingyin\admin\models\vo\PartnerForm;
 use lingyin\admin\models\vo\PasswordForm;
 use lingyin\admin\models\vo\UserForm;
 
@@ -54,7 +55,8 @@ class UserController extends Controller
                 User::STATUS_ACTIVE => '正常',
                 User::STATUS_INACTIVE => '未激活',
                 User::STATUS_DELETE => '禁用',
-            ]
+            ],
+            'partnerList' => (new PartnerForm())->getPartnerList(),
         ]);
     }
 

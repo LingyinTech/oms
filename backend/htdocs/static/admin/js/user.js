@@ -29,7 +29,7 @@ namespace('admin.user')
         let load = layer.load(2, {time: 3 * 1000});
         $.post(url, $("#UserForm").serialize(), function (data) {
             if (data.status == 0) {
-                //$("#UserForm")[0].reset();
+                window.admin.main.form.reset('UserForm');
             }
             layer.close(load);
             layer.msg(data.msg);
