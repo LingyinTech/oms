@@ -35,6 +35,8 @@ namespace('admin.role')
         }, 'json');
     });
 
+
+
     function save() {
         let url = '/admin/role/save';
         $.post(url, $("#RoleForm").serialize(), function (data) {
@@ -72,6 +74,11 @@ namespace('admin.role')
         }, 'json');
     }
 
+    function saveUser() {
+
+    }
+
     window.admin.role.save = save;
     window.admin.role.saveNode = saveNode;
+    window.admin.role.saveUser = saveUser;
 })();

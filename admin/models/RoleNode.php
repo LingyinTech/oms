@@ -15,15 +15,14 @@ class RoleNode extends ActiveRecord
             'in' => ['role_id' => $roleIdArr],
         ])->asArray()->all();
 
+        $result = [];
         if ($data) {
-            $result = [];
             foreach ($data as $item) {
                 $result[$item['role_id']][] = $item['node_id'];
             }
-            return $result;
         }
 
-        return [];
+        return $result;
     }
 
     public function batchSaveData($roleId, $nodeArr)

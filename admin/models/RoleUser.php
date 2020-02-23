@@ -5,8 +5,73 @@ namespace lingyin\admin\models;
 
 
 use lingyin\admin\base\ActiveRecord;
+use yii\db\Exception;
 
 class RoleUser extends ActiveRecord
 {
+    public function getAllRoleByUserIds($userIdArr)
+    {
+        $data = $this->setWhere([
+            'in' => ['user_id' => $userIdArr],
+        ])->asArray()->all();
 
+        $result = [];
+        if ($data) {
+            foreach ($data as $item) {
+                $result[$item['user_id']][] = $item['role_id'];
+            }
+        }
+
+        return [];
+    }
+
+    public function batchSaveData($userId, $roleArr)
+    {
+        $data = $this->getAllRoleByUserIds([$userId]);
+        $oldRoleArr = [];
+        if ($data && isset($data[$userId])) {
+            $oldRoleArr = $data[$userId];
+        }
+
+        // 需删除的权限
+        $deleteArr = array_diff($oldRoleArr, $roleArr);
+
+        // 需要增加的权限
+        $addArr = array_diff($roleArr, $oldRoleArr);
+
+        if (empty($deleteArr) && empty($addArr)) {
+            $this->addError('role_id', '没有修改任何权限');
+            return false;
+        }
+
+        $trans = self::getDb()->beginTransaction();
+
+        try {
+            if (!empty($deleteArr)) {
+                $deleteStr = implode("','", $deleteArr);
+                $condition = "user_id = '{$userId}' AND role_id in ('{$deleteStr}')";
+                self::getDb()->createCommand()->delete(self::tableName(), $condition)->execute();
+            }
+
+            if (!empty($addArr)) {
+                $add = [];
+                foreach ($addArr as $roleId) {
+                    $add[] = [
+                        'user_id' => $userId,
+                        'role_id' => $roleId,
+                    ];
+                }
+                self::getDb()->createCommand()->batchInsert(self::tableName(), ['user_id', 'role_id'], $add)->execute();
+            }
+            $trans->commit();
+        } catch (Exception $e) {
+            $trans->rollBack();
+            $this->addError('role_id', $e->getMessage());
+            return false;
+        }
+
+        return true;
+
+
+    }
 }

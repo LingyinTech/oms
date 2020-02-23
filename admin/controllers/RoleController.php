@@ -9,8 +9,11 @@ use lingyin\admin\logic\RoleLogic;
 use lingyin\admin\models\Node;
 use lingyin\admin\models\Role;
 use lingyin\admin\models\RoleNode;
+use lingyin\admin\models\User;
+use lingyin\admin\models\UserInfo;
 use lingyin\admin\models\vo\RoleForm;
 use lingyin\admin\models\vo\RoleNodeForm;
+use lingyin\admin\models\vo\RoleUserForm;
 
 class RoleController extends Controller
 {
@@ -95,6 +98,15 @@ class RoleController extends Controller
 
     public function actionUser()
     {
-        return $this->render('user');
+        $list = (new UserInfo())->getList([
+            'u.status' => User::STATUS_ACTIVE
+        ]);
+        var_export($list);
+exit(0);
+        return $this->render('user',[
+            'list' => $list['list'],
+            'pages' => $list['pages'],
+            'model' => new RoleUserForm(),
+        ]);
     }
 }
