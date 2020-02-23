@@ -20,7 +20,6 @@ namespace('admin.role')
         $.post(url + '?role_id=' + roleId, function (data) {
             layer.close(load);
             if (0 == data.status) {
-                $('#rolenodeform-node_id').val(data.data);
                 let nodeArr = data.data.split(',');
                 $('input.check_node').each(function () {
                     if (nodeArr.indexOf($(this).val()) >= 0) {
@@ -35,6 +34,29 @@ namespace('admin.role')
         }, 'json');
     });
 
+    $('table.role-user-grid tbody tr').on('click', function () {
+        $('table.role-user-grid tbody tr').removeClass('active');
+        $(this).addClass('active');
+        let userId = $(this).data('user_id');
+        let url = '/admin/role/user';
+        $('#roleuserform-user_id').val(userId);
+        let load = layer.load(2, {time: 3 * 1000});
+        $.post(url + '?user_id=' + userId, function (data) {
+            layer.close(load);
+            if (0 == data.status) {
+                let roleArr = data.data.split(',');
+                $('input.check_role').each(function () {
+                    if (roleArr.indexOf($(this).val()) >= 0) {
+                        $(this).prop('checked', true);
+                    } else {
+                        $(this).prop('checked', false);
+                    }
+                })
+            } else {
+                layer.msg(data.msg);
+            }
+        }, 'json');
+    });
 
 
     function save() {
@@ -67,7 +89,7 @@ namespace('admin.role')
             layer.close(load);
             if (data.status == 0) {
                 layer.msg('保存成功');
-                $('#RoleNodeForm')[0].reset();
+                window.admin.main.form.reset('RoleNodeForm');
             } else {
                 layer.msg('保存存失败');
             }
@@ -75,7 +97,28 @@ namespace('admin.role')
     }
 
     function saveUser() {
+        let userId = $('#roleuserform-user_id').val();
+        if (!userId) {
+            layer.msg('请先选择员工');
+            return;
+        }
 
+        let url = '/admin/role/save-user';
+        let roleArr = [];
+        $('input.check_role:checked').each(function () {
+            roleArr.push($(this).val());
+        });
+        let roleId = roleArr.join(',');
+        let load = layer.load(2, {time: 3 * 1000});
+        $.post(url, {role_id: roleId, user_id: userId}, function (data) {
+            layer.close(load);
+            if (data.status == 0) {
+                layer.msg('保存成功');
+                window.admin.main.form.reset('RoleUserForm');
+            } else {
+                layer.msg('保存存失败');
+            }
+        }, 'json');
     }
 
     window.admin.role.save = save;

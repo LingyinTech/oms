@@ -22,7 +22,7 @@ return [
             'password' => 'qqWW1019!@#',
         ],
         'cache' => [
-            'keyPrefix' => 'lingyin:oms:',
+            'keyPrefix' => 'lingyin_oms_',
         ],
     ],
     'modules' => [
