@@ -15,6 +15,11 @@ use yii\helpers\Url;
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">用户列表</h3>
+
+                    <div class="pull-right">
+                        <a href="/admin/user/add" class="btn btn-primary">添加员工</a>
+                        <a href="/admin/user/batch-add" class="btn btn-primary">批量添加</a>
+                    </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">

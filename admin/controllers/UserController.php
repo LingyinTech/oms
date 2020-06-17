@@ -31,6 +31,10 @@ class UserController extends Controller
         ]);
     }
 
+    public function actionBatchAdd() {
+        return $this->render('batch-add');
+    }
+
     public function actionAdd()
     {
         $model = new UserForm();

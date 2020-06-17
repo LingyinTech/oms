@@ -70,7 +70,7 @@ class RoleController extends Controller
             'status' => Role::STATUS_ACTIVE
         ]);
 
-        $nodeList = (new RoleLogic())->getAccessNodeByUser(app()->user);
+        $nodeList = (new RoleLogic())->getAccessTreeByUser(app()->user);
 
         return $this->render('node', [
             'list' => $list['list'],

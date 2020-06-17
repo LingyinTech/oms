@@ -12,14 +12,8 @@ use yii\web\User;
 class RoleLogic
 {
 
-    /**
-     * @param User $user
-     * @param array $filterStatus
-     * @return array|ActiveRecord[]
-     */
-    public function getAccessNodeByUser($user, $filterStatus = [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_MENU])
+    public function getAccessNodeByUser($user)
     {
-
         $params = [
             'in' => ['status' => [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_MENU]],
         ];
@@ -44,7 +38,18 @@ class RoleLogic
             $params['in']['id'] = $nodeArr;
         }
 
-        $list = (new Node())->setWhere($params)->orderBy('sort ASC,pid ASC,id ASC')->asArray()->all();
+        return (new Node())->setWhere($params)->orderBy('sort ASC,pid ASC,id ASC')->asArray()->all();
+    }
+
+    /**
+     * @param User $user
+     * @param array $filterStatus
+     * @return array|ActiveRecord[]
+     */
+    public function getAccessTreeByUser($user, $filterStatus = [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_MENU])
+    {
+
+        $list = $this->getAccessNodeByUser($user);
 
         return $this->list2Tree($list, $filterStatus);
     }
@@ -56,7 +61,7 @@ class RoleLogic
      */
     public function getAccessMenuByUser($user)
     {
-        return $this->getAccessNodeByUser($user, [Node::STATUS_MENU]);
+        return $this->getAccessTreeByUser($user, [Node::STATUS_MENU]);
     }
 
     public function list2Tree($list, $filterStatus = null)

@@ -3,6 +3,7 @@
 
 namespace lingyin\admin\components;
 
+use lingyin\admin\logic\RoleLogic;
 use Yii;
 use yii\base\ActionFilter;
 use yii\web\ForbiddenHttpException;
@@ -37,13 +38,16 @@ class AccessControl extends ActionFilter
             }
 
             $pathInfo = app()->getRequest()->getPathInfo();
-
+            $nodeArr = (new RoleLogic())->getAccessNodeByUser($user);
+            foreach ($nodeArr as $node) {
+                if ($pathInfo === ltrim($node['url'],'/')) {
+                    return true;
+                }
+            }
         }
 
         $this->denyAccess($user);
     }
-
-
 
 
     /**
