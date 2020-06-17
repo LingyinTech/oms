@@ -4,6 +4,7 @@
 namespace lingyin\admin\models;
 
 use lingyin\admin\base\ActiveRecord;
+use lingyin\admin\logic\PartnerLogic;
 use yii\data\Pagination;
 
 /**
@@ -24,12 +25,10 @@ class UserInfo extends ActiveRecord
 
     public function getList($params)
     {
+        PartnerLogic::setPartnerId($params,'u.partner_id');
+
         $params['alias'] = 'ui';
         $params['join'] = ['user u' => 'u.id = ui.user_id'];
-
-        if (!app()->user->getIdentity()->getSupperAdmin()) {
-            $params['partner_id'] = app()->user->getIdentity()->partner_id;
-        }
 
         $data = $this->setWhere($params);
         $page = app()->getRequest()->get('page', 1);
@@ -39,7 +38,7 @@ class UserInfo extends ActiveRecord
             'pageSizeParam' => 'page_size',
             'pageSize' => $pageSize,
         ]);
-        $data->select('ui.*,u.username,u.status');
+        $data->select('ui.*,u.username,u.status,u.partner_id');
         $data->limit($pageSize);
         $data->offset(($page - 1) * $pageSize);
         isset($params['select']) && $data->select($params['select']);

@@ -44,7 +44,7 @@ class UserForm extends Model
                 if (!$this->user_id) {
                     $user = new User();
                     $user->setPassword('123456');
-                    $user->partner_id = PartnerLogic::filterPartnerId($this->partner_id, true);
+                    $user->partner_id = PartnerLogic::filterPartnerId($this->partner_id);
                 } else {
                     $user = User::findOne($this->user_id);
                     if (app()->user->getIdentity()->getSupperAdmin() && !empty($this->partner_id)) {

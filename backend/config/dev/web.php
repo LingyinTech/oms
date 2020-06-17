@@ -7,34 +7,34 @@ return [
             'debug/*',
         ],
         'supperAdmin' => [
-            'admin','actors315'
+            'actors315'
         ]
     ],
     'components' => [
         'db' => [
             'dsn' => 'mysql:host=127.0.0.1;dbname=db_order_flow',
-            'username' => 'root',
-            'password' => 'qqWW1019!@#',
+            'username' => 'sso_master',
+            'password' => 'Twinkle2020',
         ],
         'authDb' => [
             'dsn' => 'mysql:host=127.0.0.1;dbname=db_twinkle_ucenter',
-            'username' => 'root',
-            'password' => 'qqWW1019!@#',
+            'username' => 'sso_master',
+            'password' => 'Twinkle2020',
         ],
         'cache' => [
-            'keyPrefix' => 'lingyin_oms_',
+            'keyPrefix' => 'oms:',
         ],
     ],
     'modules' => [
         'debug' => [
             'class' => 'yii\debug\Module',
             // uncomment the following to add your IP if you are not connecting from localhost.
-            'allowedIPs' => ['127.0.0.1', '::1', '192.168.96.1'],
+            'allowedIPs' => ['127.0.0.1', '::1', '172.17.0.1'],
         ],
         'gii' => [
             'class' => 'yii\gii\Module',
             // uncomment the following to add your IP if you are not connecting from localhost.
-            'allowedIPs' => ['127.0.0.1', '::1', '192.168.96.1'],
+            'allowedIPs' => ['127.0.0.1', '::1', '172.17.0.1'],
         ]
     ],
 ];

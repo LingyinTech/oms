@@ -29,7 +29,12 @@ use yii\helpers\Url;
                             <tbody>
                             <?php foreach ($list as $item): ?>
                                 <tr data-role_id="<?= $item['id'] ?>">
-                                    <td data-name="name" data-value="<?= $item['name'] ?>"><?= $item['name'] ?></td>
+                                    <td data-name="name" data-value="<?= $item['name'] ?>">
+                                        <?= $item['name'] ?>
+                                        <?php if (app()->user->getIdentity()->getSupperAdmin() && isset($partnerList[$item['partner_id']])): ?>
+                                            (<?= $partnerList[$item['partner_id']] ?>)
+                                        <?php endif; ?>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>

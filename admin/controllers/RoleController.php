@@ -9,6 +9,7 @@ use lingyin\admin\logic\RoleLogic;
 use lingyin\admin\models\Node;
 use lingyin\admin\models\Role;
 use lingyin\admin\models\RoleNode;
+use lingyin\admin\models\RoleUser;
 use lingyin\admin\models\vo\PartnerForm;
 use lingyin\admin\models\User;
 use lingyin\admin\models\UserInfo;
@@ -80,6 +81,7 @@ class RoleController extends Controller
                 Node::STATUS_ACTION => '动作',
                 Node::STATUS_ELEMENT => '元素',
             ],
+            'partnerList' => (new PartnerForm())->getPartnerList(),
         ]);
     }
 
@@ -100,15 +102,44 @@ class RoleController extends Controller
 
     public function actionUser()
     {
+        if (app()->getRequest()->isAjax) {
+            $userId = app()->getRequest()->get('user_id');
+            if ($userId) {
+                $data = (new RoleUser())->getAllRoleByUserIds([$userId]);
+                $roleIdStr = isset($data[$userId]) ? implode(',', $data[$userId]) : '';
+                return $this->format($roleIdStr);
+            }
+            return $this->fail('非法请求');
+        }
+
         $list = (new UserInfo())->getList([
             'u.status' => User::STATUS_ACTIVE
         ]);
-        var_export($list);
-exit(0);
+
+        $roleList = (new Role())->getAll([
+            'status' => Role::STATUS_ACTIVE
+        ]);
+
         return $this->render('user',[
             'list' => $list['list'],
             'pages' => $list['pages'],
             'model' => new RoleUserForm(),
+            'roleList' => $roleList,
+        ]);
+    }
+
+    public function actionSaveUser()
+    {
+        $model = new RoleUserForm();
+        $model->user_id = app()->request->post('user_id');
+        $model->role_id = app()->request->post('role_id');
+        if ($model->batchSaveRoleUser()) {
+            return $this->success('保存成功');
+        }
+        return $this->format([
+            'status' => 1,
+            'msg' => '保存失败',
+            'errors' => $model->getErrors(),
         ]);
     }
 }

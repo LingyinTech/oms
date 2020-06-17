@@ -3,25 +3,24 @@
 
 namespace lingyin\admin\models\vo;
 
-use lingyin\admin\models\RoleNode;
 use lingyin\admin\models\RoleUser;
 use yii\base\Model;
 
 class RoleUserForm extends Model
 {
 
-    public $role_id;
     public $user_id;
+    public $role_id;
 
     public function rules()
     {
         return [
-            [['role_id','user_id'], 'required'],
+            [['user_id', 'role_id'], 'required'],
             ['role_id', 'filterRole']
         ];
     }
 
-    public function filterUser($attribute, $params)
+    public function filterRole($attribute, $params)
     {
         if ($this->role_id) {
             $roleArr = array_map(function ($v) {

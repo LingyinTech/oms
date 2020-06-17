@@ -24,4 +24,10 @@ class Role extends ActiveRecord
         PartnerLogic::setPartnerId($params);
         return parent::getList($params);
     }
+
+    public function getAll($params)
+    {
+        PartnerLogic::setPartnerId($params);
+        return parent::getAll($params);
+    }
 }

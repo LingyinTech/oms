@@ -32,6 +32,9 @@ class User extends ActiveRecord implements IdentityInterface
 
     protected $supperAdmin = false;
 
+    protected $profile;
+    protected $partner;
+
     /**
      * @inheritdoc
      */
@@ -160,12 +163,18 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getProfile()
     {
-        return UserInfo::findOne($this->getId());
+        if (null == $this->profile) {
+            $this->profile = UserInfo::findOne($this->getId());
+        }
+        return $this->profile;
     }
 
     public function getPartner()
     {
-        return Partner::findOne($this->partner_id);
+        if (null == $this->partner) {
+            $this->partner = Partner::findOne($this->partner_id);
+        }
+        return $this->partner;
     }
 
     /**

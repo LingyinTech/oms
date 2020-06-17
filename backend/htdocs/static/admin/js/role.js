@@ -10,6 +10,16 @@ namespace('admin.role')
         })
     });
 
+    $('#RoleNodeForm input.check_node').on('click',function () {
+        let check = $(this).prop('checked');
+        let childNodeArr = $(this).parent().next().find('input.check_node');
+        if (childNodeArr) {
+            childNodeArr.each(function () {
+                $(this).prop('checked',check);
+            })
+        }
+    });
+
     $('table.role-node-grid tbody tr').on('click', function () {
         $('table.role-node-grid tbody tr').removeClass('active');
         $(this).addClass('active');

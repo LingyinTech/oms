@@ -26,7 +26,8 @@ class UserController extends Controller
                 User::STATUS_ACTIVE => '正常',
                 User::STATUS_INACTIVE => '未激活',
                 User::STATUS_DELETE => '禁用',
-            ]
+            ],
+            'partnerList' => (new PartnerForm())->getPartnerList(),
         ]);
     }
 

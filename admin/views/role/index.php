@@ -37,8 +37,8 @@ use yii\helpers\Url;
                                     <td class="none" data-name="id" data-value="<?= $item['id'] ?>"></td>
                                     <td data-name="name" data-value="<?= $item['name'] ?>">
                                         <?= $item['name'] ?>
-                                        <?php if (app()->user->getIdentity()->getSupperAdmin()): ?>
-                                        (<?= isset($partnerList[$item['partner_id']]) ? $partnerList[$item['partner_id']] : '' ?>)
+                                        <?php if (app()->user->getIdentity()->getSupperAdmin() && isset($partnerList[$item['partner_id']])): ?>
+                                        (<?= $partnerList[$item['partner_id']] ?>)
                                         <?php endif; ?>
                                     </td>
                                     <td data-name="status" data-value="<?= $item['status'] ?>"><?= isset($statusList[$item['status']]) ? $statusList[$item['status']] : ''; ?></td>

@@ -34,7 +34,12 @@ use yii\helpers\Url;
                             <?php foreach ($list as $item): ?>
                                 <tr data-user_id="<?=$item['user_id']?>">
                                     <td class="none"><?= $item['user_id'] ?></td>
-                                    <td><?= $item['username'] ?></td>
+                                    <td>
+                                        <?= $item['username'] ?>
+                                        <?php if (app()->user->getIdentity()->getSupperAdmin() && isset($partnerList[$item['partner_id']])): ?>
+                                            (<?= $partnerList[$item['partner_id']] ?>)
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?= $item['real_name'] ?></td>
                                     <td><?= $item['email'] ?></td>
                                     <td><?= isset($statusList[$item['status']]) ? $statusList[$item['status']] : '' ?></td>

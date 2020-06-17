@@ -22,7 +22,7 @@ class RoleUser extends ActiveRecord
             }
         }
 
-        return [];
+        return $result;
     }
 
     public function batchSaveData($userId, $roleArr)
@@ -71,7 +71,5 @@ class RoleUser extends ActiveRecord
         }
 
         return true;
-
-
     }
 }
