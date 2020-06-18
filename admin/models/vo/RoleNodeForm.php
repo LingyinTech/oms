@@ -3,6 +3,8 @@
 
 namespace lingyin\admin\models\vo;
 
+use lingyin\admin\logic\PartnerLogic;
+use lingyin\admin\models\Role;
 use lingyin\admin\models\RoleNode;
 use yii\base\Model;
 
@@ -43,6 +45,17 @@ class RoleNodeForm extends Model
         }
 
         return false;
+    }
+
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        $role = Role::findOne($this->role_id);
+        if (!$role || !PartnerLogic::checkPartnerId($role->partner_id)) {
+            $this->addError('msg', '非法操作');
+            return false;
+        }
+
+        return parent::validate($attributeNames, $clearErrors);
     }
 
 }

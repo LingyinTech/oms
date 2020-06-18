@@ -42,10 +42,33 @@ class RoleForm extends Model
                 }
             }
             $data['partner_id'] = PartnerLogic::filterPartnerId($this->partner_id);
-            return $model->saveData($data);
+            if($model->saveData($data)) {
+               return true;
+            }
+            $this->addErrors($model->getErrors());
         }
 
         return false;
+    }
+
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        if (parent::validate($attributeNames, $clearErrors)) {
+            if ($this->id) {
+                $role = Role::findOne($this->id);
+                if (!$role) {
+                    $this->addError('msg', '操作失败，请稍后再试');
+                    return false;
+                }
+
+                if (!PartnerLogic::checkPartnerId($role->partner_id)) {
+                    $this->addError('msg','非法操作');
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 }

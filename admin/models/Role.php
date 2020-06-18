@@ -5,8 +5,12 @@ namespace lingyin\admin\models;
 
 use lingyin\admin\base\ActiveRecord;
 use lingyin\admin\logic\PartnerLogic;
-use yii\data\Pagination;
 
+/**
+ * Class Role
+ * @package lingyin\admin\models
+ * @property integer $partner_id 合作伙伴ID
+ */
 class Role extends ActiveRecord
 {
     //状态，0未开放，1删除，10开放
@@ -29,5 +33,15 @@ class Role extends ActiveRecord
     {
         PartnerLogic::setPartnerId($params);
         return parent::getAll($params);
+    }
+
+    public function beforeSave($insert)
+    {
+        if (!$insert && !PartnerLogic::checkPartnerId($this->partner_id)) {
+            $this->addError('msg', '非法操作');
+            return false;
+        }
+
+        return parent::beforeSave($insert);
     }
 }

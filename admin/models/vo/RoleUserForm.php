@@ -3,7 +3,9 @@
 
 namespace lingyin\admin\models\vo;
 
+use lingyin\admin\logic\PartnerLogic;
 use lingyin\admin\models\RoleUser;
+use lingyin\admin\models\User;
 use yii\base\Model;
 
 class RoleUserForm extends Model
@@ -43,6 +45,17 @@ class RoleUserForm extends Model
         }
 
         return false;
+    }
+
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        $user = User::findOne($this->user_id);
+        if (!$user || !PartnerLogic::checkPartnerId($user->partner_id)) {
+            $this->addError('msg', '非法操作');
+            return false;
+        }
+
+        return parent::validate($attributeNames, $clearErrors);
     }
 
 }

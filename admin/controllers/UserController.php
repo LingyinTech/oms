@@ -5,6 +5,7 @@ namespace lingyin\admin\controllers;
 
 
 use lingyin\admin\base\Controller;
+use lingyin\admin\logic\PartnerLogic;
 use lingyin\admin\models\User;
 use lingyin\admin\models\UserInfo;
 use lingyin\admin\models\vo\PartnerForm;
@@ -31,7 +32,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function actionBatchAdd() {
+    public function actionBatchAdd()
+    {
         return $this->render('batch-add');
     }
 
@@ -43,18 +45,21 @@ class UserController extends Controller
             if ($model->load(app()->request->post()) && $model->saveUser()) {
                 return $this->success('保存成功');
             }
+
+            $errors = $model->getErrors();
+
             return $this->format([
                 'status' => 1,
-                'msg' => '保存失败',
-                'errors' => $model->getErrors(),
+                'msg' => isset($errors['msg']) ? current($errors['msg']) : '保存失败',
+                'errors' => $errors,
             ]);
         }
 
 
-        if($id = app()->request->get('id')) {
+        if ($id = app()->request->get('id')) {
             $model->initData($id);
         }
-        return $this->render('add',[
+        return $this->render('add', [
             'model' => $model,
             'statusList' => [
                 User::STATUS_ACTIVE => '正常',
@@ -77,7 +82,7 @@ class UserController extends Controller
         }
 
         $userId = app()->request->get('id');
-        if (!User::findOne($userId)) {
+        if (!($user = User::findOne($userId)) || !PartnerLogic::checkPartnerId($user->partner_id)) {
             // 这里需要修改一下
             return $this->render('/site/error', [
                 'name' => '非法操作',

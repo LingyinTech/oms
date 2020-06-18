@@ -33,7 +33,12 @@ trait JsonResultTrait
     protected function fail($msg, $errors = null)
     {
         $result = ['status' => 1, 'msg' => $msg];
-        if ($errors) $result['errors'] = $errors;
+        if ($errors) {
+            $result['errors'] = $errors;
+            if (isset($errors['msg'])) {
+                $msg = $errors['msg'];
+            }
+        }
         return $this->format($result);
     }
 

@@ -39,7 +39,6 @@ class UserForm extends Model
         if ($this->validate()) {
             $trans = User::getDb()->beginTransaction();
             try {
-
                 // 添加用户
                 if (!$this->user_id) {
                     $user = new User();
@@ -47,8 +46,12 @@ class UserForm extends Model
                     $user->partner_id = PartnerLogic::filterPartnerId($this->partner_id);
                 } else {
                     $user = User::findOne($this->user_id);
-                    if (app()->user->getIdentity()->getSupperAdmin() && !empty($this->partner_id)) {
-                        $user->partner_id = $this->partner_id;
+                    if (!$user) {
+                        $this->addError('msg', '用户不存在');
+                        return false;
+                    }
+                    if (app()->user->getIdentity()->getSupperAdmin()) {
+                        !empty($this->partner_id) && $user->partner_id = $this->partner_id;
                     }
                 }
 
@@ -90,7 +93,11 @@ class UserForm extends Model
         $user = User::findOne($id);
         $userInfo = UserInfo::findOne($id);
 
-        if ($user) {
+        if (!$user) {
+            return;
+        }
+
+        if (true || PartnerLogic::checkPartnerId($user->partner_id)) {
             $this->attributes = array_merge($userInfo->attributes, $user->attributes);
         }
     }

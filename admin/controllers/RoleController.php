@@ -5,14 +5,15 @@ namespace lingyin\admin\controllers;
 
 
 use lingyin\admin\base\Controller;
+use lingyin\admin\logic\PartnerLogic;
 use lingyin\admin\logic\RoleLogic;
 use lingyin\admin\models\Node;
 use lingyin\admin\models\Role;
 use lingyin\admin\models\RoleNode;
 use lingyin\admin\models\RoleUser;
-use lingyin\admin\models\vo\PartnerForm;
 use lingyin\admin\models\User;
 use lingyin\admin\models\UserInfo;
+use lingyin\admin\models\vo\PartnerForm;
 use lingyin\admin\models\vo\RoleForm;
 use lingyin\admin\models\vo\RoleNodeForm;
 use lingyin\admin\models\vo\RoleUserForm;
@@ -57,11 +58,13 @@ class RoleController extends Controller
     public function actionNode()
     {
         if (app()->getRequest()->isAjax) {
-            $roleId = app()->getRequest()->get('role_id');
-            if ($roleId) {
-                $data = (new RoleNode())->getAllNodeByRoleIds([$roleId]);
-                $nodeIdStr = isset($data[$roleId]) ? implode(',', $data[$roleId]) : '';
-                return $this->format($nodeIdStr);
+            if ($roleId = app()->getRequest()->get('role_id')) {
+                $role = Role::findOne($roleId);
+                if ($role && PartnerLogic::checkPartnerId($role->partner_id)) {
+                    $data = (new RoleNode())->getAllNodeByRoleIds([$roleId]);
+                    $nodeIdStr = isset($data[$roleId]) ? implode(',', $data[$roleId]) : '';
+                    return $this->format($nodeIdStr);
+                }
             }
             return $this->fail('非法请求');
         }
@@ -103,11 +106,13 @@ class RoleController extends Controller
     public function actionUser()
     {
         if (app()->getRequest()->isAjax) {
-            $userId = app()->getRequest()->get('user_id');
-            if ($userId) {
-                $data = (new RoleUser())->getAllRoleByUserIds([$userId]);
-                $roleIdStr = isset($data[$userId]) ? implode(',', $data[$userId]) : '';
-                return $this->format($roleIdStr);
+            if ($userId = app()->getRequest()->get('user_id')) {
+                $user = User::findOne($userId);
+                if ($user && PartnerLogic::checkPartnerId($user->partner_id)) {
+                    $data = (new RoleUser())->getAllRoleByUserIds([$userId]);
+                    $roleIdStr = isset($data[$userId]) ? implode(',', $data[$userId]) : '';
+                    return $this->format($roleIdStr);
+                }
             }
             return $this->fail('非法请求');
         }
@@ -120,7 +125,7 @@ class RoleController extends Controller
             'status' => Role::STATUS_ACTIVE
         ]);
 
-        return $this->render('user',[
+        return $this->render('user', [
             'list' => $list['list'],
             'pages' => $list['pages'],
             'model' => new RoleUserForm(),
