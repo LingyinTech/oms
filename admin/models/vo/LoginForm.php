@@ -44,8 +44,13 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, '用户名密码错误或者账号未激活');
+            if (!$user) {
+                $this->addError($attribute, '用户不存在或者未激活');
+                return;
+            }
+
+            if (!$user->validatePassword($this->password)) {
+                $this->addError($attribute, '密码错误');
             }
         }
     }
