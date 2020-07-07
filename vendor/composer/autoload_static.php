@@ -44,6 +44,7 @@ class ComposerStaticInit88bb735c14103ce7271d30bd0882d4e9
         'l' => 
         array (
             'lingyin\\traits\\' => 15,
+            'lingyin\\predis\\' => 15,
             'lingyin\\admin\\' => 14,
         ),
         'd' => 
@@ -81,6 +82,7 @@ class ComposerStaticInit88bb735c14103ce7271d30bd0882d4e9
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'Prophecy\\' => 9,
+            'Predis\\' => 7,
         ),
         'O' => 
         array (
@@ -154,6 +156,10 @@ class ComposerStaticInit88bb735c14103ce7271d30bd0882d4e9
         'lingyin\\traits\\' => 
         array (
             0 => __DIR__ . '/../..' . '/traits',
+        ),
+        'lingyin\\predis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lingyin/predis/src',
         ),
         'lingyin\\admin\\' => 
         array (
@@ -242,6 +248,10 @@ class ComposerStaticInit88bb735c14103ce7271d30bd0882d4e9
         'Prophecy\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
+        ),
+        'Predis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/predis/predis/src',
         ),
         'Opis\\Closure\\' => 
         array (
@@ -462,6 +472,7 @@ class ComposerStaticInit88bb735c14103ce7271d30bd0882d4e9
         'PHPUnit\\Framework\\SkippedTestError' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/SkippedTestError.php',
         'PHPUnit\\Framework\\SkippedTestSuiteError' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/SkippedTestSuiteError.php',
         'PHPUnit\\Framework\\SyntheticError' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/SyntheticError.php',
+        'PHPUnit\\Framework\\Test' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Test.php',
         'PHPUnit\\Framework\\TestCase' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/TestCase.php',
         'PHPUnit\\Framework\\TestFailure' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/TestFailure.php',
         'PHPUnit\\Framework\\TestListener' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/TestListener.php',
@@ -524,6 +535,7 @@ class ComposerStaticInit88bb735c14103ce7271d30bd0882d4e9
         'PHPUnit\\Util\\PHP\\WindowsPhpProcess' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/PHP/WindowsPhpProcess.php',
         'PHPUnit\\Util\\Printer' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/Printer.php',
         'PHPUnit\\Util\\RegularExpression' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/RegularExpression.php',
+        'PHPUnit\\Util\\Test' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/Test.php',
         'PHPUnit\\Util\\TestDox\\CliTestDoxPrinter' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/TestDox/CliTestDoxPrinter.php',
         'PHPUnit\\Util\\TestDox\\HtmlResultPrinter' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/TestDox/HtmlResultPrinter.php',
         'PHPUnit\\Util\\TestDox\\NamePrettifier' => __DIR__ . '/..' . '/phpunit/phpunit/src/Util/TestDox/NamePrettifier.php',
