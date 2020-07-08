@@ -5,6 +5,7 @@ namespace lingyin\admin\models;
 
 
 use lingyin\admin\base\ActiveRecord;
+use lingyin\admin\logic\RoleLogic;
 use yii\db\Exception;
 
 class RoleNode extends ActiveRecord
@@ -33,11 +34,17 @@ class RoleNode extends ActiveRecord
             $oldNodeArr = $data[$roleId];
         }
 
+        // 当前用户拥有的全部权限
+        $nodeList = (new RoleLogic())->getAccessNodeByUser(app()->user);
+        $accessNodeArr = array_column($nodeList,'id');
+
         // 需删除的权限
         $deleteNode = array_diff($oldNodeArr, $nodeArr);
+        $deleteNode = array_intersect($deleteNode,$accessNodeArr);
 
         // 需要增加的权限
         $addNode = array_diff($nodeArr, $oldNodeArr);
+        $addNode = array_intersect($addNode,$accessNodeArr);
 
         if (empty($deleteNode) && empty($addNode)) {
             $this->addError('node_id', '没有修改任何权限');
