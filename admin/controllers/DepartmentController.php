@@ -15,15 +15,34 @@ class DepartmentController extends Controller
 
     public function actionIndex()
     {
+        $model = new Department();
+
+        $list = $model->getList(['orderBy'=>'sort ASC,id DESC']);
+
         $model = new DepartmentForm();
         return $this->render('index', [
             'model' => $model,
+            'list' => $list['list'],
+            'pages' => $list['pages'],
+        ]);
+    }
+
+    public function actionSave()
+    {
+        $model = new DepartmentForm();
+        if ($model->load(app()->request->post()) && $model->saveDepartment()) {
+            return $this->success('保存成功');
+        }
+        return $this->format([
+            'status' => 1,
+            'msg' => '保存失败',
+            'errors' => $model->getErrors(),
         ]);
     }
 
     public function actionSelect()
     {
-        $list = (new Department())->getAll(['status' => 1]);
+        $list = (new Department())->getAll([]);
 
         $list = $this->list2Tree($list);
 

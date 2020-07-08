@@ -53,6 +53,14 @@ use yii\helpers\Url;
                     </div>
 
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">部门</label>
+
+                        <div class="col-sm-8">
+                            <?= $form->field($model, 'department_id')->dropDownList($departmentList) ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="col-sm-3 control-label">办公室电话</label>
                         <div class="col-sm-8">
                             <?= $form->field($model, 'tel')->input('text') ?>

@@ -20,6 +20,7 @@ class UserForm extends Model
     public $avatar;
     public $tel;
     public $phone;
+    public $department_id;
     public $status;
     public $partner_id;
 
@@ -97,7 +98,7 @@ class UserForm extends Model
             return;
         }
 
-        if (true || PartnerLogic::checkPartnerId($user->partner_id)) {
+        if (PartnerLogic::checkPartnerId($user->partner_id)) {
             $this->attributes = array_merge($userInfo->attributes, $user->attributes);
         }
     }
