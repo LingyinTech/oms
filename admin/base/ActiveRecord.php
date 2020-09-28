@@ -5,17 +5,13 @@ namespace lingyin\admin\base;
 
 
 use lingyin\traits\db\ActiveRecordTrait;
+use lingyin\traits\db\ChooseConnectionTrait;
 
 class ActiveRecord extends \yii\db\ActiveRecord
 {
-
     use ActiveRecordTrait;
 
-    public static function getDb()
-    {
-        return app()->authDb;
-    }
-
+    use ChooseConnectionTrait;
 
     public function beforeSave($insert)
     {

@@ -31,11 +31,9 @@ trait ListTreeTrait
         foreach ($list as $key => $data) {
             if ($rootId == $data[$pidKey]) {
                 $tree[] = &$list[$key];
-            } else {
-                if (isset($refer[$data[$pidKey]])) {
-                    $parent = &$refer[$data[$pidKey]];
-                    $parent[$child][] = &$list[$key];
-                }
+            } elseif (isset($refer[$data[$pidKey]])) {
+                $parent = &$refer[$data[$pidKey]];
+                $parent[$child][] = &$list[$key];
             }
         }
 

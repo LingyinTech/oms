@@ -42,7 +42,8 @@
   "autoload": {
     "psr-4": {
       "lingyin\\admin\\": "admin/",
-      "lingyin\\traits\\": "traits/"
+      "lingyin\\traits\\": "traits/",
+      "lingyin\\common\\": "common/"
     },
     "classmap": [
     ]

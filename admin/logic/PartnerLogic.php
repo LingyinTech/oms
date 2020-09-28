@@ -21,7 +21,7 @@ class PartnerLogic
     }
 
     /**
-     * @param integer $partnerId
+     * @param int $partnerId
      * @return mixed
      * @throws \Throwable
      */
@@ -36,8 +36,11 @@ class PartnerLogic
 
     public static function setPartnerId(&$params, $field = 'partner_id')
     {
-        if (!app()->user->getIdentity()->getSupperAdmin()) {
-            $params[$field] = app()->user->getIdentity()->partner_id;
+        try {
+            if (!app()->user->getIdentity()->getSupperAdmin()) {
+                $params[$field] = app()->user->getIdentity()->partner_id;
+            }
+        } catch (\Throwable $e) {
         }
     }
 
