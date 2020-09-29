@@ -5,27 +5,21 @@ namespace backend\base;
 
 
 use lingyin\traits\db\ActiveRecordTrait;
+use lingyin\traits\db\ChooseConnectionTrait;
+use yii\behaviors\TimestampBehavior;
 
 class ActiveRecord extends \yii\db\ActiveRecord
 {
+    use ActiveRecordTrait;
 
     use ActiveRecordTrait;
 
-    public function beforeSave($insert)
+    use ChooseConnectionTrait;
+
+    public function behaviors()
     {
-        $nowTime = time();
-        if ($insert) {
-            $this->setAttributes([
-                'created_at' => $nowTime,
-                'updated_at' => $nowTime,
-            ], false);
-        } else {
-            $this->setAttributes([
-                'updated_at' => $nowTime,
-            ], false);
-        }
-
-        return parent::beforeSave($insert);
+        return [
+            TimestampBehavior::class,
+        ];
     }
-
 }

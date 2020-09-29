@@ -26,6 +26,7 @@ class AccessControl extends ActionFilter
 
     /**
      * @inheritdoc
+     * @throws ForbiddenHttpException
      */
     public function beforeAction($action)
     {
@@ -89,10 +90,8 @@ class AccessControl extends ActionFilter
                 if ($route === '' || strpos($uniqueId, $route) === 0) {
                     return false;
                 }
-            } else {
-                if ($uniqueId === $route) {
-                    return false;
-                }
+            } elseif ($uniqueId === $route) {
+                return false;
             }
         }
 

@@ -1,12 +1,21 @@
 <?php
 
-
 namespace lingyin\admin\logic;
 
-
+/**
+ * 合作伙伴校验
+ * Class PartnerLogic
+ * @package lingyin\admin\logic
+ */
 class PartnerLogic
 {
 
+    /**
+     * 较验当前操作是否合法
+     * @param $partnerId
+     * @return bool
+     * @throws \Throwable
+     */
     public static function checkPartnerId($partnerId)
     {
         if (app()->user->getIdentity()->getSupperAdmin()) {
@@ -25,7 +34,7 @@ class PartnerLogic
      * @return mixed
      * @throws \Throwable
      */
-    public static function filterPartnerId($partnerId)
+    public static function filterPartnerId($partnerId = 0)
     {
         if (app()->user->getIdentity()->getSupperAdmin() && $partnerId) {
             return $partnerId;
@@ -34,13 +43,16 @@ class PartnerLogic
         return app()->user->getIdentity()->partner_id;
     }
 
+    /**
+     * 填加 partner_id 参数
+     * @param $params
+     * @param string $field
+     * @throws \Throwable
+     */
     public static function setPartnerId(&$params, $field = 'partner_id')
     {
-        try {
-            if (!app()->user->getIdentity()->getSupperAdmin()) {
-                $params[$field] = app()->user->getIdentity()->partner_id;
-            }
-        } catch (\Throwable $e) {
+        if (!app()->user->getIdentity()->getSupperAdmin()) {
+            $params[$field] = app()->user->getIdentity()->partner_id;
         }
     }
 

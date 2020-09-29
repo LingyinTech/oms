@@ -5,15 +5,19 @@ namespace lingyin\admin\models;
 
 
 use lingyin\admin\base\ActiveRecord;
+use lingyin\admin\logic\PartnerLogic;
 use yii\db\Exception;
 
 class RoleUser extends ActiveRecord
 {
+
     public function getAllRoleByUserIds($userIdArr)
     {
-        $data = $this->setWhere([
-            'in' => ['user_id' => $userIdArr],
-        ])->asArray()->all();
+        $data = $this->setWhere(
+            [
+                'in' => ['user_id' => $userIdArr],
+            ]
+        )->asArray()->all();
 
         $result = [];
         if ($data) {
@@ -44,12 +48,14 @@ class RoleUser extends ActiveRecord
             return false;
         }
 
+        $partnerId = PartnerLogic::filterPartnerId();
+
         $trans = self::getDb()->beginTransaction();
 
         try {
             if (!empty($deleteArr)) {
                 $deleteStr = implode("','", $deleteArr);
-                $condition = "user_id = '{$userId}' AND role_id in ('{$deleteStr}')";
+                $condition = "user_id = '{$userId}' AND role_id in ('{$deleteStr}') AND partner_id = {$partnerId}";
                 self::getDb()->createCommand()->delete(self::tableName(), $condition)->execute();
             }
 
@@ -59,9 +65,14 @@ class RoleUser extends ActiveRecord
                     $add[] = [
                         'user_id' => $userId,
                         'role_id' => $roleId,
+                        'partner_id' => $partnerId,
                     ];
                 }
-                self::getDb()->createCommand()->batchInsert(self::tableName(), ['user_id', 'role_id'], $add)->execute();
+                self::getDb()->createCommand()->batchInsert(
+                    self::tableName(),
+                    ['user_id', 'role_id', 'partner_id'],
+                    $add
+                )->execute();
             }
             $trans->commit();
         } catch (Exception $e) {

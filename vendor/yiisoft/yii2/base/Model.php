@@ -168,7 +168,7 @@ class Model extends Component implements StaticInstanceInterface, IteratorAggreg
      * [
      *     'scenario1' => ['attribute11', 'attribute12', ...],
      *     'scenario2' => ['attribute21', 'attribute22', ...],
-     *     ...
+     *     ...i
      * ]
      * ```
      *

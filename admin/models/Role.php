@@ -4,12 +4,11 @@
 namespace lingyin\admin\models;
 
 use lingyin\admin\base\ActiveRecord;
-use lingyin\admin\logic\PartnerLogic;
 
 /**
  * Class Role
  * @package lingyin\admin\models
- * @property integer $partner_id 合作伙伴ID
+ * @property int $partner_id 合作伙伴ID
  */
 class Role extends ActiveRecord
 {
@@ -21,27 +20,5 @@ class Role extends ActiveRecord
     public function deleteCache()
     {
         return app()->cache->delete('admin:role');
-    }
-
-    public function getList($params)
-    {
-        PartnerLogic::setPartnerId($params);
-        return parent::getList($params);
-    }
-
-    public function getAll($params)
-    {
-        PartnerLogic::setPartnerId($params);
-        return parent::getAll($params);
-    }
-
-    public function beforeSave($insert)
-    {
-        if (!$insert && !PartnerLogic::checkPartnerId($this->partner_id)) {
-            $this->addError('msg', '非法操作');
-            return false;
-        }
-
-        return parent::beforeSave($insert);
     }
 }

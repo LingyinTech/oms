@@ -24,7 +24,7 @@ class Partner extends ActiveRecord
             foreach ($list as $item) {
                 $data[$item['id']] = $item;
             }
-            app()->cache->set('admin:partner', $data);
+            app()->cache->set('admin:partner', $data, 86400);
         }
         return $data;
     }

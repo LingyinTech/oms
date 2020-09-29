@@ -15,7 +15,6 @@ class Node extends ActiveRecord
     const STATUS_ELEMENT = 3;
     const STATUS_MENU = 10;
 
-
     public function getCache()
     {
         $data = app()->cache->get('admin:node');

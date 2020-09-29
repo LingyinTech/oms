@@ -13,6 +13,7 @@ use lingyin\admin\models\RoleNode;
 use lingyin\admin\models\RoleUser;
 use lingyin\admin\models\User;
 use lingyin\admin\models\UserInfo;
+use lingyin\admin\models\views\UserView;
 use lingyin\admin\models\vo\PartnerForm;
 use lingyin\admin\models\vo\RoleForm;
 use lingyin\admin\models\vo\RoleNodeForm;
@@ -117,8 +118,8 @@ class RoleController extends Controller
             return $this->fail('非法请求');
         }
 
-        $list = (new UserInfo())->getList([
-            'u.status' => User::STATUS_ACTIVE
+        $list = (new UserView())->getList([
+            'status' => User::STATUS_ACTIVE
         ]);
 
         $roleList = (new Role())->getAll([

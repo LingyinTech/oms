@@ -5,6 +5,7 @@ namespace lingyin\admin\logic;
 
 
 use lingyin\admin\models\Node;
+use lingyin\admin\models\RoleNode;
 use lingyin\admin\models\RoleUser;
 use yii\db\ActiveRecord;
 use yii\web\User;
@@ -25,13 +26,25 @@ class RoleLogic
         }
 
         if (!$supperAdmin) {
-            $list = (new RoleUser())->setWhere([
-                'alias' => 'ru',
-                'join' => ['role_node rn' => 'rn.role_id = ru.role_id'],
-                'ru.user_id' => $user->getId(),
-            ])->select('rn.node_id')->asArray()->all();
+            // 这里可以加个缓存
+            $roleList = (new RoleUser())->setWhere(
+                [
+                    'user_id' => $user->getId(),
+                ]
+            )->select('role_id')->asArray()->all();
+            if (empty($roleList)) {
+                return [];
+            }
 
-            if (empty($list)) return [];
+            $roleArr = array_column($roleList, 'role_id');
+            $list = (new RoleNode())->setWhere(
+                [
+                    'in' => ['role_id' => $roleArr]
+                ]
+            )->select('node_id')->asArray()->all();
+            if (empty($list)) {
+                return [];
+            }
 
             $nodeArr = array_column($list, 'node_id');
 
@@ -46,9 +59,10 @@ class RoleLogic
      * @param array $filterStatus
      * @return array|ActiveRecord[]
      */
-    public function getAccessTreeByUser($user, $filterStatus = [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_MENU])
-    {
-
+    public function getAccessTreeByUser(
+        $user,
+        $filterStatus = [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_MENU]
+    ) {
         $list = $this->getAccessNodeByUser($user);
 
         return $this->list2Tree($list, $filterStatus);
@@ -90,11 +104,9 @@ class RoleLogic
 
             if (0 == $data['pid']) {
                 $tree[] = &$list[$key];
-            } else {
-                if (isset($refer[$data['pid']])) {
-                    $parent = &$refer[$data['pid']];
-                    $parent['items'][] = &$list[$key];
-                }
+            } elseif (isset($refer[$data['pid']])) {
+                $parent = &$refer[$data['pid']];
+                $parent['items'][] = &$list[$key];
             }
         }
 

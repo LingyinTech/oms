@@ -3,7 +3,7 @@
 namespace lingyin\traits\db;
 
 use lingyin\common\models\DbConfig;
-use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\Connection;
 
 /**
@@ -16,6 +16,11 @@ trait ChooseConnectionTrait
 
     public static $dbInstance = null;
 
+    /**
+     * @return mixed|object|Connection|null
+     * @throws \Throwable
+     * @throws InvalidConfigException
+     */
     public static function chooseDb()
     {
         if (null !== self::$dbName) {
@@ -28,15 +33,19 @@ trait ChooseConnectionTrait
             return self::$dbInstance = app()->{$allocate[$table]};
         }
 
-        try {
-            if (app()->user->getIdentity()) {
-                $partnerId = app()->user->getIdentity()->partner_id;
-
-                $config = (new DbConfig())->getDbConfigById($partnerId);
-
-                return self::$dbInstance = new Connection($config['connection']);
+        // 表里没有 partner_id 字段，直接走默认db
+        $scheme = self::getTableSchema()->columns;
+        if (isset($scheme['partner_id']) && app()->user->getIdentity()) {
+            $partnerId = app()->user->getIdentity()->partner_id;
+            if ($config = (new DbConfig())->getDbConfigById($partnerId)) {
+                $configName = $config['config_name'];
+                if ($instance = app()->get($configName, false)) {
+                    return self::$dbInstance = $instance;
+                }
+                $connection = $config['connection'];
+                app()->setComponents([$configName => $connection]);
+                return self::$dbInstance = app()->{$configName};
             }
-        } catch (\Throwable $e) {
         }
 
         return self::$dbInstance = app()->db;
@@ -44,6 +53,8 @@ trait ChooseConnectionTrait
 
     /**
      * @return Connection
+     * @throws \Throwable
+     * @throws InvalidConfigException
      */
     public static function getDb()
     {

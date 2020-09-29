@@ -27,6 +27,11 @@ class DepartmentForm extends Model
         ];
     }
 
+    /**
+     * 创建部门
+     * @return bool
+     * @throws \Throwable
+     */
     public function saveDepartment()
     {
         if ($this->validate()) {
@@ -37,7 +42,7 @@ class DepartmentForm extends Model
                     $data[$attribute] = $this->{$attribute};
                 }
             }
-            $data['partner_id'] = PartnerLogic::filterPartnerId(false);print_r($data);
+            $data['partner_id'] = PartnerLogic::filterPartnerId(false);
             return $model->saveData($data);
         }
 

@@ -1,9 +1,10 @@
 <?php
 
-
 namespace lingyin\traits\db;
 
+use lingyin\admin\logic\PartnerLogic;
 use yii\data\Pagination;
+use yii\db\ActiveQuery;
 
 /**
  * Trait ActiveRecordTrait
@@ -11,6 +12,8 @@ use yii\data\Pagination;
  */
 trait ActiveRecordTrait
 {
+
+    public static $shouldCheckPartner = true;
 
     /**
      * 允许接收用户输入的字段
@@ -129,11 +132,14 @@ trait ActiveRecordTrait
      * 设置查询条件
      *
      * @param array $params
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
+     * @throws \Throwable
      */
     public function setWhere($params = [])
     {
         $obj = self::find();
+
+        PartnerLogic::setPartnerId($params);
 
         foreach ($params as $key => $value) {
             switch ($key) {
@@ -151,9 +157,7 @@ trait ActiveRecordTrait
                     break;
                 case 'join':
                 case 'left join':
-                    foreach ($value as $k => $v) {
-                        $obj->join($key, $k, $v);
-                    }
+                    // 不允许联表查询
                     break;
                 case 'in':
                 case '>':
@@ -185,4 +189,30 @@ trait ActiveRecordTrait
         return $obj;
     }
 
+    public static function findOne($condition)
+    {
+        PartnerLogic::setPartnerId($condition);
+        return parent::findOne($condition);
+    }
+
+    public static function findAll($condition)
+    {
+        PartnerLogic::setPartnerId($condition);
+        return parent::findAll($condition);
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     * @throws \Throwable
+     */
+    public function beforeSave($insert)
+    {
+        if (static::$shouldCheckPartner && !PartnerLogic::checkPartnerId($this->partner_id)) {
+            $this->addError('msg', '非法操作');
+            return false;
+        }
+
+        return parent::beforeSave($insert);
+    }
 }
