@@ -23,6 +23,12 @@ return [
         ],
         'cache' => [
             'keyPrefix' => 'oms:',
+            'redis' => [
+                'parameters' => [
+                    'host' => 'dev.local.redis',
+                    'port' => 6379,
+                ]
+            ]
         ],
     ],
     'modules' => [

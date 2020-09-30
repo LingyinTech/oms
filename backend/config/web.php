@@ -31,7 +31,7 @@ $config = [
             'cookieValidationKey' => 'OQU4_eWEuJ2HnvLfgRgNXS8I4FtVOKLo',
         ],
         'cache' => [
-            'class' => 'yii\caching\FileCache',
+            'class' => \lingyin\predis\Cache::class,
         ],
         'user' => [
             'identityClass' => \lingyin\admin\models\User::class,

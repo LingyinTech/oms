@@ -34,8 +34,8 @@ trait ChooseConnectionTrait
         }
 
         // 表里没有 partner_id 字段，直接走默认db
-        $scheme = self::getTableSchema()->columns;
-        if (isset($scheme['partner_id']) && app()->user->getIdentity()) {
+        $schema = self::getTableSchema()->columns;
+        if (isset($schema['partner_id']) && app()->user->getIdentity()) {
             $partnerId = app()->user->getIdentity()->partner_id;
             if ($config = (new DbConfig())->getDbConfigById($partnerId)) {
                 $configName = $config['config_name'];
