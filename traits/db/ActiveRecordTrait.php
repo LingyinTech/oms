@@ -89,6 +89,7 @@ trait ActiveRecordTrait
      * 列表分页查询
      * @param $params
      * @return array
+     * @throws \Throwable
      */
     public function getList($params)
     {
@@ -117,6 +118,7 @@ trait ActiveRecordTrait
      * 查询所有记录
      * @param $params
      * @return array
+     * @throws \Throwable
      */
     public function getAll($params)
     {
@@ -214,5 +216,12 @@ trait ActiveRecordTrait
         }
 
         return parent::beforeSave($insert);
+    }
+
+    protected static function fixConditionWithPartner()
+    {
+        if (!static::$shouldCheckPartner) {
+            return;
+        }
     }
 }

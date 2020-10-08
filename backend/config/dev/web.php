@@ -27,7 +27,9 @@ return [
                 'parameters' => [
                     'host' => 'dev.local.redis',
                     'port' => 6379,
-                ]
+					'password' => 'localpass',
+                ],
+				
             ]
         ],
     ],
