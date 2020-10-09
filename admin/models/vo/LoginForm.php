@@ -76,6 +76,7 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->user === false) {
+            User::$shouldCheckPartner = false;
             $this->user = User::findByUsername($this->username);
         }
 

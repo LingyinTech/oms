@@ -34,7 +34,6 @@ class RegisterForm extends Model
     {
         if ($this->validate()) {
             $user = new User();
-
             $user->username = $this->username;
             $user->setPassword($this->password);
             $trans = Yii::$app->db->beginTransaction();
@@ -45,14 +44,17 @@ class RegisterForm extends Model
                     $userInfo->email = $this->email;
                     if ($userInfo->save()) {
                         $trans->commit();
+                        var_export($user);
                         return $user;
                     }
                     $trans->rollBack();
                 }
             } catch (Exception $e) {
+                var_export($e);
                 $trans->rollBack();
             }
         }
+        var_export(111111);exit(0);
         return null;
     }
 }

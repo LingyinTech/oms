@@ -33,8 +33,9 @@ trait ChooseConnectionTrait
             return self::$dbInstance = app()->{$allocate[$table]};
         }
 
-        // 表里没有 partner_id 字段，直接走默认db
+        self::$dbName = 'db';
         $schema = self::getTableSchema()->columns;
+        self::$dbName = null;
         if (isset($schema['partner_id']) && app()->user->getIdentity()) {
             $partnerId = app()->user->getIdentity()->partner_id;
             if ($config = (new DbConfig())->getDbConfigById($partnerId)) {
@@ -48,6 +49,7 @@ trait ChooseConnectionTrait
             }
         }
 
+        // 表里没有 partner_id 字段，直接走默认db
         return self::$dbInstance = app()->db;
     }
 

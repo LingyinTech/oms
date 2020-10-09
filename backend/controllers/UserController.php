@@ -34,7 +34,6 @@ class UserController extends Controller
         if (!app()->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new RegisterForm();
         if ($model->load(app()->request->post()) && $model->register()) {
             return $this->redirect(Url::toRoute(['user/login']));

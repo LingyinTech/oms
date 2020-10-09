@@ -9,6 +9,8 @@ use yii\db\Connection;
 
 class DbConfig extends ActiveRecord
 {
+    public static $dbName = 'db';
+
     public static $dbMap = [];
 
     public function getDbConfigById($partnerId)
@@ -19,7 +21,7 @@ class DbConfig extends ActiveRecord
 
         $config = self::findOne(['partner_id' => $partnerId, 'environment' => YII_ENV]);
         if ($config) {
-            return self::$dbMap = [
+            return self::$dbMap[$config['partner_id']] = [
                 'db_name' => $config['config_name'],
                 'connection' => [
                     'class' => $config['class'] ?: Connection::class,

@@ -63,8 +63,8 @@ CREATE TABLE `role` (
 
 DROP TABLE IF EXISTS `role_node`;
 CREATE TABLE `role_node` (
-  `role_id` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
-  `node_id` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '节点ID',
+  `role_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
+  `node_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '节点ID',
   PRIMARY KEY (`role_id`,`node_id`),
   KEY `index_node` (`node_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -72,8 +72,8 @@ CREATE TABLE `role_node` (
 
 DROP TABLE IF EXISTS `role_user`;
 CREATE TABLE `role_user` (
-  `user_id` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `role_id` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
+  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `role_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
   PRIMARY KEY (`user_id`,`role_id`),
   KEY `idx_role` (`role_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -82,16 +82,16 @@ CREATE TABLE `role_user` (
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `username` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '用户名',
-  `auth_key` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'auth_key',
-  `password_hash` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '密码hash',
-  `password_reset_token` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'password_reset_token',
+  `username` varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
+  `auth_key` varchar(32) NOT NULL DEFAULT '' COMMENT 'auth_key',
+  `password_hash` varchar(255) NOT NULL DEFAULT '' COMMENT '密码hash',
+  `password_reset_token` varchar(255) NOT NULL DEFAULT '' COMMENT 'password_reset_token',
   `status` smallint(6) NOT NULL DEFAULT '0' COMMENT '状态，0未激活，1删除，10激活',
   `created_at` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updated_at` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `partner_id` bigint(10) unsigned NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uniq_username` (`username`) USING BTREE
+  UNIQUE KEY `uniq_name` (`username`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `user_info`;

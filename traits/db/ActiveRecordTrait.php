@@ -97,11 +97,13 @@ trait ActiveRecordTrait
 
         $page = app()->getRequest()->get('page', 1);
         $pageSize = app()->getRequest()->get('page_size', 20);
-        $pages = new Pagination([
-            'totalCount' => $data->count(),
-            'pageSizeParam' => 'page_size',
-            'pageSize' => $pageSize,
-        ]);
+        $pages = new Pagination(
+            [
+                'totalCount' => $data->count(),
+                'pageSizeParam' => 'page_size',
+                'pageSize' => $pageSize,
+            ]
+        );
 
         $data->limit($pageSize);
         $data->offset(($page - 1) * $pageSize);
@@ -141,7 +143,7 @@ trait ActiveRecordTrait
     {
         $obj = self::find();
 
-        PartnerLogic::setPartnerId($params);
+        self::fixConditionWithPartner($params);
 
         foreach ($params as $key => $value) {
             switch ($key) {
@@ -191,15 +193,20 @@ trait ActiveRecordTrait
         return $obj;
     }
 
+    /**
+     * @param $condition
+     * @return ActiveRecordTrait|null
+     * @throws \Throwable
+     */
     public static function findOne($condition)
     {
-        PartnerLogic::setPartnerId($condition);
+        self::fixConditionWithPartner($condition);
         return parent::findOne($condition);
     }
 
     public static function findAll($condition)
     {
-        PartnerLogic::setPartnerId($condition);
+        self::fixConditionWithPartner($condition);
         return parent::findAll($condition);
     }
 
@@ -218,10 +225,22 @@ trait ActiveRecordTrait
         return parent::beforeSave($insert);
     }
 
-    protected static function fixConditionWithPartner()
+    protected static function fixConditionWithPartner(&$condition)
     {
         if (!static::$shouldCheckPartner) {
             return;
         }
+
+        $schema = self::getTableSchema()->columns;
+        if (!isset($schema['partner_id'])) {
+            return;
+        }
+
+        if (!app()->user->getIdentity()) {
+            $condition['partner_id'] = 'error';
+            return;
+        }
+
+        PartnerLogic::setPartnerId($condition);
     }
 }

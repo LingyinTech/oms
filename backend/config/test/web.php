@@ -1,7 +1,5 @@
 <?php
 
-$db = require __DIR__ . '/db.php';
-
 return [
     'bootstrap' => ['debug'],
     'components' => [

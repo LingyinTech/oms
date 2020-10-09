@@ -10,10 +10,10 @@ return [
     ],
     'params' => [
         'db.allocate' => [
-            'user' => 'db',
-            'node' => 'db',
-            'user_info' => 'db',
-            'partner' => 'db',
+            '{{%user}}' => 'db',
+            '{{%node}}' => 'db',
+            '{{%user_info}}' => 'db',
+            '{{%partner}}' => 'db',
         ]
     ]
 ];

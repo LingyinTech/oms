@@ -57,9 +57,6 @@ $config = [
         'db' => [
             'class' => 'yii\db\Connection',
         ],
-        'authDb' => [
-            'class' => 'yii\db\Connection',
-        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,

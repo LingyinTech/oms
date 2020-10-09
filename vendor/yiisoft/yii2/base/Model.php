@@ -354,6 +354,8 @@ class Model extends Component implements StaticInstanceInterface, IteratorAggreg
         $scenarios = $this->scenarios();
         $scenario = $this->getScenario();
         if (!isset($scenarios[$scenario])) {
+            var_export($scenarios);
+            var_dump($scenario);exit(0);
             throw new InvalidArgumentException("Unknown scenario: $scenario");
         }
 
