@@ -17,6 +17,7 @@ return array(
     'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
     'lingyin\\traits\\' => array($baseDir . '/traits'),
     'lingyin\\predis\\' => array($vendorDir . '/lingyin/predis/src'),
+    'lingyin\\common\\' => array($baseDir . '/common'),
     'lingyin\\admin\\' => array($baseDir . '/admin'),
     'dmstr\\' => array($vendorDir . '/dmstr/yii2-adminlte-asset'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),

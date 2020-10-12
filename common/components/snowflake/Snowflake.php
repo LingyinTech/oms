@@ -48,7 +48,7 @@ class Snowflake extends Component
     public function next($prefix = '')
     {
         $currentTime = $this->getCurrentMicroTime();
-        while (($sequence = $this->sequence($currentTime,$prefix)) > (-1 ^ (-1 << self::MAX_SEQUENCE_LENGTH))) {
+        while (($sequence = $this->sequence($currentTime, $prefix)) > (-1 ^ (-1 << self::MAX_SEQUENCE_LENGTH))) {
             usleep(1);
             $currentTime = $this->getCurrentMicroTime();
         }
@@ -57,7 +57,7 @@ class Snowflake extends Component
         $datacenterLeftMoveLength = self::MAX_WORK_ID_LENGTH + $workerLeftMoveLength;
         $timestampLeftMoveLength = self::MAX_DATACENTER_LENGTH + $datacenterLeftMoveLength;
 
-        return (string) ((($currentTime - $this->getStartTimeStamp()) << $timestampLeftMoveLength)
+        return (string)((($currentTime - $this->getStartTimeStamp()) << $timestampLeftMoveLength)
             | ($this->dataCenterId << $datacenterLeftMoveLength)
             | ($this->workerId << $workerLeftMoveLength)
             | ($sequence));
@@ -72,7 +72,7 @@ class Snowflake extends Component
         $key = "snowflake:{$key}";
         $lua = "return redis.call('exists',KEYS[1])<1 and redis.call('psetex',KEYS[1],ARGV[2],ARGV[1])";
 
-        if ($redis->eval($lua, [$key, 1, 1000], 1)) {
+        if ($redis->eval($lua, 1, $key, 1000, 1)) {
             return 0;
         }
 

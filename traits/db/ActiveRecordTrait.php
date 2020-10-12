@@ -236,11 +236,14 @@ trait ActiveRecordTrait
             return;
         }
 
-        if (!app()->user->getIdentity()) {
-            $condition['partner_id'] = 'error';
-            return;
-        }
-
         PartnerLogic::setPartnerId($condition);
+    }
+
+    /**
+     * @param bool $shouldCheckPartner
+     */
+    public function setShouldCheckPartner($shouldCheckPartner)
+    {
+        self::$shouldCheckPartner = $shouldCheckPartner;
     }
 }

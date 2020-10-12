@@ -19,8 +19,8 @@ class m201009_120945_create_user_table extends Migration
   `password_hash` varchar(255) NOT NULL DEFAULT '' COMMENT '密码hash',
   `password_reset_token` varchar(255) NOT NULL DEFAULT '' COMMENT 'password_reset_token',
   `status` smallint(6) NOT NULL DEFAULT '0' COMMENT '状态，0未激活，1删除，10激活',
-  `created_at` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `updated_at` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `created_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `updated_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间',
   `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_name` (`username`) USING BTREE

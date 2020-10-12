@@ -13,7 +13,7 @@ class SnowflakeBehavior extends AttributeBehavior
 {
     public $cachePrefix = 'snowflake';
 
-    public $idAttribute = 'id';
+    public $primaryAttribute = 'id';
 
     public $value;
 
@@ -23,7 +23,7 @@ class SnowflakeBehavior extends AttributeBehavior
 
         if (empty($this->attributes)) {
             $this->attributes = [
-                BaseActiveRecord::EVENT_BEFORE_INSERT => $this->idAttribute,
+                BaseActiveRecord::EVENT_BEFORE_INSERT => $this->primaryAttribute,
             ];
         }
     }

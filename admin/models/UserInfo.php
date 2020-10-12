@@ -15,6 +15,8 @@ use yii\data\Pagination;
  */
 class UserInfo extends ActiveRecord
 {
+    protected $snowflakePrimaryKey = false;
+
     public function rules()
     {
         return [

@@ -13,6 +13,8 @@ use yii\behaviors\TimestampBehavior;
 class ActiveRecord extends \yii\db\ActiveRecord
 {
 
+    protected $snowflakePrimaryKey = true;
+
     use ActiveRecordTrait;
 
     use ChooseConnectionTrait;
@@ -27,14 +29,24 @@ class ActiveRecord extends \yii\db\ActiveRecord
             'TimestampBehavior' => TimestampBehavior::class,
         ];
 
-        $schema = self::getTableSchema()->columns;
-        if (isset($schema['partner_id'])) {
+        $schema = self::getTableSchema();
+        if ($this->snowflakePrimaryKey && $primaryKey = $this->shouldSnowflakeId($schema)) {
             $behaviors['SnowflakeBehavior'] = [
                 'class' => SnowflakeBehavior::class,
                 'cachePrefix' => self::tableName(),
+                'primaryAttribute' => $primaryKey,
             ];
         }
-
         return $behaviors;
+    }
+
+    protected function shouldSnowflakeId($schema)
+    {
+        $key = $schema->primaryKey;
+        if (1 !== count($key)) {
+            return false;
+        }
+        $primaryKey = $schema->columns[$key[0]];
+        return $primaryKey->autoIncrement ? false : $key[0];
     }
 }

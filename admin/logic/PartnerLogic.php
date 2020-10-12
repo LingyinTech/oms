@@ -51,6 +51,11 @@ class PartnerLogic
      */
     public static function setPartnerId(&$params, $field = 'partner_id')
     {
+        if (!app()->user->getIdentity()) {
+            $params[$field] = 'error';
+            return;
+        }
+
         if (!app()->user->getIdentity()->getSupperAdmin()) {
             $params[$field] = app()->user->getIdentity()->partner_id;
         }

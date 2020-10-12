@@ -18,7 +18,11 @@ $config = yii\helpers\ArrayHelper::merge(
 try {
     (new Application($config))->run();
 } catch (\yii\base\InvalidConfigException $e) {
-    throw new \yii\web\NotFoundHttpException('404 Not Found.');
+    if(YII_DEBUG) {
+        echo $e->getMessage();
+    } else {
+        throw new \yii\web\NotFoundHttpException('404 Not Found.');
+    }
 }
 
 /**

@@ -94,7 +94,7 @@ class AccessControl extends ActionFilter
                 return false;
             }
         }
-var_export($uniqueId);exit(0);
+
         return true;
     }
 

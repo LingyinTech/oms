@@ -20,7 +20,8 @@ class m201009_121148_create_user_info_table extends Migration
   `tel` varchar(16) NOT NULL DEFAULT '' COMMENT '办公电话',
   `phone` varchar(16) NOT NULL DEFAULT '' COMMENT '手机号',
   `department_id` bigint(10) NOT NULL DEFAULT '0' COMMENT '部门ID',
-  `updated_at` int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `created_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `updated_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间',
   `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
   PRIMARY KEY (`user_id`),
   KEY `idx_partner` (`partner_id`)

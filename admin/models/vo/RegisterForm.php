@@ -34,27 +34,26 @@ class RegisterForm extends Model
     {
         if ($this->validate()) {
             $user = new User();
+            $user->setShouldCheckPartner(false);
             $user->username = $this->username;
             $user->setPassword($this->password);
             $trans = Yii::$app->db->beginTransaction();
             try {
                 if ($user->save()) {
                     $userInfo = new UserInfo();
+                    $userInfo->setShouldCheckPartner(false);
                     $userInfo->user_id = $user->getId();
                     $userInfo->email = $this->email;
                     if ($userInfo->save()) {
                         $trans->commit();
-                        var_export($user);
                         return $user;
                     }
                     $trans->rollBack();
                 }
             } catch (Exception $e) {
-                var_export($e);
                 $trans->rollBack();
             }
         }
-        var_export(111111);exit(0);
         return null;
     }
 }
