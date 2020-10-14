@@ -1,12 +1,14 @@
 <?php
 
-use yii\db\Migration;
+use console\base\Migration;
 
 /**
  * Handles the creation of table `{{%partner}}`.
  */
 class m201012_122927_create_partner_table extends Migration
 {
+    public $dbAllowList = ['db'];
+
     /**
      * {@inheritdoc}
      */

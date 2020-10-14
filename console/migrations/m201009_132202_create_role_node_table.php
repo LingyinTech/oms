@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use console\base\Migration;
 
 /**
  * Handles the creation of table `{{%role_node}}`.
@@ -13,7 +13,7 @@ class m201009_132202_create_role_node_table extends Migration
     public function safeUp()
     {
         $sql = "CREATE TABLE {{%role_node}} (
-  `role_id` char(64) NOT NULL DEFAULT '' COMMENT '角色ID',
+  `role_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
   `node_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '节点ID',
   `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
   PRIMARY KEY (`role_id`,`node_id`),

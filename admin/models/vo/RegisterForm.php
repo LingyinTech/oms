@@ -34,14 +34,14 @@ class RegisterForm extends Model
     {
         if ($this->validate()) {
             $user = new User();
-            $user->setShouldCheckPartner(false);
+            $user->setShouldCheckPartnerSave(false);
             $user->username = $this->username;
             $user->setPassword($this->password);
             $trans = Yii::$app->db->beginTransaction();
             try {
                 if ($user->save()) {
                     $userInfo = new UserInfo();
-                    $userInfo->setShouldCheckPartner(false);
+                    $userInfo->setShouldCheckPartnerSave(false);
                     $userInfo->user_id = $user->getId();
                     $userInfo->email = $this->email;
                     if ($userInfo->save()) {

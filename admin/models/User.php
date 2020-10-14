@@ -30,6 +30,8 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETE = 1;
     const STATUS_ACTIVE = 10;
 
+    public static $shouldCheckPartner = false;
+
     protected $supperAdmin = false;
 
     protected $profile;

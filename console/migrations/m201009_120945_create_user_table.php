@@ -1,15 +1,14 @@
 <?php
 
-use yii\db\Migration;
+use console\base\Migration;
 
 /**
  * Handles the creation of table `{{%user}}`.
  */
 class m201009_120945_create_user_table extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
+    public $dbAllowList = ['db'];
+
     public function safeUp()
     {
         $sql = "CREATE TABLE {{%user}} (

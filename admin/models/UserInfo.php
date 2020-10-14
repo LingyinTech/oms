@@ -15,6 +15,8 @@ use yii\data\Pagination;
  */
 class UserInfo extends ActiveRecord
 {
+    public static $shouldCheckPartner = false;
+
     protected $snowflakePrimaryKey = false;
 
     public function rules()

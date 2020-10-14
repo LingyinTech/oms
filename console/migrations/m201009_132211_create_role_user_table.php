@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use console\base\Migration;
 
 /**
  * Handles the creation of table `{{%role_user}}`.
@@ -14,7 +14,7 @@ class m201009_132211_create_role_user_table extends Migration
     {
         $sql = "CREATE TABLE {{%role_user}} (
   `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '用户ID',
-  `role_id` char(64) NOT NULL DEFAULT '' COMMENT '角色ID', 
+  `role_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID', 
   `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
   PRIMARY KEY (`user_id`,`role_id`),
   KEY `idx_role` (`role_id`) USING BTREE

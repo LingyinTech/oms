@@ -18,6 +18,10 @@ class PartnerLogic
      */
     public static function checkPartnerId($partnerId)
     {
+        if (!app()->user->getIdentity()) {
+            return false;
+        }
+
         if (app()->user->getIdentity()->getSupperAdmin()) {
             return true;
         }

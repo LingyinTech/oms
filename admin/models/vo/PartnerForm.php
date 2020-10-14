@@ -42,6 +42,7 @@ class PartnerForm extends Model
             $model = new Partner();
             $data = [
                 'code' => $this->code,
+                'short_code' => $this->short_code,
                 'name' => $this->name,
                 'status' => $this->status,
             ];

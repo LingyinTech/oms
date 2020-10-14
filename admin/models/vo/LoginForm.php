@@ -62,7 +62,6 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            User::$shouldCheckPartner = false;
             return app()->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
         }
         return false;
@@ -76,7 +75,6 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->user === false) {
-            User::$shouldCheckPartner = false;
             $this->user = User::findByUsername($this->username);
         }
 

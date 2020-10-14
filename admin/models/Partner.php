@@ -8,6 +8,9 @@ use yii\data\Pagination;
 
 class Partner extends ActiveRecord
 {
+    public static $shouldCheckPartner = false;
+    public static $shouldCheckPartnerSave = false;
+
     //状态:0未启用，1删除，2临时有效，10长期有效
     const STATUS_INACTIVE = 0;
     const STATUS_DELETE = 1;

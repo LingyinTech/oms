@@ -1,15 +1,14 @@
 <?php
 
-use yii\db\Migration;
+use console\base\Migration;
 
 /**
  * Handles the creation of table `{{%node}}`.
  */
 class m201012_122735_create_node_table extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
+    public $dbAllowList = ['db'];
+
     public function safeUp()
     {
         $sql = "CREATE TABLE {{%node}} (

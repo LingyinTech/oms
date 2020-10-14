@@ -2,6 +2,9 @@
 
 ## 数据库分布
 
+<details>
+<summary>数据库分为公共库和业务分库，可能还会有若干特定功能库</summary>
+
 **1 公共库 db** 
 
 用户表  
@@ -14,9 +17,9 @@ node
 租户表  
 partner  
 
-**2 分库**
+**2 业务分库**
 
-以租户ID分库 oms_partner_xxxx (xxx 为租户ID，固定长度8位，不足左补零)  
+以租户ID分库 oms_partner_xxxx (xxx 为租户ID，固定长度8位，不足左补零) , 保持业务数据隔离  
 
 部门信息表  
 department  
@@ -25,9 +28,19 @@ department
 role 权限组  
 role_node 权限组拥有的权限，建议遵循最小权限原则  
 role_user 用户拥有的权限组，建议遵循最小权限原则  
+</details>
+
+## Migration
+
+通过 migration 来管理，并在各个业务分库保持 schema 一致  
+
+- [x] migration up
+- [ ] migration down
+- [ ] 支持黑白名单
+- [ ] 支持约束
+- [ ] 对账
 
 ## 功能和权限管理
-
 
 这两个功能共用独立 DB，多租户共用同一 DB。用户表，权限组表，部门表增加 partner_id 字段用来区分租户
 

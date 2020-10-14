@@ -14,6 +14,7 @@ trait ActiveRecordTrait
 {
 
     public static $shouldCheckPartner = true;
+    public static $shouldCheckPartnerSave = true;
 
     /**
      * 允许接收用户输入的字段
@@ -217,7 +218,7 @@ trait ActiveRecordTrait
      */
     public function beforeSave($insert)
     {
-        if (static::$shouldCheckPartner && !PartnerLogic::checkPartnerId($this->partner_id)) {
+        if (static::$shouldCheckPartnerSave && !PartnerLogic::checkPartnerId($this->partner_id)) {
             $this->addError('msg', '非法操作');
             return false;
         }
@@ -246,4 +247,13 @@ trait ActiveRecordTrait
     {
         self::$shouldCheckPartner = $shouldCheckPartner;
     }
+
+    /**
+     * @param bool $shouldCheckPartnerSave
+     */
+    public function setShouldCheckPartnerSave($shouldCheckPartnerSave)
+    {
+        self::$shouldCheckPartnerSave = $shouldCheckPartnerSave;
+    }
+
 }
