@@ -218,12 +218,30 @@ trait ActiveRecordTrait
      */
     public function beforeSave($insert)
     {
-        if (static::$shouldCheckPartnerSave && !PartnerLogic::checkPartnerId($this->partner_id)) {
+        if (!static::checkPartnerSave($this)) {
             $this->addError('msg', '非法操作');
             return false;
         }
 
         return parent::beforeSave($insert);
+    }
+
+    protected static function checkPartnerSave($model)
+    {
+        if (!static::$shouldCheckPartner) {
+            return true;
+        }
+
+        if (!static::$shouldCheckPartnerSave) {
+            return true;
+        }
+
+        $schema = self::getTableSchema()->columns;
+        if (!isset($schema['partner_id'])) {
+            return true;
+        }
+
+        return PartnerLogic::checkPartnerId($model->partner_id);
     }
 
     protected static function fixConditionWithPartner(&$condition)
