@@ -20,7 +20,7 @@ class m201009_120945_create_user_table extends Migration
   `status` smallint(6) NOT NULL DEFAULT '0' COMMENT '状态，0未激活，1删除，10激活',
   `created_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updated_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
+  `current_partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_name` (`username`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
