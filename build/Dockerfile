@@ -6,5 +6,4 @@ RUN apt-get update \
 	&& mkdir -p /data/www/myapp \
 	&& ls ../
 
-COPY ../ /data/www/myapp 
-WORKDIR /data/www/myapp
+COPY . /data/www/myapp/ 
