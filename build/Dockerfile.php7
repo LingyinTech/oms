@@ -2,8 +2,8 @@ FROM php:7-fpm
 RUN apt-get update \
 	&& apt-get install -y libzip-dev zlib1g-dev libpng-dev \
 	&& rm -rf /var/lib/apt/lists/* \
+	&& mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 	&& docker-php-ext-install pdo_mysql zip json \
 	&& mkdir -p /data/www/myapp \
-	&& ls ../
 
-COPY . /data/www/myapp/ 
+COPY . /data/www/
