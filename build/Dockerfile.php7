@@ -7,5 +7,7 @@ COPY . /data/www/
 RUN docker-php-ext-install pdo_mysql \
 	&& mv /data/www/build/fpm/www.conf /usr/local/etc/php-fpm.d/ \
 	&& mv /data/www/build/fpm/php-fpm.conf /usr/local/etc/ \
-	&& rm -rf /data/www/build/
+	&& rm -rf /data/www/build/ \
+	&& sed -i "s/getenv('OMS_DB_USER')/root/g" /data/www/backend/config/prod/web.php \
+	&& sed -i "s/getenv('OMS_DB_PASS')/${MYSQL_ROOT_PASSWORD}/g" /data/www/backend/config/prod/web.php \
 	
