@@ -7,7 +7,7 @@ COPY --chown=www-data:www-data . /data/www/oms/
 RUN docker-php-ext-install pdo_mysql \
 	&& mv /data/www/oms/build/fpm/www.conf /usr/local/etc/php-fpm.d/ \
 	&& mv /data/www/oms/build/fpm/php-fpm.conf /usr/local/etc/ \
-	&& rm -rf /data/www/oms/build/
+	&& rm -rf /data/www/oms/build/ \
 	&& apt-get install vim
 
 WORKDIR /data/www/
