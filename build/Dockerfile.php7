@@ -2,10 +2,12 @@ FROM php:7-fpm
 
 MAINTAINER actors315 <actors315@gmail.com>
 
-COPY . /data/www/oms/
+COPY --chown=www-data:www-data . /data/www/oms/
 
 RUN docker-php-ext-install pdo_mysql \
 	&& mv /data/www/oms/build/fpm/www.conf /usr/local/etc/php-fpm.d/ \
 	&& mv /data/www/oms/build/fpm/php-fpm.conf /usr/local/etc/ \
 	&& rm -rf /data/www/oms/build/
-	
+	&& apt-get install vim
+
+WORKDIR /data/www/
