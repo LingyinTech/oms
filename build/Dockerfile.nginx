@@ -2,7 +2,7 @@ FROM nginx
 
 MAINTAINER actors315 <actors315@gmail.com>
 
-COPY . /data/www/ 
+COPY . /data/www/oms/
 
 RUN mv /data/www/build/nginx/oms.lingyin99.com.conf /etc/nginx/conf.d/ \
 	&& mv /data/www/build/nginx/nginx.conf /etc/nginx/nginx.conf \
