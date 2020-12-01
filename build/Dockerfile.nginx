@@ -4,6 +4,6 @@ MAINTAINER actors315 <actors315@gmail.com>
 
 COPY . /data/www/oms/
 
-RUN mv /data/www/build/nginx/oms.lingyin99.com.conf /etc/nginx/conf.d/ \
-	&& mv /data/www/build/nginx/nginx.conf /etc/nginx/nginx.conf \
-	&& rm -rf /data/www/build/
+RUN mv /data/www/oms/build/nginx/oms.lingyin99.com.conf /etc/nginx/conf.d/ \
+	&& mv /data/www/oms/build/nginx/nginx.conf /etc/nginx/nginx.conf \
+	&& rm -rf /data/www/oms/build/

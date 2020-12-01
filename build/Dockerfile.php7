@@ -5,7 +5,7 @@ MAINTAINER actors315 <actors315@gmail.com>
 COPY . /data/www/oms/
 
 RUN docker-php-ext-install pdo_mysql \
-	&& mv /data/www/build/fpm/www.conf /usr/local/etc/php-fpm.d/ \
-	&& mv /data/www/build/fpm/php-fpm.conf /usr/local/etc/ \
-	&& rm -rf /data/www/build/
+	&& mv /data/www/oms/build/fpm/www.conf /usr/local/etc/php-fpm.d/ \
+	&& mv /data/www/oms/build/fpm/php-fpm.conf /usr/local/etc/ \
+	&& rm -rf /data/www/oms/build/
 	
