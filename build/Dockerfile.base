@@ -1,5 +1,3 @@
-FROM centos:8
-
 MAINTAINER actors315 <actors315@gmail.com>
 
 RUN yum install -y epel-release
@@ -20,7 +18,7 @@ RUN yum install -y wget gcc make bzip2 supervisor autoconf automake libtool \
 	&& cd /usr/local/src/oniguruma-6.9.4 \
 	&& export LANGUAGE="en_US.UTF-8" && export LANG=en_US:zh_CN.UTF-8 && export LC_ALL=C \
 	&& ./autogen.sh && ./configure --prefix=/usr \
-	&& make && make install \	
+	&& make && make install \
 # 安装 php
 	&& cd /usr/local/src && tar -xvf php-8.0.0.tar.bz2 \
 	&& cd /usr/local/src/php-8.0.0 \
@@ -35,8 +33,8 @@ RUN yum install -y wget gcc make bzip2 supervisor autoconf automake libtool \
 	&& rm -rf /usr/local/src/* \
 	&& yum remove -y gcc make wget autoconf automake libtool \
 	&& yum remove -y epel-release \
-	&& yum clean all 
+	&& yum clean all
 
 EXPOSE 80
 
-ENTRYPOINT ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
+ENTRYPOINT ["/usr/bin/supervisord","-c","/etc/supervisord.conf","--nodaemon"]
