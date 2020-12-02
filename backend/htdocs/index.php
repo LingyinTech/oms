@@ -3,7 +3,7 @@
 // comment out the following two lines when deployed to production
 use backend\base\Application;
 
-defined('YII_ENV') or define('YII_ENV', getenv('ENV'));
+defined('YII_ENV') or define('YII_ENV', getenv('ENV') ?: 'prod');
 defined('YII_DEBUG') or define('YII_DEBUG', 'dev' === YII_ENV);
 
 require __DIR__ . '/../../vendor/autoload.php';

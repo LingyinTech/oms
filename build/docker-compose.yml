@@ -1,0 +1,44 @@
+version: '3'
+services:
+    web:
+        hostname: webapp
+        build: 
+            context: .
+            dockerfile: build/Dockerfile.web
+        networks:
+            - dev-local-network
+        depends_on:
+            - mysql
+            - redis
+        ports:
+            - "80:80"
+        links:
+            - mysql:dev.local.mysql
+            - redis:dev.local.redis
+    redis:
+        image: "redis:5.0"
+        hostname: redis
+        networks:
+            - dev-local-network
+        ports:
+            - "6379:6379"
+        volumes:
+            - .\redis5.0\data:/data
+        command: ["redis-server", "--appendonly", "yes"]
+    mysql:
+        image: "mysql:5.7"
+        hostname: mysql-master
+        networks:
+            - dev-local-network
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+        ports:
+            - "3306:3306"
+        volumes:
+            - .\mysql5.7\master:/var/lib/mysql
+            - .\mysql5.7\mysql.conf:/etc/mysql/mysql.conf.d/mysqld.cnf
+            
+networks:
+    dev-local-network:
+    

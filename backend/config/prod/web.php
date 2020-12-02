@@ -1,12 +1,12 @@
 <?php
 
 $env = [
-    'host' => getenv('OMS_DB_HOST') ? getenv('OMS_DB_HOST') : 'mysql',
-    'db' => getenv('OMS_DB_NAME') ? getenv('OMS_DB_NAME') : 'db_oms',
-    'user' => getenv('OMS_DB_USER') ? getenv('OMS_DB_USER') : 'root',
-    'pass' => getenv('OMS_DB_PASS') ? getenv('OMS_DB_PASS') : '',
-    'redis_host' => getenv('OMS_REDIS_HOST') ? getenv('OMS_REDIS_HOST') : 'redis-master',
-    'redis_prefix' => getenv('OMS_REDIS_KEY_PREFIX') ? getenv('OMS_REDIS_KEY_PREFIX') : 'oms:',
+    'host' => getenv('OMS_DB_HOST') ?: 'mysql',
+    'db' => getenv('OMS_DB_NAME') ?: 'db_oms',
+    'user' => getenv('OMS_DB_USER') ?: 'root',
+    'pass' => getenv('OMS_DB_PASS') ?: '',
+    'redis_host' => getenv('OMS_REDIS_HOST') ?: 'redis-master',
+    'redis_prefix' => getenv('OMS_REDIS_KEY_PREFIX') ?: 'oms:',
 ];
 
 return [

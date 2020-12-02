@@ -1,0 +1,5 @@
+FROM redis:5.0 
+
+MAINTAINER actors315 <actors315@gmail.com>
+
+CMD ["redis-server", "--appendonly", "yes"]
