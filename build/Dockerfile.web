@@ -35,10 +35,13 @@ RUN yum install -y wget gcc make bzip2 supervisor autoconf automake libtool \
 	&& mkdir -p /var/log/nginx/ && chown -R www-data:www-data /var/log/nginx \
 	&& touch /var/run/nginx.pid && chown -R www-data:www-data /var/run/nginx.pid \
 	&& mkdir -p /usr/local/nginx/conf.d/ \
-	&& mkdir -p /data/www/oms/ \
+	&& mkdir -p /data/www/oms/
+	
 # 源码
-	&& COPY --chown=www-data:www-data . /data/www/oms/ \
-	&& mv /data/www/oms/build/fpm/www.conf /usr/local/php/etc/php-fpm.d/ \
+COPY --chown=www-data:www-data . /data/www/oms/ 
+
+# 配置
+RUN mv /data/www/oms/build/fpm/www.conf /usr/local/php/etc/php-fpm.d/ \
 	&& mv /data/www/oms/build/fpm/php-fpm.conf /usr/local/php/etc/ \
 	&& mv /data/www/oms/build/fpm/php-fpm.ini /etc/supervisord.d/ \
 	&& mv /data/www/oms/build/nginx/oms.lingyin99.com.conf /usr/local/nginx/conf.d/ \
