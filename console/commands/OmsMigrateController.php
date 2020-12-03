@@ -24,9 +24,6 @@ class OmsMigrateController extends \yii\console\controllers\MigrateController
 
     public function actionUp($limit = 0)
     {
-        // 先更新公共库
-        parent::actionUp($limit);
-
         $dbList = (new DbConfig())->getAll();
         $components = [];
         foreach ($dbList as $config) {
@@ -43,6 +40,9 @@ class OmsMigrateController extends \yii\console\controllers\MigrateController
             $this->stdout("*** 更新分库 {$db} ***\n", Console::FG_YELLOW);
             parent::actionUp($limit);
         }
+
+        // 最后更新公共库
+        parent::actionUp($limit);
     }
 
     public function confirm($message, $default = false)

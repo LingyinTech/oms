@@ -19,6 +19,10 @@ RUN mv /data/www/oms/build/fpm/www.conf /usr/local/php/etc/php-fpm.d/ \
 	&& mv /data/www/oms/build/nginx/oms.lingyin99.com.conf /usr/local/nginx/conf.d/ \
 	&& mv /data/www/oms/build/nginx/nginx.conf /usr/local/nginx/conf/nginx.conf \
 	&& mv /data/www/oms/build/nginx/nginx.ini /etc/supervisord.d/ \
+	&& mv /data/www/oms/build/start /start \
+	&& chmod +x /start \
 	&& rm -rf /data/www/oms/build/
 
 WORKDIR /data/www/
+
+ENTRYPOINT ["/start"]
