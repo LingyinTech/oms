@@ -11,7 +11,7 @@ class m201012_122735_create_node_table extends Migration
 
     public function safeUp()
     {
-        $sql = "CREATE TABLE {{%node}} (
+        $sql = "CREATE TABLE IF NOT EXISTS {{%node}} (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `pid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '父级ID',
   `label` varchar(64) NOT NULL DEFAULT '' COMMENT '菜单名称',

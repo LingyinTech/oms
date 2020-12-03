@@ -14,7 +14,7 @@ class m201012_122927_create_partner_table extends Migration
      */
     public function safeUp()
     {
-        $sql = "CREATE TABLE {{%partner}} (
+        $sql = "CREATE TABLE IF NOT EXISTS {{%partner}} (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(16) NOT NULL DEFAULT '' COMMENT '标识',
   `short_code` varchar(8) NOT NULL DEFAULT '' COMMENT '简码',

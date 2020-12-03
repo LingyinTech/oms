@@ -4,6 +4,6 @@ source /etc/profile
 
 /data/www/oms/console/yii system/init-db
 
-/data/www/oms/console/yii oms-migrate/up
+/data/www/oms/console/yii oms-migrate/up --silent=true
 
 /usr/bin/supervisord -c /etc/supervisord.conf --nodaemon

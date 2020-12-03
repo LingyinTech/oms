@@ -11,7 +11,7 @@ class m201009_120945_create_user_table extends Migration
 
     public function safeUp()
     {
-        $sql = "CREATE TABLE {{%user}} (
+        $sql = "CREATE TABLE IF NOT EXISTS {{%user}} (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `username` varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
   `auth_key` varchar(32) NOT NULL DEFAULT '' COMMENT 'auth_key',

@@ -12,7 +12,7 @@ class m201009_124742_create_db_config_table extends Migration
 
     public function safeUp()
     {
-        $sql = "CREATE TABLE {{%db_config}} (
+        $sql = "CREATE TABLE IF NOT EXISTS {{%db_config}} (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增ID',  
   `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
   `environment` varchar(8) NOT NULL DEFAULT '' COMMENT '环境',

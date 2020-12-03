@@ -12,7 +12,7 @@ class m201009_121148_create_user_info_table extends Migration
      */
     public function safeUp()
     {
-        $sql = "CREATE TABLE {{%user_info}} (
+        $sql = "CREATE TABLE IF NOT EXISTS {{%user_info}} (
   `user_id` bigint(20) UNSIGNED NOT NULL COMMENT '用户ID',
   `real_name` varchar(16) NOT NULL DEFAULT '' COMMENT '姓名',
   `email` varchar(128) NOT NULL DEFAULT '' COMMENT '用户邮箱',

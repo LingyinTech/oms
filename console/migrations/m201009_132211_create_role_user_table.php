@@ -12,7 +12,7 @@ class m201009_132211_create_role_user_table extends Migration
      */
     public function safeUp()
     {
-        $sql = "CREATE TABLE {{%role_user}} (
+        $sql = "CREATE TABLE IF NOT EXISTS {{%role_user}} (
   `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '用户ID',
   `role_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID', 
   `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',

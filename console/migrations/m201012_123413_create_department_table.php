@@ -12,7 +12,7 @@ class m201012_123413_create_department_table extends Migration
      */
     public function safeUp()
     {
-        $sql = "CREATE TABLE {{%department}} (
+        $sql = "CREATE TABLE IF NOT EXISTS {{%department}} (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT '自增ID',
   `name` varchar(64) NOT NULL DEFAULT '' COMMENT '角色名',
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',

@@ -53,8 +53,12 @@ class OmsMigrateController extends \yii\console\controllers\MigrateController
 
     public function confirm($message, $default = false)
     {
-        $confirm = parent::confirm($message, $default);
-        if ($confirm) {
+        if(true || app()->request->get('silent')) {
+            $this->interactive = false;
+            return true;
+        }
+
+        if ($confirm = parent::confirm($message, $default)) {
             // 只保留一次交互
             $this->interactive = false;
         }
