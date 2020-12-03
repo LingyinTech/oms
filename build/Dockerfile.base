@@ -1,3 +1,5 @@
+FROM centos:8
+
 MAINTAINER actors315 <actors315@gmail.com>
 
 RUN yum install -y epel-release
