@@ -19,24 +19,14 @@ class DbConfig extends ActiveRecord
             return self::$dbMap[$partnerId];
         }
 
-        $config = self::findOne(['partner_id' => $partnerId, 'environment' => YII_ENV]);
-        if ($config) {
-            return self::$dbMap[$config['partner_id']] = [
-                'db_name' => $config['config_name'],
-                'connection' => [
-                    'class' => $config['class'] ?: Connection::class,
-                    'dsn' => $config['dsn'],
-                    'username' => $config['login'],
-                    'password' => $config['password'],
-                ]
-            ];
-        }
-        return false;
+        $this->getAll(['partner_id' => $partnerId]);
+        return self::$dbMap[$partnerId] ?? false;
     }
 
-    public function getAll($env = YII_ENV)
+    public function getAll($condition = [])
     {
-        $list = self::findAll(['environment' => $env]);
+        $condition['environment'] = YII_ENV;
+        $list = self::findAll($condition);
         if (!empty($list)) {
             foreach ($list as $config) {
                 self::$dbMap[$config['partner_id']] = [

@@ -26,7 +26,6 @@ class SystemController extends Controller
             $conn = new PDO("mysql:host={$env['host']}", 'root', $env['root.pass']);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $sql = "show databases;";
-            // 使用 exec() ，因为没有结果返回
             $res = $conn->query($sql);
             $res = $res->fetchAll(PDO::FETCH_ASSOC);
             foreach ($res as $k => $v) {
@@ -53,7 +52,7 @@ class SystemController extends Controller
             app()->runAction('oms-migrate/init-base');
 
         } catch (\Exception $e) {
-            $this->stdout("*** 数据库 {$env['db']} 创建失败\n\n", Console::FG_GREEN);
+            $this->stdout("*** 数据库 {$env['db']} 创建失败，{$e->getMessage()}\n\n", Console::FG_RED);
         }
     }
 

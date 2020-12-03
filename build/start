@@ -2,8 +2,8 @@
 
 source /etc/profile
 
-#/data/www/oms/console/yii system/init-db
+/data/www/oms/console/yii system/init-db --interactive=false
 
-#/data/www/oms/console/yii oms-migrate/up --interactive=false
+/data/www/oms/console/yii oms-migrate/up --interactive=false
 
 /usr/bin/supervisord -c /etc/supervisord.conf --nodaemon
