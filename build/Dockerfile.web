@@ -21,6 +21,7 @@ RUN mv /data/www/oms/build/fpm/www.conf /usr/local/php/etc/php-fpm.d/ \
 	&& mv /data/www/oms/build/nginx/nginx.ini /etc/supervisord.d/ \
 	&& mv /data/www/oms/build/start /start \
 	&& chmod +x /start \
+	&& chmod +x /data/www/oms/console/yii \
 	&& rm -rf /data/www/oms/build/
 
 WORKDIR /data/www/
