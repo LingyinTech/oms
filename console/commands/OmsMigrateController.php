@@ -24,15 +24,13 @@ class OmsMigrateController extends \yii\console\controllers\MigrateController
 
     public function actionInitBase()
     {
+        $this->currentDbName = 'db';
         $this->db = app()->db;
         parent::actionUp(0);
     }
 
     public function actionUp($limit = 0)
     {
-        // 先更新公共库
-        parent::actionUp($limit);
-
         $dbList = (new DbConfig())->getAll();
         $components = [];
         foreach ($dbList as $config) {
@@ -49,16 +47,17 @@ class OmsMigrateController extends \yii\console\controllers\MigrateController
             $this->stdout("*** 更新分库 {$db} ***\n", Console::FG_YELLOW);
             parent::actionUp($limit);
         }
+
+        // 最后更新公共库
+        $this->currentDbName = 'db';
+        $this->db = app()->db;
+        parent::actionUp($limit);
     }
 
     public function confirm($message, $default = false)
     {
-        if(true || app()->request->get('silent')) {
-            $this->interactive = false;
-            return true;
-        }
-
-        if ($confirm = parent::confirm($message, $default)) {
+        $confirm = parent::confirm($message, $default);
+        if ($confirm) {
             // 只保留一次交互
             $this->interactive = false;
         }
