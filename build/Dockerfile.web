@@ -26,4 +26,4 @@ RUN mv /data/www/oms/build/fpm/www.conf /usr/local/php/etc/php-fpm.d/ \
 
 WORKDIR /data/www/
 
-ENTRYPOINT ["/start"]
+CMD ["/start"]

@@ -3,7 +3,7 @@ services:
     web:
         hostname: webapp
         build: 
-            context: .
+            context: ../
             dockerfile: build/Dockerfile.web
         networks:
             - dev-local-network
@@ -12,18 +12,29 @@ services:
             - redis
         ports:
             - "80:80"
-        links:
-            - mysql:dev.local.mysql
-            - redis:dev.local.redis
+        volumes:
+            - ../:/data/www/oms
+        environment:
+            OMS_DB_HOST: ${OMS_DB_HOST}
+            OMS_DB_NAME: ${OMS_DB_NAME}
+            OMS_DB_USER: ${OMS_DB_USER}
+            OMS_DB_PASS: ${OMS_DB_PASS}
+            ROOT_DB_PASS: ${MYSQL_ROOT_PASSWORD}
+            OMS_REDIS_HOST: ${OMS_REDIS_HOST}
+            OMS_REDIS_KEY_PREFIX: ${OMS_REDIS_KEY_PREFIX}
+            
+        command: ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf", "--nodaemon"]
     redis:
-        image: "redis:5.0"
         hostname: redis
+        build: 
+            context: ../
+            dockerfile: build/Dockerfile.redis
         networks:
             - dev-local-network
         ports:
             - "6379:6379"
         volumes:
-            - .\redis5.0\data:/data
+            - ${REDIS_DATA_DIR}:/data
         command: ["redis-server", "--appendonly", "yes"]
     mysql:
         image: "mysql:5.7"
@@ -36,9 +47,9 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - .\mysql5.7\master:/var/lib/mysql
-            - .\mysql5.7\mysql.conf:/etc/mysql/mysql.conf.d/mysqld.cnf
+            - ${MYSQL_DATA_DIR}:/var/lib/mysql
             
 networks:
     dev-local-network:
     
+# docker-compose -f .\build\docker-compose.yml --env-file .\build\.env up -d
