@@ -37,7 +37,7 @@ trait ChooseConnectionTrait
         $schema = self::getTableSchema()->columns;
         self::$dbName = null;
         if (isset($schema['partner_id']) && app()->user->getIdentity()) {
-            $partnerId = app()->user->getIdentity()->partner_id;
+            $partnerId = app()->user->getIdentity()->current_partner_id;
             if ($config = (new DbConfig())->getDbConfigById($partnerId)) {
                 $configName = $config['db_name'];
                 if ($instance = app()->get($configName, false)) {

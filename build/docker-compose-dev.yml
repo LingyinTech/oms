@@ -14,6 +14,7 @@ services:
             - "80:80"
         volumes:
             - ../:/data/www/oms
+            - ./dev/oms.dev.lingyin99.com.conf:/usr/local/nginx/conf.d/oms.dev.lingyin99.com.conf
         environment:
             OMS_DB_HOST: ${OMS_DB_HOST}
             OMS_DB_NAME: ${OMS_DB_NAME}

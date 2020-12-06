@@ -61,7 +61,7 @@ class PartnerLogic
         }
 
         if (!app()->user->getIdentity()->getSupperAdmin()) {
-            $params[$field] = app()->user->getIdentity()->partner_id;
+            $params[$field] = app()->user->getIdentity()->current_partner_id;
         }
     }
 

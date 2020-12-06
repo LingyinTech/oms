@@ -20,7 +20,7 @@ use yii\web\IdentityInterface;
  * @property int $created_at
  * @property int $updated_at
  * @property string $password write-only password
- * @property int $partner_id 合作伙伴ID
+ * @property int $current_partner_id 合作伙伴ID
  *
  * @property UserInfo $profile
  */
@@ -154,7 +154,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function getPartner()
     {
         if (null == $this->partner) {
-            $this->partner = Partner::findOne($this->partner_id);
+            $this->partner = Partner::findOne($this->current_partner_id);
         }
         return $this->partner;
     }

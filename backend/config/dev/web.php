@@ -10,23 +10,6 @@ return [
             'actors315'
         ]
     ],
-    'components' => [
-        'db' => [
-            'dsn' => 'mysql:host=dev.local.mysql;dbname=db_oms',
-            'username' => 'root',
-            'password' => getenv('OMS_DB_PASS'),
-        ],
-        'cache' => [
-            'keyPrefix' => 'oms:',
-            'redis' => [
-                'parameters' => [
-                    'host' => 'dev.local.redis',
-                    'port' => 6379,
-                ],
-				
-            ]
-        ],
-    ],
     'modules' => [
         'debug' => [
             'class' => 'yii\debug\Module',

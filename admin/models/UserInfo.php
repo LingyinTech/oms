@@ -12,6 +12,7 @@ use yii\data\Pagination;
  * @package backend\models
  * @property $user_id
  * @property $email
+ * @property $partner_id
  */
 class UserInfo extends ActiveRecord
 {
