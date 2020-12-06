@@ -30,6 +30,12 @@ role_node 权限组拥有的权限，建议遵循最小权限原则
 role_user 用户拥有的权限组，建议遵循最小权限原则  
 </details>
 
+## 标准化部署
+
+提供 dockerfile , 建议使用腾讯云 tke 拖管集群。也提供一个 docker-compose.yml 配置，方便开发环境统一。  
+
+软件版本 nginx-1.19.5，php-8.0.0, mysql-5.7, redis5.0 。 根据需要，不定期更新。  
+
 ## Migration
 
 通过 migration 来管理，并在各个业务分库保持 schema 一致  
