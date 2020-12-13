@@ -1,0 +1,31 @@
+FROM actors315/oms
+
+MAINTAINER actors315 <actors315@gmail.com>
+
+# 创建一些目录
+RUN useradd www-data \
+    && mkdir -p /var/log/nginx/ && chown -R www-data:www-data /var/log/nginx \
+	&& touch /var/run/nginx.pid && chown -R www-data:www-data /var/run/nginx.pid \
+	&& mkdir -p /usr/local/nginx/conf.d/ \
+	&& mkdir -p /data/www/oms/
+	
+# 源码
+COPY --chown=www-data:www-data . /data/www/oms/ 
+
+# 配置
+RUN mv /data/www/oms/build/fpm/www.conf /usr/local/php/etc/php-fpm.d/ \
+	&& mv /data/www/oms/build/fpm/php-fpm.conf /usr/local/php/etc/ \
+	&& mv /data/www/oms/build/fpm/php-fpm.ini /etc/supervisord.d/ \
+	&& mv /data/www/oms/build/nginx/oms.lingyin99.com.conf /usr/local/nginx/conf.d/ \
+	&& mv /data/www/oms/build/nginx/nginx.conf /usr/local/nginx/conf/nginx.conf \
+	&& mv /data/www/oms/build/nginx/nginx.ini /etc/supervisord.d/ \
+	&& mv /data/www/oms/build/start /start \
+	&& chmod +x /start \
+	&& chmod +x /data/www/oms/console/yii \
+	&& rm -rf /data/www/oms/console \
+	&& rm -rf /data/www/oms/build/ \
+	&& rm -rf /data/www/oms/.git
+
+WORKDIR /data/www/
+
+CMD ["/start"]

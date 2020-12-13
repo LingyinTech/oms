@@ -1,0 +1,13 @@
+{
+  "name": "lingyin/predis",
+  "description": "yii2整合predis，支持哨兵、集群",
+  "require": {
+    "yiisoft/yii2": "~2.0.15",
+    "predis/predis": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "lingyin\\predis\\": "src/"
+    }
+  }
+}

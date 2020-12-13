@@ -1,0 +1,58 @@
+version: '3'
+services:
+    web:
+        hostname: webapp
+        build: 
+            context: ../
+            dockerfile: build/Dockerfile.web
+        networks:
+            - dev-local-network
+        depends_on:
+            - mysql
+            - redis
+        ports:
+            - "80:80"
+        volumes:
+            - ../:/data/www/oms
+            - ./dev/oms.dev.lingyin99.com.conf:/usr/local/nginx/conf.d/oms.dev.lingyin99.com.conf
+        environment:
+            ENV: ${ENV}
+            OMS_DB_HOST: ${OMS_DB_HOST}
+            OMS_DB_NAME: ${OMS_DB_NAME}
+            OMS_DB_USER: ${OMS_DB_USER}
+            OMS_DB_PASS: ${OMS_DB_PASS}
+            ROOT_DB_PASS: ${MYSQL_ROOT_PASSWORD}
+            OMS_REDIS_HOST: ${OMS_REDIS_HOST}
+            OMS_REDIS_KEY_PREFIX: ${OMS_REDIS_KEY_PREFIX}
+        command: ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf", "--nodaemon"]
+    redis:
+        hostname: redis
+        build: 
+            context: ../
+            dockerfile: build/Dockerfile.redis
+        networks:
+            - dev-local-network
+        ports:
+            - "6379:6379"
+        volumes:
+            - ${REDIS_DATA_DIR}:/data
+        command: ["redis-server", "--appendonly", "yes"]
+    mysql:
+        hostname: mysql-master
+        build: 
+            context: ../
+            dockerfile: build/Dockerfile.mysql
+        networks:
+            - dev-local-network
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+        ports:
+            - "3306:3306"
+        volumes:
+            - ${MYSQL_DATA_DIR}:/var/lib/mysql
+            
+networks:
+    dev-local-network:
+    
+# docker-compose -f .\build\docker-compose.yml --env-file .\build\.env up -d

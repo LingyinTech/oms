@@ -1,0 +1,5 @@
+FROM mysql:5.7 
+
+MAINTAINER actors315 <actors315@gmail.com>
+
+COPY ./build/mysql/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
