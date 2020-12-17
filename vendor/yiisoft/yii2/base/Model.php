@@ -168,7 +168,7 @@ class Model extends Component implements StaticInstanceInterface, IteratorAggreg
      * [
      *     'scenario1' => ['attribute11', 'attribute12', ...],
      *     'scenario2' => ['attribute21', 'attribute22', ...],
-     *     ...i
+     *     ...
      * ]
      * ```
      *
@@ -354,8 +354,6 @@ class Model extends Component implements StaticInstanceInterface, IteratorAggreg
         $scenarios = $this->scenarios();
         $scenario = $this->getScenario();
         if (!isset($scenarios[$scenario])) {
-            var_export($scenarios);
-            var_dump($scenario);exit(0);
             throw new InvalidArgumentException("Unknown scenario: $scenario");
         }
 
@@ -800,7 +798,7 @@ class Model extends Component implements StaticInstanceInterface, IteratorAggreg
         }
         $attributes = [];
         foreach ($scenarios[$scenario] as $attribute) {
-            if ($attribute[0] !== '!' && !in_array('!' . $attribute, $scenarios[$scenario])) {
+            if (strncmp($attribute, '!', 1) !== 0 && !in_array('!' . $attribute, $scenarios[$scenario])) {
                 $attributes[] = $attribute;
             }
         }

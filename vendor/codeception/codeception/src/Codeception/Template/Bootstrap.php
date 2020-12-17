@@ -39,13 +39,13 @@ class Bootstrap extends InitTemplate
             return;
         }
 
+        if (!class_exists('\\Codeception\\Module\\Asserts') || !class_exists('\\Codeception\\Module\\PhpBrowser')) {
+            $this->addModulesToComposer(['PhpBrowser', 'Asserts']);
+        }
+
         $this->createUnitSuite();
         $this->createFunctionalSuite();
         $this->createAcceptanceSuite();
-
-        if (!class_exists('\\Codeception\\Module\\Asserts') && !class_exists('\\Codeception\\Module\\PhpBrowser')) {
-            $this->addModulesToComposer(['PhpBrowser', 'Asserts']);
-        }
 
         $this->say(" --- ");
         $this->say();
@@ -78,7 +78,7 @@ class Bootstrap extends InitTemplate
 #
 # Suite for functional tests
 # Emulate web requests and make application process them
-# Include one of framework modules (Symfony2, Yii2, Laravel5) to use it
+# Include one of framework modules (Symfony2, Yii2, Laravel5, Phalcon4) to use it
 # Remove this suite if you don't use frameworks
 
 actor: $actor{$this->actorSuffix}
