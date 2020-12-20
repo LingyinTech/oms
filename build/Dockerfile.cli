@@ -33,7 +33,8 @@ RUN yum install -y wget gcc make bzip2 supervisor autoconf automake libtool \
 COPY --chown=www-data:www-data . /data/www/oms/
 
 # 配置
-RUN mv /data/www/oms/build/start-cli /start \
+RUN mv /data/www/oms/build/queue/yii-queue.ini /etc/supervisord.d/ \
+    && mv /data/www/oms/build/start-cli /start \
     && chmod +x /start \
     && chmod +x /data/www/oms/console/yii \
     && rm -f /data/www/oms/backend \
