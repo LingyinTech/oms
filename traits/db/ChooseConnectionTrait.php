@@ -21,7 +21,7 @@ trait ChooseConnectionTrait
      * @throws \Throwable
      * @throws InvalidConfigException
      */
-    public static function chooseDb()
+    public static function getDb()
     {
         if (null !== self::$dbName) {
             return self::$dbInstance = app()->{self::$dbName};
@@ -52,17 +52,4 @@ trait ChooseConnectionTrait
         // 表里没有 partner_id 字段，直接走默认db
         return self::$dbInstance = app()->db;
     }
-
-    /**
-     * @return Connection
-     * @throws \Throwable
-     * @throws InvalidConfigException
-     */
-    public static function getDb()
-    {
-        self::chooseDb();
-
-        return self::$dbInstance;
-    }
-
 }

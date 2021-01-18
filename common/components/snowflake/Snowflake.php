@@ -33,7 +33,7 @@ class Snowflake extends Component
      */
     protected $workerId;
 
-    public $driver = 'cache';
+    public $driver = 'redis';
 
     public $startTime;
 
@@ -55,7 +55,7 @@ class Snowflake extends Component
 
     protected function sequence($current, $prefix = '')
     {
-        $redis = app()->{$this->driver}->redis;
+        $redis = app()->{$this->driver};
 
         $key = $current;
         $prefix && $key = $prefix . ':' . $key;

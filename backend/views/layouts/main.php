@@ -16,7 +16,10 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title>
+        <?php if($this->title) {echo Html::encode($this->title), ' | ';} ?>
+        <?= Html::encode(app()->name) ?>
+    </title>
     <?php $this->head() ?>
 </head>
 <body class="hold-transition skin-blue sidebar-mini <?php if(isset($_COOKIE['sidebar-toggle-control'])):?>sidebar-collapse<?php endif;?>">

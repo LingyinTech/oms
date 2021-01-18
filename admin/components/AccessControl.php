@@ -17,20 +17,12 @@ class AccessControl extends ActionFilter
     public $supperAdmin = [];
 
     /**
-     * @return User
-     */
-    public function getUser()
-    {
-        return app()->getUser();
-    }
-
-    /**
      * @inheritdoc
      * @throws ForbiddenHttpException
      */
     public function beforeAction($action)
     {
-        $user = $this->getUser();
+        $user = app()->accessCheck->getUser();
 
         if (!$user->getIsGuest()) {
             if (in_array($user->getIdentity()->getUsername(), $this->supperAdmin)) {
@@ -39,11 +31,8 @@ class AccessControl extends ActionFilter
             }
 
             $pathInfo = app()->getRequest()->getPathInfo();
-            $nodeArr = (new RoleLogic())->getAccessNodeByUser($user);
-            foreach ($nodeArr as $node) {
-                if ($pathInfo === ltrim($node['url'],'/')) {
-                    return true;
-                }
+            if(app()->accessCheck->checkPermission($pathInfo)) {
+                return true;
             }
         }
 
@@ -71,7 +60,7 @@ class AccessControl extends ActionFilter
             return false;
         }
 
-        $user = $this->getUser();
+        $user = app()->accessCheck->getUser();
         if ($user->getIsGuest()) {
             $loginUrl = null;
             if (is_array($user->loginUrl) && isset($user->loginUrl[0])) {

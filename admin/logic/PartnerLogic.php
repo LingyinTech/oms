@@ -26,7 +26,7 @@ class PartnerLogic
             return true;
         }
 
-        if ($partnerId === app()->user->getIdentity()->partner_id) {
+        if ($partnerId === app()->user->getIdentity()->current_partner_id) {
             return true;
         }
 
@@ -44,7 +44,7 @@ class PartnerLogic
             return $partnerId;
         }
 
-        return app()->user->getIdentity()->partner_id;
+        return app()->user->getIdentity()->current_partner_id;
     }
 
     /**

@@ -196,7 +196,7 @@ trait ActiveRecordTrait
 
     /**
      * @param $condition
-     * @return ActiveRecordTrait|null
+     * @return static|null
      * @throws \Throwable
      */
     public static function findOne($condition)

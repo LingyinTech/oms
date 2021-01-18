@@ -5,8 +5,7 @@ namespace lingyin\admin\models\vo;
 
 use lingyin\admin\models\User;
 use lingyin\admin\models\UserInfo;
-use Yii;
-use yii\base\Model;
+use lingyin\admin\base\Model;
 use yii\db\Exception;
 
 class RegisterForm extends Model
@@ -36,7 +35,7 @@ class RegisterForm extends Model
             $user = new User();
             $user->username = $this->username;
             $user->setPassword($this->password);
-            $trans = Yii::$app->db->beginTransaction();
+            $trans = app()->db->beginTransaction();
             try {
                 if ($user->save()) {
                     $userInfo = new UserInfo();

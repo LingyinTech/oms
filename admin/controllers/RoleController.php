@@ -13,11 +13,12 @@ use lingyin\admin\models\RoleNode;
 use lingyin\admin\models\RoleUser;
 use lingyin\admin\models\User;
 use lingyin\admin\models\UserInfo;
-use lingyin\admin\models\views\UserView;
+use lingyin\admin\models\dto\UserView;
 use lingyin\admin\models\vo\PartnerForm;
 use lingyin\admin\models\vo\RoleForm;
 use lingyin\admin\models\vo\RoleNodeForm;
 use lingyin\admin\models\vo\RoleUserForm;
+use lingyin\admin\models\vo\UserForm;
 
 class RoleController extends Controller
 {
@@ -30,17 +31,20 @@ class RoleController extends Controller
 
         $model = new RoleForm();
 
-        return $this->render('index', [
-            'list' => $list['list'],
-            'pages' => $list['pages'],
-            'model' => $model,
-            'statusList' => [
-                Role::STATUS_INACTIVE => '未开放',
-                Role::STATUS_ACTIVE => '启用',
-                Role::STATUS_DELETE => '禁用',
-            ],
-            'partnerList' => (new PartnerForm())->getPartnerList(),
-        ]);
+        return $this->render(
+            'index',
+            [
+                'list' => $list['list'],
+                'pages' => $list['pages'],
+                'model' => $model,
+                'statusList' => [
+                    Role::STATUS_INACTIVE => '未开放',
+                    Role::STATUS_ACTIVE => '启用',
+                    Role::STATUS_DELETE => '禁用',
+                ],
+                'partnerList' => (new PartnerForm())->getPartnerList(),
+            ]
+        );
     }
 
     public function actionSave()
@@ -49,11 +53,13 @@ class RoleController extends Controller
         if ($model->load(app()->request->post()) && $model->saveRole()) {
             return $this->success('保存成功');
         }
-        return $this->format([
-            'status' => 1,
-            'msg' => '保存失败',
-            'errors' => $model->getErrors(),
-        ]);
+        return $this->format(
+            [
+                'status' => 1,
+                'msg' => '保存失败',
+                'errors' => $model->getErrors(),
+            ]
+        );
     }
 
     public function actionNode()
@@ -70,23 +76,28 @@ class RoleController extends Controller
             return $this->fail('非法请求');
         }
 
-        $list = (new Role())->getList([
-            'status' => Role::STATUS_ACTIVE
-        ]);
+        $list = (new Role())->getList(
+            [
+                'status' => Role::STATUS_ACTIVE
+            ]
+        );
 
         $nodeList = (new RoleLogic())->getAccessTreeByUser(app()->user);
 
-        return $this->render('node', [
-            'list' => $list['list'],
-            'pages' => $list['pages'],
-            'model' => new RoleNodeForm(),
-            'nodeList' => $nodeList,
-            'nodeStatusList' => [
-                Node::STATUS_ACTION => '动作',
-                Node::STATUS_ELEMENT => '元素',
-            ],
-            'partnerList' => (new PartnerForm())->getPartnerList(),
-        ]);
+        return $this->render(
+            'node',
+            [
+                'list' => $list['list'],
+                'pages' => $list['pages'],
+                'model' => new RoleNodeForm(),
+                'nodeList' => $nodeList,
+                'nodeStatusList' => [
+                    Node::STATUS_ACTION => '动作',
+                    Node::STATUS_ELEMENT => '元素',
+                ],
+                'partnerList' => (new PartnerForm())->getPartnerList(),
+            ]
+        );
     }
 
     public function actionSaveNode()
@@ -97,11 +108,13 @@ class RoleController extends Controller
         if ($model->batchSaveRoleNode()) {
             return $this->success('保存成功');
         }
-        return $this->format([
-            'status' => 1,
-            'msg' => '保存失败',
-            'errors' => $model->getErrors(),
-        ]);
+        return $this->format(
+            [
+                'status' => 1,
+                'msg' => '保存失败',
+                'errors' => $model->getErrors(),
+            ]
+        );
     }
 
     public function actionUser()
@@ -109,7 +122,7 @@ class RoleController extends Controller
         if (app()->getRequest()->isAjax) {
             if ($userId = app()->getRequest()->get('user_id')) {
                 $user = User::findOne($userId);
-                if ($user && PartnerLogic::checkPartnerId($user->partner_id)) {
+                if ($user && PartnerLogic::checkPartnerId($user->current_partner_id)) {
                     $data = (new RoleUser())->getAllRoleByUserIds([$userId]);
                     $roleIdStr = isset($data[$userId]) ? implode(',', $data[$userId]) : '';
                     return $this->format($roleIdStr);
@@ -118,20 +131,35 @@ class RoleController extends Controller
             return $this->fail('非法请求');
         }
 
-        $list = (new UserView())->getList([
-            'status' => User::STATUS_ACTIVE
-        ]);
+        $userIdArr = (new User())->getAll(
+            [
+                'status' => User::STATUS_ACTIVE,
+                'current_partner_id' => app()->user->getIdentity()->current_partner_id,
+                'select' => 'id',
+            ]
+        );
 
-        $roleList = (new Role())->getAll([
-            'status' => Role::STATUS_ACTIVE
-        ]);
+        $list = (new UserForm())->getList(
+            [
+                'in' => ['user_id' => array_column($userIdArr, 'id')],
+            ]
+        );
 
-        return $this->render('user', [
-            'list' => $list['list'],
-            'pages' => $list['pages'],
-            'model' => new RoleUserForm(),
-            'roleList' => $roleList,
-        ]);
+        $roleList = (new Role())->getAll(
+            [
+                'status' => Role::STATUS_ACTIVE
+            ]
+        );
+
+        return $this->render(
+            'user',
+            [
+                'list' => $list['list'],
+                'pages' => $list['pages'],
+                'model' => new RoleUserForm(),
+                'roleList' => $roleList,
+            ]
+        );
     }
 
     public function actionSaveUser()
@@ -142,10 +170,12 @@ class RoleController extends Controller
         if ($model->batchSaveRoleUser()) {
             return $this->success('保存成功');
         }
-        return $this->format([
-            'status' => 1,
-            'msg' => '保存失败',
-            'errors' => $model->getErrors(),
-        ]);
+        return $this->format(
+            [
+                'status' => 1,
+                'msg' => '保存失败',
+                'errors' => $model->getErrors(),
+            ]
+        );
     }
 }

@@ -4,6 +4,8 @@
 namespace lingyin\common\models;
 
 
+use yii\behaviors\TimestampBehavior;
+use yii\data\Pagination;
 use yii\db\ActiveRecord;
 use yii\db\Connection;
 use yii\helpers\ArrayHelper;
@@ -11,7 +13,16 @@ use yii\helpers\ArrayHelper;
 /**
  * Class DbConfig
  * @package lingyin\common\models
+ * @property $id
+ * @property $partner_id
+ * @property $environment
+ * @property $config_name
+ * @property $dsn
+ * @property $login
+ * @property $password
+ * @property $status
  * @property $extra_config
+ *
  */
 class DbConfig extends ActiveRecord
 {
@@ -23,8 +34,29 @@ class DbConfig extends ActiveRecord
 
     public static $dbMap = [];
 
+    public function rules()
+    {
+        return [
+            ['id', 'filter', 'filter' => 'intval', 'skipOnEmpty' => true],
+            [['environment', 'config_name', 'dsn', 'login', 'password'], 'required'],
+            ['status', 'default', 'value' => self::STATUS_INACTIVE],
+            ['status', 'in', 'range' => [self::STATUS_INACTIVE, self::STATUS_DELETE, self::STATUS_ACTIVE]],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            'TimestampBehavior' => TimestampBehavior::class,
+        ];
+    }
+
     public function getDbConfigById($partnerId)
     {
+        if (!empty(app()->params['db.partner.config'][$partnerId])) {
+            return app()->params['db.partner.config'][$partnerId];
+        }
+
         if (isset(self::$dbMap[$partnerId])) {
             return self::$dbMap[$partnerId];
         }
@@ -73,10 +105,47 @@ class DbConfig extends ActiveRecord
         return self::$dbMap;
     }
 
+    public function getList()
+    {
+        $data = self::find();
+
+        $page = app()->getRequest()->get('page', 1);
+        $pageSize = app()->getRequest()->get('page_size', 20);
+        $pages = new Pagination(
+            [
+                'totalCount' => $data->count(),
+                'pageSizeParam' => 'page_size',
+                'pageSize' => $pageSize,
+            ]
+        );
+
+        $data->limit($pageSize);
+        $data->offset(($page - 1) * $pageSize);
+
+        return [
+            'list' => $data->asArray()->all(),
+            'pages' => $pages,
+        ];
+    }
+
     public function beforeSave($insert)
     {
         $this->extra_config = $this->extra_config ?? '';
+        is_array($this->extra_config) && $this->extra_config = json_encode($this->extra_config);
         return parent::beforeSave($insert);
+    }
+
+    public function filterInputAttributes() {
+        return [
+            'partner_id',
+            'environment',
+            'config_name',
+            'dsn',
+            'login',
+            'password',
+            'status',
+            'extra_config'
+        ];
     }
 
 }

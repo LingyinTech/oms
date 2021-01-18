@@ -22,6 +22,6 @@ use dmstr\widgets\Alert;
     <div class="pull-right hidden-xs">
         <b>Version</b> 1.0
     </div>
-    <strong>Copyright &copy; 2016-<?= date('Y') ?> <a href="https://oms.lingyin99.com">深圳市灵引科技有限公司</a>.</strong> All
-    rights reserved.
+    <strong>Copyright &copy; 2016-<?= date('Y') ?> <a href="https://oms.lingyin99.com">深圳市灵引科技有限公司</a></strong> |
+    <a target="_blank" href="https://beian.miit.gov.cn/">粤ICP备18103540号</a>
 </footer>

@@ -2,10 +2,6 @@
 
 $params = require __DIR__ . '/params.php';
 
-$env = require __DIR__ . "/../../common/config/env.php";
-
-$params['db.env'] = $env;
-
 $config = [
     'id' => 'oms',
     'name' => '订单管理系统',
@@ -34,17 +30,6 @@ $config = [
         'request' => [
             'cookieValidationKey' => 'OQU4_eWEuJ2HnvLfgRgNXS8I4FtVOKLo',
         ],
-        'cache' => [
-            'class' => \lingyin\predis\Cache::class,
-            'keyPrefix' => $env['redis_prefix'],
-            'redis' => [
-                'parameters' => [
-                    'host' => $env['redis_host'],
-                    'port' => 6379,
-                ],
-
-            ]
-        ],
         'user' => [
             'identityClass' => \lingyin\admin\models\User::class,
             'enableAutoLogin' => true,
@@ -66,14 +51,8 @@ $config = [
                 ],
             ],
         ],
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => "mysql:host={$env['host']};dbname={$env['db']}",
-            'username' => $env['user'],
-            'password' => $env['pass'],
-            'enableSchemaCache' => YII_ENV !== 'dev',
-            'schemaCacheDuration' => 60,
-            'schemaCache' => 'cache',
+        'accessCheck' => [
+            'class' => \lingyin\admin\components\AccessCheck::class,
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,

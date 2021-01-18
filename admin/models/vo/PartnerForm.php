@@ -5,7 +5,7 @@ namespace lingyin\admin\models\vo;
 
 
 use lingyin\admin\models\Partner;
-use yii\base\Model;
+use lingyin\admin\base\Model;
 
 class PartnerForm extends Model
 {

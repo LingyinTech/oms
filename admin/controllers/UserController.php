@@ -8,7 +8,7 @@ use lingyin\admin\base\Controller;
 use lingyin\admin\logic\PartnerLogic;
 use lingyin\admin\models\User;
 use lingyin\admin\models\UserInfo;
-use lingyin\admin\models\views\UserView;
+use lingyin\admin\models\dto\UserView;
 use lingyin\admin\models\vo\DepartmentForm;
 use lingyin\admin\models\vo\PartnerForm;
 use lingyin\admin\models\vo\PasswordForm;
@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function actionIndex()
     {
-        $model = new UserView();
+        $model = new UserForm();
 
         $list = $model->getList([]);
         return $this->render('index', [
@@ -84,8 +84,8 @@ class UserController extends Controller
             return $this->fail('设置失败', $model->getErrors());
         }
 
-        $userId = app()->request->get('id');
-        if (!User::findOne($userId)) {
+        $userId = app()->request->get('id',0);
+        if (!$userId || !User::findOne($userId)) {
             // 这里需要修改一下
             return $this->render('/site/error', [
                 'name' => '非法操作',

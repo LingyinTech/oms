@@ -7,7 +7,7 @@ use lingyin\admin\logic\PartnerLogic;
 use lingyin\admin\models\Partner;
 use lingyin\admin\models\User;
 use lingyin\admin\models\UserInfo;
-use yii\base\Model;
+use lingyin\admin\base\Model;
 use yii\db\Exception;
 
 class UserForm extends Model
@@ -27,8 +27,21 @@ class UserForm extends Model
     public function rules()
     {
         return [
-            ['user_id', 'exist', 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id'], 'message' => '用户不存在', 'skipOnEmpty' => true],
-            ['partner_id', 'exist', 'targetClass' => Partner::class, 'targetAttribute' => ['partner_id' => 'id'], 'skipOnEmpty' => true],
+            [
+                'user_id',
+                'exist',
+                'targetClass' => User::class,
+                'targetAttribute' => ['user_id' => 'id'],
+                'message' => '用户不存在',
+                'skipOnEmpty' => true
+            ],
+            [
+                'partner_id',
+                'exist',
+                'targetClass' => Partner::class,
+                'targetAttribute' => ['partner_id' => 'id'],
+                'skipOnEmpty' => true
+            ],
             [['email', 'username', 'real_name'], 'required'],
             [['avatar', 'tel', 'phone'], 'filter', 'filter' => 'trim'],
             ['status', 'in', 'range' => [User::STATUS_ACTIVE, User::STATUS_INACTIVE, User::STATUS_DELETE]],
@@ -44,7 +57,7 @@ class UserForm extends Model
                 if (!$this->user_id) {
                     $user = new User();
                     $user->setPassword('123456');
-                    $user->partner_id = PartnerLogic::filterPartnerId($this->partner_id);
+                    $user->current_partner_id = PartnerLogic::filterPartnerId($this->partner_id);
                 } else {
                     $user = User::findOne($this->user_id);
                     if (!$user) {
@@ -52,7 +65,7 @@ class UserForm extends Model
                         return false;
                     }
                     if (app()->user->getIdentity()->getSupperAdmin()) {
-                        !empty($this->partner_id) && $user->partner_id = $this->partner_id;
+                        !empty($this->partner_id) && $user->current_partner_id = $this->partner_id;
                     }
                 }
 
@@ -92,14 +105,37 @@ class UserForm extends Model
     public function initData($id)
     {
         $user = User::findOne($id);
-        $userInfo = UserInfo::findOne($id);
 
         if (!$user) {
             return;
         }
 
-        if (PartnerLogic::checkPartnerId($user->partner_id)) {
+        $userInfo = UserInfo::findOne(
+            [
+                'user_id' => $id,
+                'partner_id' => $user->current_partner_id
+            ]
+        );
+
+        if (PartnerLogic::checkPartnerId($user->current_partner_id)) {
             $this->attributes = array_merge($userInfo->attributes, $user->attributes);
         }
+    }
+
+    public function getList($condition = [])
+    {
+        $list = (new UserInfo())->getList($condition);
+        if (empty($list['list'])) {
+            return $list;
+        }
+        $userIdArr = array_column($list['list'], 'user_id');
+        $userList = (new User())->getList(['in' => ['id' => $userIdArr], 'select' => ['id', 'username', 'status']]);
+        $userList = array_column($userList['list'], null, 'id');
+        foreach ($list['list'] as $key => &$item) {
+            $item = array_merge($item, $userList[$item['user_id']]);
+        }
+        unset($item);
+
+        return $list;
     }
 }

@@ -17,7 +17,9 @@ use yii\helpers\Url;
                     <h3 class="box-title">用户列表</h3>
 
                     <div class="pull-right">
-                        <a href="/admin/user/add" class="btn btn-primary">添加员工</a>
+                        <?php if (app()->accessCheck->checkPermission('admin/user/add')): ?>
+                            <a href="/admin/user/add" class="btn btn-primary">添加员工</a>
+                        <?php endif; ?>
                         <a href="/admin/user/batch-add" class="btn btn-primary">批量添加</a>
                     </div>
                 </div>
@@ -36,31 +38,39 @@ use yii\helpers\Url;
                             </tr>
                             </thead>
                             <tbody>
-                            <?php foreach ($list as $item): ?>
-                                <tr data-user_id="<?=$item['user_id']?>">
+                            <?php
+                            foreach ($list as $item): ?>
+                                <tr data-user_id="<?= $item['user_id'] ?>">
                                     <td class="none"><?= $item['user_id'] ?></td>
                                     <td>
                                         <?= $item['username'] ?>
-                                        <?php if (app()->user->getIdentity()->getSupperAdmin() && isset($partnerList[$item['partner_id']])): ?>
+                                        <?php
+                                        if (app()->user->getIdentity()->getSupperAdmin(
+                                            ) && isset($partnerList[$item['partner_id']])): ?>
                                             (<?= $partnerList[$item['partner_id']] ?>)
-                                        <?php endif; ?>
+                                        <?php
+                                        endif; ?>
                                     </td>
                                     <td><?= $item['real_name'] ?></td>
                                     <td><?= $item['email'] ?></td>
                                     <td><?= isset($statusList[$item['status']]) ? $statusList[$item['status']] : '' ?></td>
                                     <td>
-                                        <a href="/admin/user/add?id=<?=$item['user_id']?>" title="修改" class="glyphicon glyphicon-pencil action-edit mr5"></a>
+                                        <a href="/admin/user/add?id=<?= $item['user_id'] ?>" title="修改"
+                                           class="glyphicon glyphicon-pencil action-edit mr5"></a>
                                         <a class="glyphicon glyphicon-lock action-password" title="设置密码"></a>
                                         <a class="glyphicon glyphicon-trash action-delete" title="删除"></a>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php
+                            endforeach; ?>
                             </tbody>
                         </table>
 
                         <div class="text-right paginationWrap">
 
-                            <?= \yii\widgets\LinkPager::widget(['pagination' => $pages, 'maxButtonCount' => 6, 'hideOnSinglePage' => false]); ?>
+                            <?= \yii\widgets\LinkPager::widget(
+                                ['pagination' => $pages, 'maxButtonCount' => 6, 'hideOnSinglePage' => false]
+                            ); ?>
                         </div>
                     </div>
                     <!-- /.table-responsive -->

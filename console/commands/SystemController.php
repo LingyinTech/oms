@@ -4,16 +4,30 @@
 namespace app\commands;
 
 
-use \PDO;
+use lingyin\common\models\DbConfig;
+use PDO;
+use Yii;
 use yii\console\Controller;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Console;
 
 class SystemController extends Controller
 {
+
+    /*public function options($actionID)
+    {
+        $options = [
+            'db'
+        ];
+        return ArrayHelper::merge(parent::options($actionID), $options);
+    }*/
+
     /**
-     * 创建公共库
+     * 创建新库
+     * 目前所有数据库共用一个账号和密码，后续再考虑独立
+     * @param string $db
      */
-    public function actionInitDb()
+    public function actionInitDb($db = 'db')
     {
         if (!isset(app()->params['db.env'])) {
             $this->stdout("*** 数据库边接配置不存在，直接跳过\n", Console::FG_YELLOW);
@@ -28,31 +42,39 @@ class SystemController extends Controller
             $sql = "show databases;";
             $res = $conn->query($sql);
             $res = $res->fetchAll(PDO::FETCH_ASSOC);
+            $dbExist = false;
             foreach ($res as $k => $v) {
-                if ($v['Database'] === $env['db']) {
-                    $this->stdout("*** 数据库 {$env['db']} 已存在\n\n", Console::FG_GREEN);
-                    return;
+                if ($v['Database'] === $db) {
+                    $this->stdout("*** 数据库 {$db} 已存在\n\n", Console::FG_GREEN);
+                    $dbExist = true;
+                    break;
                 }
             }
 
-            $sql = "CREATE DATABASE IF NOT EXISTS {$env['db']} DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci";
-            $conn->exec($sql);
-            $this->stdout("*** 数据库 {$env['db']} 创建成功\n\n", Console::FG_GREEN);
-
-            if ('root' !== $env['user']) {
-                $sql = "CREATE USER '{$env['user']}'@'%' IDENTIFIED BY '{$env['pass']}'";
+            if (!$dbExist) {
+                $sql = "CREATE DATABASE IF NOT EXISTS {$db} DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci";
                 $conn->exec($sql);
-                $this->stdout("*** 创建用户 {$env['user']} 成功\n\n", Console::FG_GREEN);
-
-                $sql = "GRANT ALL ON `{$env['db']}`.* TO '{$env['user']}'@'%';flush privileges;";
-                $conn->exec($sql);
-                $this->stdout("*** 权限更新成功\n\n", Console::FG_GREEN);
+                $this->stdout("*** 数据库 {$db} 创建成功\n\n", Console::FG_GREEN);
             }
 
-            app()->runAction('oms-migrate/init-base');
+            if ('root' !== $env['user']) {
+                $sql = "GRANT ALL ON `{$db}`.* TO '{$env['user']}'@'%' IDENTIFIED BY '{$env['pass']}';flush privileges;";
+                $conn->exec($sql);
+                $this->stdout("*** 用户权限更新成功\n\n", Console::FG_GREEN);
+            }
 
+            if ('db' !== $db) {
+                $dbList = (new DbConfig())->getAll(['config_name' => $db]);
+                $components = [];
+                foreach ($dbList as $config) {
+                    $components[$config['db_name']] = $config['connection'];
+                }
+                app()->setComponents($components);
+            }
+
+            app()->runAction('oms-migrate/up', ['db' => $db, 'interactive' => false]);
         } catch (\Exception $e) {
-            $this->stdout("*** 数据库 {$env['db']} 创建失败，{$e->getMessage()}\n\n", Console::FG_RED);
+            $this->stdout("*** 数据库 {$db} 创建失败，{$e->getMessage()}\n\n", Console::FG_RED);
         }
     }
 
@@ -71,7 +93,14 @@ class SystemController extends Controller
             "INSERT IGNORE INTO `node` VALUES ('10', '9', '保存权限设置', '/admin/role/save-node', '', '', '99', '2', '1603104082', '1603104082')",
             "INSERT IGNORE INTO `node` VALUES ('11', '6', '权限分配', '/admin/role/user', '', '', '20', '10', '1603104132', '1603104132')",
             "INSERT IGNORE INTO `node` VALUES ('12', '11', '权限分配保存', '/admin/role/save-user', '', '', '99', '2', '1603104181', '1603104181')",
-
+            "INSERT IGNORE INTO `node` VALUES ('13', '0', '系统管理', '#', '', '', '99', '10', '1608195146', '1608195146')",
+            "INSERT IGNORE INTO `node` VALUES ('14', '13', '数据库配置', '/admin/system/db-config', '', '', '10', '10', '1608195441', '1608195441')",
+            "INSERT IGNORE INTO `node` VALUES ('15', '0', '公司信息管理', '#', '', '', '80', '10', '1610976029', '1610976029')",
+            "INSERT IGNORE INTO `node` VALUES ('16', '15', '员工管理', '/admin/user/index', '', '', '10', '10', '1610976121', '1610976121')",
+            "INSERT IGNORE INTO `node` VALUES ('17', '16', '添加员工', '/admin/user/add', '', '', '10', '3', '1610976225', '1610976225')",
+            "INSERT IGNORE INTO `node` VALUES ('18', '16', '批量导入', '/admin/user/batch-add', '', '', '20', '3', '1610976268', '1610976268')",
+            "INSERT IGNORE INTO `node` VALUES ('19', '15', '组织图', '/admin/department/index', '', '', '9', '10', '1610978169', '1610978169')",
+            "INSERT IGNORE INTO `node` VALUES ('20', '19', '添加部门', '/admin/department/save', '', '', '10', '2', '1610978242', '1610978283')",
         ];
 
         foreach ($list as $sql) {
@@ -79,5 +108,21 @@ class SystemController extends Controller
         }
 
         $this->stdout("*** 菜单初始化成功\n\n", Console::FG_GREEN);
+    }
+
+    public function actionDumpDbConfig()
+    {
+        $config_file = Yii::getAlias('@common') . '/config/db_partner_config.php';
+        $handle = fopen($config_file, 'w');
+        if (flock($handle, LOCK_EX)) {
+            $config = (new DbConfig())->getAll();
+            $config = !empty($config) ? var_export($config, true) : '[]';
+            fwrite($handle, '<?php' . PHP_EOL . PHP_EOL . 'return ' . $config . ';');
+            flock($handle, LOCK_UN);
+            $this->stdout("*** 配置文件生成成功 K.\n", Console::FG_GREEN);
+        } else {
+            $this->stdout("*** 配置文件生成失败 K.\n", Console::FG_RED);
+        }
+        fclose($handle);
     }
 }

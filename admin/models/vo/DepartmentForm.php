@@ -5,8 +5,7 @@ namespace lingyin\admin\models\vo;
 
 use lingyin\admin\logic\PartnerLogic;
 use lingyin\admin\models\Department;
-use lingyin\admin\models\Partner;
-use yii\base\Model;
+use lingyin\admin\base\Model;
 
 class DepartmentForm extends Model
 {

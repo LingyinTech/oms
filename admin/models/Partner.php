@@ -4,8 +4,20 @@
 namespace lingyin\admin\models;
 
 use lingyin\admin\base\ActiveRecord;
+use lingyin\common\jobs\PartnerJob;
 use yii\data\Pagination;
 
+/**
+ * Class Partner
+ * @package lingyin\admin\models
+ * @property $id
+ * @property $code
+ * @property $short_code
+ * @property $name
+ * @property $status
+ * @property $active_start
+ * @property $active_end
+ */
 class Partner extends ActiveRecord
 {
     public static $shouldCheckPartner = false;
@@ -17,6 +29,11 @@ class Partner extends ActiveRecord
     const STATUS_LIMITED = 2;
     const STATUS_ACTIVE = 10;
 
+    public function init()
+    {
+        parent::init();
+        $this->on(self::EVENT_AFTER_INSERT, [$this, 'notifyAddPartner']);
+    }
 
     public function getCache()
     {
@@ -37,4 +54,15 @@ class Partner extends ActiveRecord
         return app()->cache->delete('admin:partner');
     }
 
+    public function notifyAddPartner($event)
+    {
+        return app()->queue->push(
+            new PartnerJob(
+                [
+                    'partner_id' => $this->id,
+                    'event' => 'active'
+                ]
+            )
+        );
+    }
 }

@@ -88,10 +88,12 @@ class User extends ActiveRecord implements IdentityInterface
             return null;
         }
 
-        return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
-        ]);
+        return static::findOne(
+            [
+                'password_reset_token' => $token,
+                'status' => self::STATUS_ACTIVE,
+            ]
+        );
     }
 
     /**
@@ -146,7 +148,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function getProfile()
     {
         if (null == $this->profile) {
-            $this->profile = UserInfo::findOne($this->getId());
+            $this->profile = UserInfo::findOne(
+                [
+                    'user_id' => $this->getId(),
+                    'partner_id' => $this->current_partner_id,
+                ]
+            );
         }
         return $this->profile;
     }

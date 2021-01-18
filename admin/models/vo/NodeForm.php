@@ -4,7 +4,7 @@
 namespace lingyin\admin\models\vo;
 
 use lingyin\admin\models\Node;
-use yii\base\Model;
+use lingyin\admin\base\Model;
 
 class NodeForm extends Model
 {

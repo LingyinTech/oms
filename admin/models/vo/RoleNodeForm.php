@@ -6,7 +6,7 @@ namespace lingyin\admin\models\vo;
 use lingyin\admin\logic\PartnerLogic;
 use lingyin\admin\models\Role;
 use lingyin\admin\models\RoleNode;
-use yii\base\Model;
+use lingyin\admin\base\Model;
 
 class RoleNodeForm extends Model
 {

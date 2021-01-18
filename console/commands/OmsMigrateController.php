@@ -4,9 +4,10 @@ namespace app\commands;
 
 
 use lingyin\common\models\DbConfig;
+use yii\console\controllers\MigrateController;
 use yii\helpers\Console;
 
-class OmsMigrateController extends \yii\console\controllers\MigrateController
+class OmsMigrateController extends MigrateController
 {
 
     public $currentDbName = 'db';
@@ -21,28 +22,18 @@ class OmsMigrateController extends \yii\console\controllers\MigrateController
         'create_junction' => '@console/views/createTableMigration.php',
     ];
 
-    /**
-     * 创建新库
-     * @param string $db
-     */
-    public function actionInitBase($db = 'db')
+    public function beforeAction($action)
     {
-        if ('db' !== $db) {
-            $dbList = (new DbConfig())->getAll(['config_name' => $db]);
-            $components = [];
-            foreach ($dbList as $config) {
-                $components[$config['db_name']] = $config['connection'];
-            }
-            app()->setComponents($components);
-        }
-
-        $this->currentDbName = $db;
-        $this->db = app()->{$db};
-        parent::actionUp(0);
+        is_string($this->db) && $this->currentDbName = $this->db;
+        return parent::beforeAction($action);
     }
 
     public function actionUp($limit = 0)
     {
+        if ($this->currentDbName !== 'db') {
+            return parent::actionUp($limit);
+        }
+
         $dbList = (new DbConfig())->getAll();
         $components = [];
         foreach ($dbList as $config) {

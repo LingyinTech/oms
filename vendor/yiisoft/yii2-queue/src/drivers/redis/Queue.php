@@ -11,7 +11,7 @@ use yii\base\InvalidArgumentException;
 use yii\base\NotSupportedException;
 use yii\di\Instance;
 use yii\queue\cli\Queue as CliQueue;
-use yii\redis\Connection;
+use lingyin\predis\Connection;
 
 /**
  * Redis Queue.

@@ -4,8 +4,6 @@
 namespace lingyin\admin\models;
 
 use lingyin\admin\base\ActiveRecord;
-use lingyin\admin\logic\PartnerLogic;
-use yii\data\Pagination;
 
 /**
  * Class UserInfo
@@ -16,8 +14,6 @@ use yii\data\Pagination;
  */
 class UserInfo extends ActiveRecord
 {
-    public static $shouldCheckPartner = false;
-
     protected $snowflakePrimaryKey = false;
 
     public function rules()

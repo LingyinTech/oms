@@ -23,7 +23,8 @@ RUN mv /data/www/oms/build/fpm/www.conf /usr/local/php/etc/php-fpm.d/ \
 	&& chmod +x /start \
 	&& chmod +x /data/www/oms/console/yii \
 	&& rm -rf /data/www/oms/build/ \
-	&& rm -rf /data/www/oms/.git
+	&& rm -rf /data/www/oms/.git \
+	&& rm -rf /data/www/oms/composer.*
 
 WORKDIR /data/www/
 

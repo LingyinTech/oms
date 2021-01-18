@@ -3,7 +3,7 @@
 namespace lingyin\admin\models\vo;
 
 use lingyin\admin\models\User;
-use yii\base\Model;
+use lingyin\admin\base\Model;
 
 /**
  * LoginForm is the model behind the login form.

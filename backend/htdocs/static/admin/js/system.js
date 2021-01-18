@@ -1,0 +1,5 @@
+namespace('admin.system')
+;(function () {
+
+
+})();

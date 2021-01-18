@@ -37,15 +37,14 @@ RUN mv /data/www/oms/build/queue/yii-queue.ini /etc/supervisord.d/ \
     && mv /data/www/oms/build/start-cli /start \
     && chmod +x /start \
     && chmod +x /data/www/oms/console/yii \
-    && rm -f /data/www/oms/backend \
+    && rm -rf /data/www/oms/backend \
     && rm -rf /data/www/oms/build/ \
     && rm -rf /data/www/oms/.git \
+    && rm -rf /data/www/oms/composer.* \
 # 清理
     && rm -rf /usr/local/src/* \
 	&& yum remove -y gcc make wget autoconf automake libtool \
 	&& yum remove -y epel-release \
 	&& yum clean all
-
-EXPOSE 80
 
 CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf","--nodaemon"]
