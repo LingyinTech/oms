@@ -101,6 +101,11 @@ class SystemController extends Controller
             "INSERT IGNORE INTO `node` VALUES ('18', '16', '批量导入', '/admin/user/batch-add', '', '', '20', '3', '1610976268', '1610976268')",
             "INSERT IGNORE INTO `node` VALUES ('19', '15', '组织图', '/admin/department/index', '', '', '9', '10', '1610978169', '1610978169')",
             "INSERT IGNORE INTO `node` VALUES ('20', '19', '添加部门', '/admin/department/save', '', '', '10', '2', '1610978242', '1610978283')",
+            "INSERT IGNORE INTO `node` VALUES ('21', '0', '应用设置', '#', '', '', '95', '10', '1611059524', '1611059524')",
+            "INSERT IGNORE INTO `node` VALUES ('22', '21', '自定义字段', '/field-setting/index', '', '', '95', '10', '1611059595', '1611059595')",
+            "INSERT IGNORE INTO `node` VALUES ('23', '21', '页面模板', '/template/index', '', '', '90', '10', '1611059705', '1611059705')",
+            "INSERT IGNORE INTO `node` VALUES ('24', '21', '订单类别', '/workitem-type/index', '', '', '20', '10', '1611059759', '1611059759')",
+            "INSERT IGNORE INTO `node` VALUES ('25', '21', '订单流程', '/workflow/index', '', '', '50', '10', '1611059838', '1611059838')",
         ];
 
         foreach ($list as $sql) {

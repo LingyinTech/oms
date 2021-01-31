@@ -24,6 +24,7 @@ class NodeController extends Controller
                 Node::STATUS_INACTIVE => '未开放',
                 Node::STATUS_ACTION => '动作',
                 Node::STATUS_ELEMENT => '元素',
+                Node::STATUS_VIEW => '视图',
                 Node::STATUS_MENU => '菜单',
             ],
         ]);
@@ -48,6 +49,7 @@ class NodeController extends Controller
                 Node::STATUS_MENU => '菜单',
                 Node::STATUS_ACTION => '动作',
                 Node::STATUS_ELEMENT => '元素',
+                Node::STATUS_VIEW => '视图',
                 Node::STATUS_INACTIVE => '未开放',
             ]
         ]);

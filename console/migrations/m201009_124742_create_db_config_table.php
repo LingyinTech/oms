@@ -22,7 +22,7 @@ class m201009_124742_create_db_config_table extends Migration
   `login` varchar(16) NOT NULL DEFAULT '' COMMENT '登录账号',
   `password` varchar(32) NOT NULL DEFAULT '0' COMMENT '密码',
   `extra_config`  text NOT NULL COMMENT '补充配置|如从库配置',
-  `status`  tinyint(3) NOT NULL DEFAULT 0 COMMENT '状态|0数据库未初始化，1删除，10有效',
+  `status`  smallint(3) NOT NULL DEFAULT 0 COMMENT '状态|0数据库未初始化，1删除，10有效',
   `created_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updated_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`),

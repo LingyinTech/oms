@@ -27,7 +27,17 @@ class NodeForm extends Model
             [['label','icon','remark'], 'filter', 'filter' => 'trim'],
             [['label', 'url'], 'required'],
             ['status', 'default', 'value' => Node::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [Node::STATUS_INACTIVE, Node::STATUS_ACTION, Node::STATUS_MENU,Node::STATUS_ELEMENT]],
+            [
+                'status',
+                'in',
+                'range' => [
+                    Node::STATUS_INACTIVE,
+                    Node::STATUS_ACTION,
+                    Node::STATUS_ELEMENT,
+                    Node::STATUS_VIEW,
+                    Node::STATUS_MENU,
+                ]
+            ],
         ];
     }
 

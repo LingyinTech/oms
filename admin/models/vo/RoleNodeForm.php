@@ -25,19 +25,23 @@ class RoleNodeForm extends Model
     public function filterNode($attribute, $params)
     {
         if ($this->node_id) {
-            $nodeArr = array_map(function ($v) {
-                return intval($v);
-            }, explode(',', $this->node_id));
-            return implode(',', array_unique($nodeArr));
+            $nodeArr = array_map(
+                function ($v) {
+                    return intval($v);
+                },
+                explode(',', $this->node_id)
+            );
+            return $this->node_id = array_unique($nodeArr);
         }
+
+        return $this->node_id = [];
     }
 
     public function batchSaveRoleNode()
     {
         if ($this->validate()) {
-            $nodeArr = explode(',', $this->node_id);
             $model = new RoleNode();
-            $result = $model->batchSaveData($this->role_id, $nodeArr);
+            $result = $model->batchSaveData($this->role_id, $this->node_id);
             if (!$result) {
                 $this->addErrors($model->getErrors());
             }

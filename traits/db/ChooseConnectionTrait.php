@@ -52,4 +52,23 @@ trait ChooseConnectionTrait
         // 表里没有 partner_id 字段，直接走默认db
         return self::$dbInstance = app()->db;
     }
+
+    public function assignDb($db, callable $callback)
+    {
+        $old = self::$dbName;
+        self::$dbName = $db;
+        try {
+            $result = call_user_func($callback, $this);
+        } catch (\Exception $e) {
+            self::$dbName = $old;
+            throw $e;
+        } catch (\Throwable $e) {
+            self::$dbName = $old;
+            throw $e;
+        } finally {
+            self::$dbName = $old;
+        }
+
+        return $result;
+    }
 }

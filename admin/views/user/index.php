@@ -20,7 +20,9 @@ use yii\helpers\Url;
                         <?php if (app()->accessCheck->checkPermission('admin/user/add')): ?>
                             <a href="/admin/user/add" class="btn btn-primary">添加员工</a>
                         <?php endif; ?>
-                        <a href="/admin/user/batch-add" class="btn btn-primary">批量添加</a>
+                        <?php if (app()->accessCheck->checkPermission('admin/user/batch-add')): ?>
+                            <a href="/admin/user/batch-add" class="btn btn-primary">批量添加</a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <!-- /.box-header -->

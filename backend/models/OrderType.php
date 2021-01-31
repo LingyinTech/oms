@@ -9,7 +9,7 @@ use backend\base\ActiveRecord;
 class OrderType extends ActiveRecord
 {
     const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE = 1;
+    const STATUS_ACTIVE = 10;
 
 
     public function rules()

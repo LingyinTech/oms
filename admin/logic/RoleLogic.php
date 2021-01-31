@@ -16,7 +16,14 @@ class RoleLogic
     public function getAccessNodeByUser($user)
     {
         $params = [
-            'in' => ['status' => [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_MENU]],
+            'in' => [
+                'status' => [
+                    Node::STATUS_ACTION,
+                    Node::STATUS_ELEMENT,
+                    Node::STATUS_VIEW,
+                    Node::STATUS_MENU
+                ]
+            ],
         ];
 
         try {
@@ -51,7 +58,12 @@ class RoleLogic
             $params['in']['id'] = $nodeArr;
         }
 
-        return (new Node())->setWhere($params)->orderBy('sort ASC,pid ASC,id ASC')->asArray()->all();
+        $nodeArr =  (new Node())->setWhere($params)->orderBy('sort ASC,pid ASC,id ASC')->asArray()->all();
+        foreach ($nodeArr as $item) {
+
+        }
+
+        return $nodeArr;
     }
 
     /**
@@ -78,7 +90,7 @@ class RoleLogic
         return $this->getAccessTreeByUser($user, [Node::STATUS_MENU]);
     }
 
-    public function list2Tree($list, $filterStatus = null)
+    protected function list2Tree($list, $filterStatus = null)
     {
         if (empty($list)) {
             return [];

@@ -55,6 +55,10 @@ class PartnerLogic
      */
     public static function setPartnerId(&$params, $field = 'partner_id')
     {
+        if (isset($params[$field])) {
+            return;
+        }
+
         if (!app()->user->getIdentity()) {
             $params[$field] = 'error';
             return;
