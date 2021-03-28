@@ -36,7 +36,10 @@ class DbConfigForm extends Model
         }
         $model->isNewRecord = true;
         $model->setAttributes($data, false);
-        return $model->save();
+        if ($model->save()) {
+            return $data['config_name'];
+        }
+        return false;
     }
 
 

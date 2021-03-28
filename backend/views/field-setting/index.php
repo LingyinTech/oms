@@ -60,5 +60,5 @@ use yii\helpers\Url;
     </div>
 
 <?php
-$this->registerJsFile(Url::to('@web/static/admin/js/node.js'), ['depends' => 'backend\assets\AppAsset']);
+$this->registerJsFile(Url::to('@web/static/view/js/field.js'), ['depends' => 'backend\assets\AppAsset']);
 ?>

@@ -13,7 +13,7 @@ class Menu
      */
     public static function getMenuItems()
     {
-        return (new RoleLogic())->getAccessMenuByUser(app()->user);
+        return (new RoleLogic())->getAccessMenuByUser(app()->user, true);
     }
 
 

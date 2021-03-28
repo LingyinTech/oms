@@ -22,7 +22,8 @@ class UserController extends Controller
         $model = new UserForm();
 
         $list = $model->getList([]);
-        return $this->render('index', [
+
+        $viewData = [
             'list' => $list['list'],
             'pages' => $list['pages'],
             'statusList' => [
@@ -30,8 +31,13 @@ class UserController extends Controller
                 User::STATUS_INACTIVE => '未激活',
                 User::STATUS_DELETE => '禁用',
             ],
-            'partnerList' => (new PartnerForm())->getPartnerList(),
-        ]);
+        ];
+
+        if (app()->user->getIdentity()->getSupperAdmin()) {
+            $viewData['partnerList'] = (new PartnerForm())->getPartnerList();
+        }
+
+        return $this->render('index', $viewData);
     }
 
     public function actionBatchAdd()

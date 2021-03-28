@@ -54,11 +54,15 @@ $config = [
         'accessCheck' => [
             'class' => \lingyin\admin\components\AccessCheck::class,
         ],
+        'viewConfig' => [
+            'class' => \backend\logic\ViewLogic::class,
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
                 '<module:(admin)>/<controller:[\w-]+>/<action:[\w-]+><nouse:(.*)>' => '<module>/<controller>/<action>',
+                '<controller:(order)>/<action:[\w-]+>/<viewId:([\d]+)>' => '<controller>/<action>',
                 '<controller:[\w-]+>/<action:[\w-]+><nouse:(.*)>' => '<controller>/<action>',
                 '<controller:[\w-]+><nouse:(.*)>' => '<controller>/index',
             ],

@@ -30,10 +30,6 @@ class OmsMigrateController extends MigrateController
 
     public function actionUp($limit = 0)
     {
-        if ($this->currentDbName !== 'db') {
-            return parent::actionUp($limit);
-        }
-
         $dbList = (new DbConfig())->getAll();
         $components = [];
         foreach ($dbList as $config) {

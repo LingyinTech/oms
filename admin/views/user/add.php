@@ -83,7 +83,7 @@ use yii\helpers\Url;
                         </div>
                     </div>
 
-                    <?php if (app()->user->getIdentity()->getSupperAdmin()): ?>
+                    <?php if (!empty($partnerList)): ?>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">合作伙伴</label>
 

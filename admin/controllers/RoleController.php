@@ -39,6 +39,7 @@ class RoleController extends Controller
                 'model' => $model,
                 'statusList' => [
                     Role::STATUS_INACTIVE => '未开放',
+                    Role::STATUS_ADMIN => '默认启用',
                     Role::STATUS_ACTIVE => '启用',
                     Role::STATUS_DELETE => '禁用',
                 ],

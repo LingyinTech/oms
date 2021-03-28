@@ -5,15 +5,15 @@ namespace app\controllers;
 
 
 use backend\base\Controller;
-use backend\models\FieldConfig;
-use backend\models\vo\FieldConfigForm;
+use backend\models\Template;
+use backend\models\vo\TemplateForm;
 
 class TemplateController extends Controller
 {
 
     public function actionIndex()
     {
-        $model = new FieldConfigForm();
+        $model = new TemplateForm();
         $list = $model->getAll();
 
         return $this->render(
@@ -21,8 +21,8 @@ class TemplateController extends Controller
             [
                 'list' => $list,
                 'statusList' => [
-                    FieldConfig::STATUS_DELETE => '禁用',
-                    FieldConfig::STATUS_ACTIVE => '启用',
+                    Template::STATUS_DELETE => '禁用',
+                    Template::STATUS_ACTIVE => '启用',
                 ],
             ]
         );

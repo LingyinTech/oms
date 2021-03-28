@@ -6,6 +6,7 @@
  * Time: 0:37
  */
 
+use lingyin\admin\models\Role;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
@@ -33,7 +34,7 @@ use yii\helpers\Url;
                             </thead>
                             <tbody>
                             <?php foreach ($list as $item): ?>
-                                <tr>
+                                <tr data-can-edit="<?= $item['status'] == Role::STATUS_ADMIN ? 0 : 1?>">
                                     <td class="none" data-name="id" data-value="<?= $item['id'] ?>"></td>
                                     <td data-name="name" data-value="<?= $item['name'] ?>">
                                         <?= $item['name'] ?>
@@ -96,7 +97,7 @@ use yii\helpers\Url;
                         <label class="col-sm-3 control-label">状态</label>
 
                         <div class="col-sm-8">
-                            <?= $form->field($model, 'status')->dropDownList([10 => '启用', 1 => '禁用']) ?>
+                            <?= $form->field($model, 'status')->dropDownList([Role::STATUS_ACTIVE => '启用', Role::STATUS_DELETE => '禁用']) ?>
                         </div>
                     </div>
 

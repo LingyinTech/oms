@@ -22,23 +22,34 @@ class FieldConfigForm extends Model
     public function rules()
     {
         return [
+            ['id', 'filter', 'filter' => 'intval', 'skipOnEmpty' => true],
             [['field', 'label', 'type'], 'required'],
             [['field', 'label'], 'filter', 'filter' => 'trim'],
-            ['options', 'default', ''],
             ['status', 'default', 'value' => FieldConfig::STATUS_INACTIVE],
             [
                 'status',
                 'in',
-                'range' => [FieldConfig::STATUS_INACTIVE, FieldConfig::STATUS_DELETE, FieldConfig::STATUS_ACTIVE]
+                'range' => [
+                    FieldConfig::STATUS_INACTIVE,
+                    FieldConfig::STATUS_DELETE,
+                    FieldConfig::STATUS_ACTIVE
+                ]
             ],
             ['options', 'filterCheckInput']
         ];
     }
 
-    public function filterNode($attribute, $params)
+    public function filterCheckInput($attribute, $params)
     {
         if ($this->options && is_array($this->options)) {
             return $this->options = implode('|', $this->options);
+        }
+    }
+
+    public function initData($id)
+    {
+        if ($model = FieldConfig::findOne($id)) {
+            $this->attributes = $model->attributes;
         }
     }
 
@@ -52,7 +63,8 @@ class FieldConfigForm extends Model
                     $data[$attribute] = $this->{$attribute};
                 }
             }
-            $data['partner_id'] = PartnerLogic::filterPartnerId($this->partner_id);
+            $data['partner_id']
+                = PartnerLogic::filterPartnerId($this->partner_id);
             if ($model->saveData($data)) {
                 return true;
             }

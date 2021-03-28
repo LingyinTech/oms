@@ -1,0 +1,5 @@
+namespace('view.field')
+;(function () {
+
+
+})();

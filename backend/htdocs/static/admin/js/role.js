@@ -2,6 +2,11 @@ namespace('admin.role')
 ;(function () {
 
     $('table.role-grid tbody tr').on('click', function () {
+        if (0 === $(this).data('can-edit')) {
+            layer.msg('当前角色不允许编辑');
+            return false;
+        }
+
         $(this).children('td').each(function (i, v) {
             let name = $(this).data('name');
             let value = $(this).data('value');

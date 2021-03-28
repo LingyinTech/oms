@@ -14,13 +14,13 @@ use yii\helpers\Console;
 class SystemController extends Controller
 {
 
-    /*public function options($actionID)
+    public function options($actionID)
     {
         $options = [
             'db'
         ];
         return ArrayHelper::merge(parent::options($actionID), $options);
-    }*/
+    }
 
     /**
      * 创建新库
@@ -72,7 +72,7 @@ class SystemController extends Controller
                 app()->setComponents($components);
             }
 
-            app()->runAction('oms-migrate/up', ['db' => $db, 'interactive' => false]);
+            app()->runAction('oms-migrate/up', ['interactive' => false]);
         } catch (\Exception $e) {
             $this->stdout("*** 数据库 {$db} 创建失败，{$e->getMessage()}\n\n", Console::FG_RED);
         }

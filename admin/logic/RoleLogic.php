@@ -3,7 +3,6 @@
 
 namespace lingyin\admin\logic;
 
-
 use lingyin\admin\models\Node;
 use lingyin\admin\models\RoleNode;
 use lingyin\admin\models\RoleUser;
@@ -13,7 +12,7 @@ use yii\web\User;
 class RoleLogic
 {
 
-    public function getAccessNodeByUser($user)
+    public function getAccessNodeByUser($user, $view = false)
     {
         $params = [
             'in' => [
@@ -58,24 +57,44 @@ class RoleLogic
             $params['in']['id'] = $nodeArr;
         }
 
-        $nodeArr =  (new Node())->setWhere($params)->orderBy('sort ASC,pid ASC,id ASC')->asArray()->all();
-        foreach ($nodeArr as $item) {
+        $list = (new Node())->setWhere($params)->orderBy('sort ASC,pid ASC,id ASC')->asArray()->all();
 
+        if ($view) {
+
+            $list = array_column($list, null, 'id');
+
+            $viewList = app()->viewConfig->getAccessViewList($user);
+            foreach ($viewList as $item) {
+                $node = [
+                    'id' => 'view-' . $item['id'],
+                    'pid' => $item['menu_id'],
+                    'label' => $item['name'],
+                    'url' => $item['pre_path'] . $item['id'],
+                    'sort' => 99,
+                    'status' => $item['is_menu'] ? Node::STATUS_MENU : Node::STATUS_ELEMENT,
+                ];
+                if (Node::STATUS_MENU == $node['status']) {
+                    $list[$item['menu_id']]['status'] = Node::STATUS_MENU;
+                }
+                $list[$node['id']] = $node;
+            }
         }
 
-        return $nodeArr;
+        return array_values($list);
     }
 
     /**
      * @param User $user
      * @param array $filterStatus
+     * @param bool $view 是否包含视图
      * @return array|ActiveRecord[]
      */
     public function getAccessTreeByUser(
         $user,
-        $filterStatus = [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_MENU]
+        $filterStatus = [Node::STATUS_ACTION, Node::STATUS_ELEMENT, Node::STATUS_VIEW, Node::STATUS_MENU],
+        $view = false
     ) {
-        $list = $this->getAccessNodeByUser($user);
+        $list = $this->getAccessNodeByUser($user, $view);
 
         return $this->list2Tree($list, $filterStatus);
     }
@@ -83,11 +102,12 @@ class RoleLogic
     /**
      * 获取有权限的菜单
      * @param User $user
+     * @param bool $view 是否包含视图
      * @return array
      */
-    public function getAccessMenuByUser($user)
+    public function getAccessMenuByUser($user, $view = false)
     {
-        return $this->getAccessTreeByUser($user, [Node::STATUS_MENU]);
+        return $this->getAccessTreeByUser($user, [Node::STATUS_MENU], $view);
     }
 
     protected function list2Tree($list, $filterStatus = null)

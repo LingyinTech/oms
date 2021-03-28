@@ -22,8 +22,8 @@ class m210119_130346_create_field_config_table extends Migration
   `status` smallint(3) NOT NULL DEFAULT '10' COMMENT '状态|0未启用，1禁用，10 启用',
   `is_system`  tinyint(1) NOT NULL DEFAULT 0 COMMENT '系统字段',
   `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
-  `created_at` bigint(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
-  `updated_at` bigint(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `created_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `updated_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
         $this->execute($sql);

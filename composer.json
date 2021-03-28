@@ -1,21 +1,15 @@
 {
-  "name": "yiisoft/yii2-app-basic",
-  "description": "Yii 2 Basic Project Template",
+  "name": "lingyin/oms",
+  "description": "订单管理系统",
   "keywords": [
-    "yii2",
-    "framework",
-    "basic",
-    "project template"
+    "oms",
+    "orderflow"
   ],
-  "homepage": "http://www.yiiframework.com/",
+  "homepage": "http://oms.lingyin99.com/",
   "type": "project",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "support": {
-    "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-    "forum": "http://www.yiiframework.com/forum/",
-    "wiki": "http://www.yiiframework.com/wiki/",
-    "irc": "irc://irc.freenode.net/yii",
-    "source": "https://github.com/yiisoft/yii2"
+    "issues": "https://github.com/LingyinTech/oms/issues"
   },
   "minimum-stability": "stable",
   "require": {
@@ -84,7 +78,11 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "https://asset-packagist.org"
+      "url": "https://mirrors.aliyun.com/composer/"
+    },
+    {
+      "type": "composer",
+      "url": "https://packagist.phpcomposer.com"
     }
   ]
 }

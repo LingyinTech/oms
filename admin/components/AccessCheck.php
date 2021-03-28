@@ -22,7 +22,7 @@ class AccessCheck
         }
 
         if (!isset($this->permissionList[$user->getId()])) {
-            $this->permissionList[$user->getId()] = (new RoleLogic())->getAccessNodeByUser($user);
+            $this->permissionList[$user->getId()] = (new RoleLogic())->getAccessNodeByUser($user,true);
         }
 
         foreach ($this->permissionList[$user->getId()] as $node) {
@@ -30,6 +30,8 @@ class AccessCheck
                 return true;
             }
         }
+
+        return false;
     }
 
     public function checkViewPermission($view_id)

@@ -53,7 +53,7 @@ trait ActiveRecordTrait
             $primaryKey = static::getKey();
 
             if (is_string($primaryKey)) {
-                !empty($data[$primaryKey]) && $model = self::findOne($data[$primaryKey]);
+                !empty($data[$primaryKey]) && $model = static::findOne($data[$primaryKey]);
             } elseif (is_array($primaryKey)) {
                 $condition = [];
                 $hasKey = true;
@@ -64,7 +64,7 @@ trait ActiveRecordTrait
                     }
                     $condition[$key] = $data[$key];
                 }
-                $hasKey && $model = self::findOne($condition);
+                $hasKey && $model = static::findOne($condition);
             }
         }
 
@@ -142,9 +142,9 @@ trait ActiveRecordTrait
      */
     public function setWhere($params = [])
     {
-        $obj = self::find();
+        $obj = static::find();
 
-        self::fixConditionWithPartner($params);
+        static::fixConditionWithPartner($params);
 
         foreach ($params as $key => $value) {
             switch ($key) {
@@ -201,14 +201,23 @@ trait ActiveRecordTrait
      */
     public static function findOne($condition)
     {
-        self::fixConditionWithPartner($condition);
+        static::fixConditionWithPartner($condition);
         return parent::findOne($condition);
     }
 
     public static function findAll($condition)
     {
-        self::fixConditionWithPartner($condition);
+        static::fixConditionWithPartner($condition);
         return parent::findAll($condition);
+    }
+
+    public static function getTableSchema()
+    {
+        $old = static::$dbName;
+        static::$dbName = 'db';
+        $schema = parent::getTableSchema();
+        static::$dbName = $old;
+        return $schema;
     }
 
     /**
@@ -236,7 +245,7 @@ trait ActiveRecordTrait
             return true;
         }
 
-        $schema = self::getTableSchema()->columns;
+        $schema = static::getTableSchema()->columns;
         if (!isset($schema['partner_id'])) {
             return true;
         }
@@ -250,7 +259,7 @@ trait ActiveRecordTrait
             return;
         }
 
-        $schema = self::getTableSchema()->columns;
+        $schema = static::getTableSchema()->columns;
         if (!isset($schema['partner_id'])) {
             return;
         }
@@ -263,7 +272,7 @@ trait ActiveRecordTrait
      */
     public function setShouldCheckPartner(bool $shouldCheckPartner)
     {
-        self::$shouldCheckPartner = $shouldCheckPartner;
+        static::$shouldCheckPartner = $shouldCheckPartner;
     }
 
     /**
@@ -271,7 +280,7 @@ trait ActiveRecordTrait
      */
     public function setShouldCheckPartnerSave(bool $shouldCheckPartnerSave)
     {
-        self::$shouldCheckPartnerSave = $shouldCheckPartnerSave;
+        static::$shouldCheckPartnerSave = $shouldCheckPartnerSave;
     }
 
 }

@@ -30,8 +30,6 @@ class DbConfig extends ActiveRecord
     const STATUS_DELETE = 1;
     const STATUS_ACTIVE = 10;
 
-    public static $dbName = 'db';
-
     public static $dbMap = [];
 
     public function rules()

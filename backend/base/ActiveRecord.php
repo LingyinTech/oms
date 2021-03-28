@@ -29,11 +29,11 @@ class ActiveRecord extends \yii\db\ActiveRecord
             'TimestampBehavior' => TimestampBehavior::class,
         ];
 
-        $schema = self::getTableSchema();
+        $schema = static::getTableSchema();
         if ($this->snowflakePrimaryKey && $primaryKey = $this->shouldSnowflakeId($schema)) {
             $behaviors['SnowflakeBehavior'] = [
                 'class' => SnowflakeBehavior::class,
-                'cachePrefix' => self::tableName(),
+                'cachePrefix' => static::tableName(),
                 'primaryAttribute' => $primaryKey,
             ];
         }

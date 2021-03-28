@@ -40,6 +40,10 @@ class PartnerLogic
      */
     public static function filterPartnerId($partnerId = 0)
     {
+        if ('cli' === OMS_RUNTIME && $partnerId) {
+            return $partnerId;
+        }
+
         if (app()->user->getIdentity()->getSupperAdmin() && $partnerId) {
             return $partnerId;
         }

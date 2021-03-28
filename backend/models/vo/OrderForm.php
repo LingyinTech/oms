@@ -8,7 +8,6 @@ use backend\base\Model;
 
 class OrderForm extends Model
 {
-
     public $id;
     public $shop_id;
     public $customer_name;
@@ -21,4 +20,8 @@ class OrderForm extends Model
 
     public $skuList = [];
 
+    public function __get($name)
+    {
+        return '';
+    }
 }

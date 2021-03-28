@@ -5,6 +5,7 @@ use backend\base\Application;
 
 defined('YII_ENV') or define('YII_ENV', getenv('ENV') ?: 'prod');
 defined('YII_DEBUG') or define('YII_DEBUG', 'dev' === YII_ENV);
+defined('OMS_RUNTIME') or define('OMS_RUNTIME','fpm');
 
 require __DIR__ . '/../../vendor/autoload.php';
 require __DIR__ . '/../../vendor/yiisoft/yii2/Yii.php';

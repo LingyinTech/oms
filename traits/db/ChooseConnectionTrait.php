@@ -7,14 +7,15 @@ use yii\base\InvalidConfigException;
 use yii\db\Connection;
 
 /**
+ * 数据库分为公共库和业务库，业务库按业务单元拆分，不同业务单元数据库独立，保证数据隔离
  * Trait ActiveRecordTrait
  * @package lingyin\traits\db
  */
 trait ChooseConnectionTrait
 {
-    public static $dbName = null;
+    protected static $dbName = null;
 
-    public static $dbInstance = null;
+    protected static $dbInstance = null;
 
     /**
      * @return mixed|object|Connection|null
@@ -23,50 +24,49 @@ trait ChooseConnectionTrait
      */
     public static function getDb()
     {
-        if (null !== self::$dbName) {
-            return self::$dbInstance = app()->{self::$dbName};
+        if (null !== static::$dbName) {
+            return static::$dbInstance = app()->{static::$dbName};
         }
 
         $allocate = app()->params['db.allocate'];
-        $table = self::tableName();
+        $table = static::tableName();
         if (isset($allocate[$table])) {
-            return self::$dbInstance = app()->{$allocate[$table]};
+            return static::$dbInstance = app()->{$allocate[$table]};
         }
 
-        self::$dbName = 'db';
-        $schema = self::getTableSchema()->columns;
-        self::$dbName = null;
+        static::$dbName = 'db';
+        $schema = static::getTableSchema()->columns;
+        static::$dbName = null;
         if (isset($schema['partner_id']) && app()->user->getIdentity()) {
             $partnerId = app()->user->getIdentity()->current_partner_id;
             if ($config = (new DbConfig())->getDbConfigById($partnerId)) {
                 $configName = $config['db_name'];
+                // 防此重复初始化
                 if ($instance = app()->get($configName, false)) {
                     return self::$dbInstance = $instance;
                 }
                 $connection = $config['connection'];
                 app()->setComponents([$configName => $connection]);
-                return self::$dbInstance = app()->{$configName};
+                return static::$dbInstance = app()->{$configName};
             }
         }
 
         // 表里没有 partner_id 字段，直接走默认db
-        return self::$dbInstance = app()->db;
+        return static::$dbInstance = app()->db;
     }
 
     public function assignDb($db, callable $callback)
     {
-        $old = self::$dbName;
-        self::$dbName = $db;
+        $old = static::$dbName;
+        static::$dbName = $db;
         try {
             $result = call_user_func($callback, $this);
         } catch (\Exception $e) {
-            self::$dbName = $old;
             throw $e;
         } catch (\Throwable $e) {
-            self::$dbName = $old;
             throw $e;
         } finally {
-            self::$dbName = $old;
+            static::$dbName = $old;
         }
 
         return $result;

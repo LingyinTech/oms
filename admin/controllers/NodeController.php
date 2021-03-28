@@ -16,18 +16,21 @@ class NodeController extends Controller
 
         $list = $model->getList([]);
 
-        return $this->render('index', [
-            'model' => $model,
-            'list' => $list['list'],
-            'pages' => $list['pages'],
-            'statusList' => [
-                Node::STATUS_INACTIVE => '未开放',
-                Node::STATUS_ACTION => '动作',
-                Node::STATUS_ELEMENT => '元素',
-                Node::STATUS_VIEW => '视图',
-                Node::STATUS_MENU => '菜单',
-            ],
-        ]);
+        return $this->render(
+            'index',
+            [
+                'model' => $model,
+                'list' => $list['list'],
+                'pages' => $list['pages'],
+                'statusList' => [
+                    Node::STATUS_INACTIVE => '未开放',
+                    Node::STATUS_ACTION => '动作',
+                    Node::STATUS_ELEMENT => '元素',
+                    Node::STATUS_VIEW => '视图',
+                    Node::STATUS_MENU => '菜单',
+                ],
+            ]
+        );
     }
 
     public function actionAdd()
@@ -36,23 +39,26 @@ class NodeController extends Controller
         $parentLabel = '根节点';
         if ($id = app()->getRequest()->get('id')) {
             $model->initData($id);
-            if(!empty($model->pid)) {
+            if (!empty($model->pid)) {
                 $parent = Node::findOne($model->pid);
                 $parentLabel = $parent->label;
             }
         }
-        return $this->render('add', [
-            'model' => $model,
-            'action' => '添加菜单',
-            'parentLabel' => $parentLabel,
-            'statusList' => [
-                Node::STATUS_MENU => '菜单',
-                Node::STATUS_ACTION => '动作',
-                Node::STATUS_ELEMENT => '元素',
-                Node::STATUS_VIEW => '视图',
-                Node::STATUS_INACTIVE => '未开放',
+        return $this->render(
+            'add',
+            [
+                'model' => $model,
+                'action' => $model->id ? '编辑菜单' : '添加菜单',
+                'parentLabel' => $parentLabel,
+                'statusList' => [
+                    Node::STATUS_MENU => '菜单',
+                    Node::STATUS_ACTION => '动作',
+                    Node::STATUS_ELEMENT => '元素',
+                    Node::STATUS_VIEW => '视图',
+                    Node::STATUS_INACTIVE => '未开放',
+                ]
             ]
-        ]);
+        );
     }
 
     /**
@@ -71,7 +77,13 @@ class NodeController extends Controller
                 return $this->fail('菜单不存在');
             }
 
-            if ($model->saveData(['id' => $model, 'status' => Node::STATUS_DELETE])) {
+            if ($model->saveData(
+                [
+                    'id' => $model,
+                    'status' => Node::STATUS_DELETE
+                ]
+            )
+            ) {
                 return $this->success('删除成功');
             }
 
@@ -87,11 +99,13 @@ class NodeController extends Controller
         if ($model->load(app()->request->post()) && $model->saveNode()) {
             return $this->success('保存成功');
         }
-        return $this->format([
-            'status' => 1,
-            'msg' => '保存失败',
-            'errors' => $model->getErrors(),
-        ]);
+        return $this->format(
+            [
+                'status' => 1,
+                'msg' => '保存失败',
+                'errors' => $model->getErrors(),
+            ]
+        );
     }
 
     public function actionSelect()
@@ -99,8 +113,11 @@ class NodeController extends Controller
         $list = (new RoleLogic())->getAccessMenuByUser(app()->user);
 
         $this->layout = '//main-login';
-        return $this->render('select', [
-            'list' => $list,
-        ]);
+        return $this->render(
+            'select',
+            [
+                'list' => $list,
+            ]
+        );
     }
 }

@@ -39,6 +39,28 @@ class Migration extends \yii\db\Migration
         return null;
     }
 
+    public function down()
+    {
+        if ($this->ddlStatement !== true || version_compare(PHP_VERSION, '8.0.0') < 0) {
+            return parent::down();
+        }
+
+        try {
+            if ($this->safeDown() === false) {
+                return false;
+            }
+        } catch (\Exception $e) {
+            $this->printException($e);
+            return false;
+        } catch (\Throwable $e) {
+            $this->printException($e);
+            return false;
+        }
+
+        return null;
+
+    }
+
     /**
      * @param \Throwable|\Exception $e
      */

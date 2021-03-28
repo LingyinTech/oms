@@ -15,7 +15,7 @@ use yii\helpers\Url;
     <div class="col-md-7">
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title">权限组</h3>
+                <h3 class="box-title">组织结构</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

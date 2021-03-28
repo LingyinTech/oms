@@ -6,12 +6,10 @@ namespace backend\models\vo;
 
 use backend\base\Model;
 use backend\models\ViewConfig;
-use lingyin\admin\logic\PartnerLogic;
 
 class ViewConfigForm extends Model
 {
     public $id;
-    public $partner_id;
     public $name;
     public $field_text;
     public $condition_text;
@@ -35,56 +33,48 @@ class ViewConfigForm extends Model
                     ViewConfig::STATUS_ACTIVE
                 ]
             ],
-            ['options', 'filterCheckInput']
         ];
     }
 
-    public function filterNode($attribute, $params)
-    {
-        if ($this->options && is_array($this->options)) {
-            return $this->options = implode('|', $this->options);
-        }
-    }
-
-    public function saveField()
-    {
-        if ($this->validate()) {
-            $model = new ViewConfig();
-            $data = [];
-            foreach ($model->filterInputAttributes() as $attribute) {
-                if (isset($this->{$attribute})) {
-                    $data[$attribute] = $this->{$attribute};
-                }
-            }
-            $data['partner_id'] = PartnerLogic::filterPartnerId($this->partner_id);
-            if ($model->saveData($data)) {
-                return true;
-            }
-            $this->addErrors($model->getErrors());
-        }
-
-        return false;
-    }
-
-    public function getAll()
+    public function getAll($condition = [])
     {
         $model = new ViewConfig();
-        $list = $model->getAll([]);
+        $list = $model->getAll($condition);
 
+        $systemCondition = ['partner_id' => 0];
+        if (isset($condition['user_id'])) {
+            $systemCondition['status'] = ViewConfig::STATUS_ACTIVE;
+        }
         $systemList = $model->assignDb(
             'db',
-            function ($model) {
-                return $model->getAll(['partner_id' => 0]);
+            function ($model) use ($systemCondition) {
+                return $model->getAll($systemCondition);
             }
         );
 
-        $fieldArr = array_column($list, 'field');
+        $sysViewArr = array_column($list, 'sys_view_id');
         foreach ($systemList as $item) {
-            if (!in_array($item['field'], $fieldArr)) {
+            if (!in_array($item['sys_view_id'], $sysViewArr)) {
+                $item['sys_view_id'] = $item['id'];
                 array_unshift($list, $item);
             }
         }
 
         return $list;
+    }
+
+    public function getActiveView($viewId,$userId)
+    {
+        $conditon = [
+            'id' => $viewId,
+            'user_id' => $userId,
+            'in' => ['status' => ViewConfig::STATUS_ACTIVE,ViewConfig::STATUS_PRIVATE]
+        ];
+        $list = $this->getAll($conditon);
+        if(empty($list)) {
+            return false;
+        }
+
+        return $list[0];
     }
 }

@@ -3,6 +3,7 @@
 
 namespace backend\base;
 
+use backend\logic\ViewLogic;
 use lingyin\admin\components\AccessCheck;
 use lingyin\common\components\snowflake\Snowflake;
 use yii\db\Connection;
@@ -15,6 +16,7 @@ use yii\queue\Queue;
  * @property Snowflake $snowflake
  * @property Queue $queue
  * @property AccessCheck $accessCheck
+ * @property ViewLogic $viewConfig
  */
 class Application extends \yii\web\Application
 {
