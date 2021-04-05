@@ -5,7 +5,6 @@ namespace backend\models\vo;
 
 
 use backend\base\Model;
-use backend\models\FieldConfig;
 use backend\models\Template;
 use lingyin\admin\logic\PartnerLogic;
 
@@ -14,9 +13,8 @@ class TemplateForm extends Model
     public $id;
     public $partner_id;
     public $path; // 页面路径
-    public $label;
-    public $type;
-    public $options;
+    public $name;
+    public $form_config;
     public $status;
     public $remark;
 
@@ -24,23 +22,28 @@ class TemplateForm extends Model
     {
         return [
             ['id', 'filter', 'filter' => 'intval', 'skipOnEmpty' => true],
-            [['field', 'label', 'type'], 'required'],
-            [['field', 'label'], 'filter', 'filter' => 'trim'],
-            ['status', 'default', 'value' => FieldConfig::STATUS_INACTIVE],
+            [['name', 'path'], 'required'],
+            [['name', 'path'], 'filter', 'filter' => 'trim'],
+            ['status', 'default', 'value' => Template::STATUS_INACTIVE],
             [
                 'status',
                 'in',
                 'range' => [
-                    FieldConfig::STATUS_INACTIVE,
-                    FieldConfig::STATUS_DELETE,
-                    FieldConfig::STATUS_ACTIVE
+                    Template::STATUS_INACTIVE,
+                    Template::STATUS_DELETE,
+                    Template::STATUS_ACTIVE
                 ]
             ],
-            ['options', 'filterCheckInput']
         ];
     }
 
-    public function getTemplateByPath($path) {
+    public function initData($id)
+    {
+        $model = Template::findOne($id);
+    }
+
+    public function getTemplateByPath($path)
+    {
         return [
             [
                 'title' => '收货人信息',
@@ -93,5 +96,27 @@ class TemplateForm extends Model
         }
 
         return $list;
+    }
+
+    public function saveTemplate()
+    {
+        if ($this->validate()) {
+            $model = new Template();
+            $data = [];
+            foreach ($model->filterInputAttributes() as $attribute) {
+                if (isset($this->{$attribute})) {
+                    $data[$attribute] = $this->{$attribute};
+                }
+            }
+            $data['partner_id'] = PartnerLogic::filterPartnerId(
+                $this->partner_id
+            );
+            if ($model->saveData($data)) {
+                return true;
+            }
+            $this->addErrors($model->getErrors());
+        }
+
+        return false;
     }
 }

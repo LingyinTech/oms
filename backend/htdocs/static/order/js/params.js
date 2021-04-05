@@ -8,7 +8,7 @@ namespace('admin.params.invoiceType')
         $.post(url, $("#PayMethod").serialize(), function (data) {
             if (data.status == 0) {
                 layer.msg('保存成功')
-                window.admin.main.form.reset('PayMethod');
+                window.main.form.reset('PayMethod');
             } else {
                 layer.msg('保存存失败');
             }
@@ -20,7 +20,7 @@ namespace('admin.params.invoiceType')
         $.post(url, $("#OrderType").serialize(), function (data) {
             if (data.status == 0) {
                 layer.msg('保存成功')
-                window.admin.main.form.reset('OrderType');
+                window.main.form.reset('OrderType');
             } else {
                 layer.msg('保存存失败');
             }
@@ -32,7 +32,7 @@ namespace('admin.params.invoiceType')
         $.post(url, $("#InvoiceType").serialize(), function (data) {
             if (data.status == 0) {
                 layer.msg('保存成功')
-                window.admin.main.form.reset('InvoiceType');
+                window.main.form.reset('InvoiceType');
             } else {
                 layer.msg('保存存失败');
             }

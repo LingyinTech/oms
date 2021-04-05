@@ -11,7 +11,7 @@ namespace = function () {
     return obj;
 }
 
-namespace('admin.main.cookie')
+namespace('main.cookie')
 ;(function () {
     // 写cookie
     function setCookie(name, value, day) {
@@ -40,6 +40,13 @@ namespace('admin.main.cookie')
             document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
     }
 
+    window.main.cookie.set = setCookie;
+    window.main.cookie.get = getCookie;
+    window.main.cookie.delete = delCookie;
+})();
+
+namespace('main.form')
+;(function () {
     function resetForm(formId) {
         if (formId) {
             $('#' + formId)[0].reset();
@@ -52,15 +59,8 @@ namespace('admin.main.cookie')
         })
     }
 
-    window.admin.main.cookie.set = setCookie;
-    window.admin.main.cookie.get = getCookie;
-    window.admin.main.cookie.delete = delCookie;
-
-    window.admin.main.form = window.admin.main.form || {};
-    window.admin.main.form.reset = resetForm;
-
+    window.main.form.reset = resetForm;
 })();
-
 
 ;(function () {
 
@@ -75,12 +75,12 @@ namespace('admin.main.cookie')
 
     $('.sidebar-toggle').on('click', function () {
         if ($('body').hasClass('sidebar-collapse')) {
-            window.admin.main.cookie.delete('sidebar-toggle-control');
+            window.main.cookie.delete('sidebar-toggle-control');
         } else {
-            window.admin.main.cookie.set('sidebar-toggle-control', 1, 7);
+            window.main.cookie.set('sidebar-toggle-control', 1, 7);
         }
     });
 
-    $('form button.action-reset').on('click', window.admin.main.form.reset);
+    $('form button.action-reset').on('click', window.main.form.reset);
 
 })();

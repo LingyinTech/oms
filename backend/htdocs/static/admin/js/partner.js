@@ -13,7 +13,7 @@ namespace('admin.partner')
         $.post(url, $("#PartnerForm").serialize(), function (data) {
             if (data.status == 0) {
                 layer.msg('保存成功')
-                window.admin.main.form.reset('PartnerForm');
+                window.main.form.reset('PartnerForm');
             } else {
                 layer.msg('保存存失败');
             }

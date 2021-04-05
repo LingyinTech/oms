@@ -63,8 +63,9 @@ class FieldConfigForm extends Model
                     $data[$attribute] = $this->{$attribute};
                 }
             }
-            $data['partner_id']
-                = PartnerLogic::filterPartnerId($this->partner_id);
+            $data['partner_id'] = PartnerLogic::filterPartnerId(
+                $this->partner_id
+            );
             if ($model->saveData($data)) {
                 return true;
             }

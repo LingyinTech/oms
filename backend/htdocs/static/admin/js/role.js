@@ -104,7 +104,7 @@ namespace('admin.role')
             layer.close(load);
             if (data.status == 0) {
                 layer.msg('保存成功');
-                window.admin.main.form.reset('RoleNodeForm');
+                window.main.form.reset('RoleNodeForm');
             } else {
                 layer.msg('保存存失败');
             }
@@ -129,7 +129,7 @@ namespace('admin.role')
             layer.close(load);
             if (data.status == 0) {
                 layer.msg('保存成功');
-                window.admin.main.form.reset('RoleUserForm');
+                window.main.form.reset('RoleUserForm');
             } else {
                 layer.msg('保存存失败');
             }

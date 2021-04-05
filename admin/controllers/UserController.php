@@ -56,27 +56,33 @@ class UserController extends Controller
 
             $errors = $model->getErrors();
 
-            return $this->format([
-                'status' => 1,
-                'msg' => isset($errors['msg']) ? current($errors['msg']) : '保存失败',
-                'errors' => $errors,
-            ]);
+            return $this->format(
+                [
+                    'status' => 1,
+                    'msg' => isset($errors['msg']) ? current($errors['msg'])
+                        : '保存失败',
+                    'errors' => $errors,
+                ]
+            );
         }
 
 
         if ($id = app()->request->get('id')) {
             $model->initData($id);
         }
-        return $this->render('add', [
-            'model' => $model,
-            'statusList' => [
-                User::STATUS_ACTIVE => '正常',
-                User::STATUS_INACTIVE => '未激活',
-                User::STATUS_DELETE => '禁用',
-            ],
-            'departmentList' => (new DepartmentForm())->getDepartmentList(),
-            'partnerList' => (new PartnerForm())->getPartnerList(),
-        ]);
+        return $this->render(
+            'add',
+            [
+                'model' => $model,
+                'statusList' => [
+                    User::STATUS_ACTIVE => '正常',
+                    User::STATUS_INACTIVE => '未激活',
+                    User::STATUS_DELETE => '禁用',
+                ],
+                'departmentList' => (new DepartmentForm())->getDepartmentList(),
+                'partnerList' => (new PartnerForm())->getPartnerList(),
+            ]
+        );
     }
 
     public function actionPassword()
@@ -90,20 +96,26 @@ class UserController extends Controller
             return $this->fail('设置失败', $model->getErrors());
         }
 
-        $userId = app()->request->get('id',0);
+        $userId = app()->request->get('id', 0);
         if (!$userId || !User::findOne($userId)) {
             // 这里需要修改一下
-            return $this->render('/site/error', [
-                'name' => '非法操作',
-                'message' => '请选择需操作的用户',
-            ]);
+            return $this->render(
+                '/site/error',
+                [
+                    'name' => '非法操作',
+                    'message' => '请选择需操作的用户',
+                ]
+            );
         }
 
         $model->user_id = $userId;
 
         $this->layout = '//main-login';
-        return $this->render('password', [
-            'model' => $model,
-        ]);
+        return $this->render(
+            'password',
+            [
+                'model' => $model,
+            ]
+        );
     }
 }
