@@ -7,16 +7,17 @@ use console\base\Migration;
  */
 class m201009_121148_create_user_info_table extends Migration
 {
+    public $testStatus = true;
+
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function up()
     {
         $sql = "CREATE TABLE IF NOT EXISTS {{%user_info}} (
   `user_id` bigint(20) UNSIGNED NOT NULL COMMENT '用户ID',
   `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
-  `real_name` varchar(16) NOT NULL DEFAULT '' COMMENT '姓名',
-  `email` varchar(128) NOT NULL DEFAULT '' COMMENT '用户邮箱',
+  `username` varchar(32) NOT NULL DEFAULT '' COMMENT '姓名',
   `avatar` varchar(128) NOT NULL DEFAULT '' COMMENT '头像',
   `tel` varchar(16) NOT NULL DEFAULT '' COMMENT '办公电话',
   `phone` varchar(16) NOT NULL DEFAULT '' COMMENT '手机号',
@@ -31,7 +32,7 @@ class m201009_121148_create_user_info_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('{{%user_info}}');
     }

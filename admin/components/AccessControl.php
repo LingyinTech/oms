@@ -25,7 +25,7 @@ class AccessControl extends ActionFilter
         $user = app()->accessCheck->getUser();
 
         if (!$user->getIsGuest()) {
-            if (in_array($user->getIdentity()->getUsername(), $this->supperAdmin)) {
+            if (in_array($user->getIdentity()->getEmail(), $this->supperAdmin)) {
                 $user->getIdentity()->setSupperAdmin(true);
                 return true;
             }

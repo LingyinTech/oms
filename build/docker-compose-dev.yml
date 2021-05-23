@@ -56,3 +56,4 @@ networks:
     dev-local-network:
     
 # docker-compose -f .\build\docker-compose.yml --env-file .\build\.env up -d
+# docker-compose -f .\build\docker-compose-dev.yml --env-file .\build\.env up -d

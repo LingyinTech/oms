@@ -23,7 +23,7 @@ RUN yum install -y wget gcc make bzip2 supervisor autoconf automake libtool \
 	--with-openssl --with-curl --enable-mbstring \
 	&& make && make install \
 	&& cp /usr/local/src/php-8.0.0/php.ini-production /usr/local/php/lib/php.ini \
-	&& echo 'export PATH=/usr/local/php/bin:$PATH' >> /etc/profile \
+	&& echo 'export PATH=/usr/local/php/bin:$PATH' >> /etc/bashrc \
 	&& mkdir -p /var/run/supervisor && chmod -R 666 /var/run/supervisor \
 # 创建一些目录
     && useradd www-data \

@@ -7,7 +7,7 @@ return [
             'debug/*',
         ],
         'supperAdmin' => [
-            'actors315'
+            'actors315@gmail.com'
         ]
     ],
     'modules' => [

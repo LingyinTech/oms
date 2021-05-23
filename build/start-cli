@@ -1,8 +1,6 @@
 #!/bin/bash
 
-source /etc/profile
-
-/data/www/oms/console/yii system/init-db --interactive=false
+. ~/.bashrc
 
 /data/www/oms/console/yii oms-migrate/up --interactive=false
 

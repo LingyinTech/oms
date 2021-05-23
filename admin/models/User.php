@@ -11,10 +11,10 @@ use yii\web\IdentityInterface;
  * User model
  *
  * @property int $id
- * @property string $username
+ * @property string $email
  * @property string $password_hash
  * @property string $password_reset_token
- * @property string $email
+ * @property string $username
  * @property string $auth_key
  * @property int $status
  * @property int $created_at
@@ -42,6 +42,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETE]],
+            ['email', 'email', 'message' => '邮箱格式不合法'],
         ];
     }
 
@@ -68,49 +69,12 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Finds user by username
      *
-     * @param string $username
+     * @param string $email
      * @return User|null
      */
-    public static function findByUsername($username)
+    public static function findByEmail($email)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-    }
-
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return User|null
-     */
-    public static function findByPasswordResetToken($token)
-    {
-        if (!static::isPasswordResetTokenValid($token)) {
-            return null;
-        }
-
-        return static::findOne(
-            [
-                'password_reset_token' => $token,
-                'status' => self::STATUS_ACTIVE,
-            ]
-        );
-    }
-
-    /**
-     * Finds out if password reset token is valid
-     *
-     * @param string $token password reset token
-     * @return bool
-     */
-    public static function isPasswordResetTokenValid($token)
-    {
-        if (empty($token)) {
-            return false;
-        }
-        $expire = app()->params['user.passwordResetTokenExpire'];
-        $parts = explode('_', $token);
-        $timestamp = (int)end($parts);
-        return $timestamp + $expire >= time();
+        return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
     }
 
     public function getId()
@@ -120,12 +84,12 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getEmail()
     {
-        return $this->getProfile()->email;
+        return $this->email;
     }
 
     public function getUsername()
     {
-        return $this->username;
+        return $this->getProfile()->username;
     }
 
     public function getSupperAdmin()
@@ -230,7 +194,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function filterInputAttributes()
     {
-        return ['username', 'status'];
+        return ['email', 'status'];
     }
 
 }

@@ -21,7 +21,7 @@ class RegisterForm extends Model
             [['email', 'username', 'password'], 'required'],
             ['password', 'string', 'min' => 6],
             ['username', 'string', 'max' => 32],
-            ['username', 'unique', 'targetClass' => User::class, 'message' => '用户名重复'],
+            ['email', 'unique', 'targetClass' => User::class, 'message' => '邮箱已存在'],
         ];
     }
 
@@ -33,7 +33,7 @@ class RegisterForm extends Model
     {
         if ($this->validate()) {
             $user = new User();
-            $user->username = $this->username;
+            $user->email = $this->email;
             $user->setPassword($this->password);
             $trans = app()->db->beginTransaction();
             try {
@@ -41,7 +41,7 @@ class RegisterForm extends Model
                     $userInfo = new UserInfo();
                     $userInfo->setShouldCheckPartnerSave(false);
                     $userInfo->user_id = $user->getId();
-                    $userInfo->email = $this->email;
+                    $userInfo->username = $this->username;
                     if ($userInfo->save()) {
                         $trans->commit();
                         return $user;

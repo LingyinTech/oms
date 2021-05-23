@@ -11,62 +11,28 @@ class Migration extends \yii\db\Migration
 
     public $dbExcludeList = [];
 
-    /**
-     * @var bool 是否 DDL 操作
-     */
-    protected $ddlStatement = true;
+    public $testStatus = false;
 
-    /**
-     * 8.0 以上的版本 DDL 语句使用事务会报错
-     * @return bool|null
-     */
-    public function up()
+    public function checkStatus()
     {
-        if ($this->ddlStatement !== true || version_compare(PHP_VERSION, '8.0.0') < 0) {
-            return parent::up();
-        }
-        try {
-            if ($this->safeUp() === false) {
-                return false;
-            }
-        } catch (\Exception $e) {
-            $this->printException($e);
-            return false;
-        } catch (\Throwable $e) {
-            $this->printException($e);
-            return false;
-        }
-        return null;
-    }
-
-    public function down()
-    {
-        if ($this->ddlStatement !== true || version_compare(PHP_VERSION, '8.0.0') < 0) {
-            return parent::down();
-        }
-
-        try {
-            if ($this->safeDown() === false) {
-                return false;
-            }
-        } catch (\Exception $e) {
-            $this->printException($e);
-            return false;
-        } catch (\Throwable $e) {
-            $this->printException($e);
-            return false;
-        }
-
-        return null;
-
+        return $this->testStatus || 'dev' === YII_ENV;
     }
 
     /**
-     * @param \Throwable|\Exception $e
+     * @param string $dbName
+     * 黑白名单较验，优先白名单
+     * @return bool
      */
-    protected function printException($e)
+    public function checkDbList($dbName)
     {
-        echo 'Exception: ' . $e->getMessage() . ' (' . $e->getFile() . ':' . $e->getLine() . ")\n";
-        echo $e->getTraceAsString() . "\n";
+        if (!empty($this->dbAllowList) && !in_array($dbName, $this->dbAllowList)) {
+            return false;
+        }
+
+        if (!empty($this->dbExcludeList) && in_array($dbName, $this->dbExcludeList)) {
+            return false;
+        }
+
+        return true;
     }
 }

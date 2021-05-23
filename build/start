@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /etc/profile
+. ~/.bashrc
 
 /data/www/oms/console/yii system/dump-db-config --interactive=false
 

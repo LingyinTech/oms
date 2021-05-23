@@ -14,7 +14,7 @@ RUN yum install -y wget gcc make bzip2 supervisor autoconf automake libtool \
 	&& cd /usr/local/src && tar -xvf nginx-1.19.5.tar.gz \
 	&& cd /usr/local/src/nginx-1.19.5 \
 	&& ./configure --prefix=/usr/local/nginx && make && make install \
-	&& echo 'export PATH=/usr/local/nginx/sbin:$PATH' >> /etc/profile \
+	&& echo 'export PATH=/usr/local/nginx/sbin:$PATH' >> /etc/bashrc \
 # 安装 oniguruma
 	&& cd /usr/local/src && tar -xvf oniguruma-6.9.4.tar.gz \
 	&& cd /usr/local/src/oniguruma-6.9.4 \
@@ -29,7 +29,7 @@ RUN yum install -y wget gcc make bzip2 supervisor autoconf automake libtool \
 	--with-openssl --with-curl --enable-mbstring \
 	&& make && make install \
 	&& cp /usr/local/src/php-8.0.0/php.ini-production /usr/local/php/lib/php.ini \
-	&& echo 'export PATH=/usr/local/php/bin:$PATH' >> /etc/profile \
+	&& echo 'export PATH=/usr/local/php/bin:$PATH' >> /etc/bashrc \
 	&& mkdir -p /var/run/supervisor && chmod -R 666 /var/run/supervisor \
 # 清理
 	&& rm -rf /usr/local/src/* \

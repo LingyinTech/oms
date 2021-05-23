@@ -82,18 +82,16 @@ class OmsMigrateController extends MigrateController
         $start = microtime(true);
         $migration = $this->createMigration($class);
 
+        if (!$migration->checkStatus()) {
+            $this->stdout("*** 环境不匹配，不需要执行 $class \n\n", Console::FG_GREEN);
+            return false;
+        }
+
         $up = false;
-        if (!empty($migration->dbAllowList) && !in_array($this->currentDbName, $migration->dbAllowList)) {
+        if (!$migration->checkDbList($this->currentDbName)) {
             $up = true;
             $this->stdout("*** 不在需要变更的 db 范围，直接跳过 $class \n\n", Console::FG_GREEN);
-        }
-
-        if (!$up && !empty($migration->dbExcludeList) && in_array($this->currentDbName, $migration->dbExcludeList)) {
-            $up = true;
-            $this->stdout("*** 在不需要变更的 db 范围，直接跳过 $class \n\n", Console::FG_GREEN);
-        }
-
-        if (!$up && false !== $migration->up()) {
+        } elseif (false !== $migration->up()) {
             $up = true;
             $time = microtime(true) - $start;
             $this->stdout("*** applied $class (time: " . sprintf('%.3f', $time) . "s)\n\n", Console::FG_GREEN);

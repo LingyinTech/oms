@@ -9,7 +9,7 @@ use lingyin\admin\base\ActiveRecord;
  * Class UserInfo
  * @package backend\models
  * @property $user_id
- * @property $email
+ * @property $username
  * @property $partner_id
  */
 class UserInfo extends ActiveRecord
@@ -19,8 +19,7 @@ class UserInfo extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'email'], 'required'],
-            ['email', 'email', 'message' => '邮箱格式不合法'],
+            [['user_id', 'username'], 'required'],
         ];
     }
 

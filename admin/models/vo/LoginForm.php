@@ -13,7 +13,7 @@ use lingyin\admin\base\Model;
  */
 class LoginForm extends Model
 {
-    public $username;
+    public $email;
     public $password;
     public $rememberMe;
 
@@ -26,7 +26,7 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            [['username', 'password'], 'required'],
+            [['email', 'password'], 'required'],
             ['rememberMe', 'boolean'],
             ['password', 'validatePassword'],
         ];
@@ -75,7 +75,7 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->user === false) {
-            $this->user = User::findByUsername($this->username);
+            $this->user = User::findByEmail($this->email);
         }
 
         return $this->user;
