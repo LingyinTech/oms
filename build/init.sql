@@ -1,22 +1,12 @@
-<?php
+CREATE DATABASE `db_oms` DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci;
 
-use console\base\Migration;
+GRANT ALL PRIVILEGES ON `db_oms`.* TO 'lingyin-oms-app'@'%' IDENTIFIED BY 'Lingyin2021';
 
-/**
- * Handles the creation of table `{{%db_config}}`.
- */
-class m201009_124742_create_db_config_table extends Migration
-{
-
-    public $dbAllowList = ['db'];
-
-    public function safeUp()
-    {
-        $sql = "CREATE TABLE IF NOT EXISTS {{%db_config}} (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增ID',  
+CREATE TABLE IF NOT EXISTS `db_oms`.`db_config` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
   `environment` varchar(8) NOT NULL DEFAULT '' COMMENT '环境',
-  `config_name` varchar(32) NOT NULL DEFAULT '' COMMENT '连接名字|尽量重用',  
+  `config_name` varchar(32) NOT NULL DEFAULT '' COMMENT '连接名字|尽量重用',
   `class` varchar(32) NOT NULL DEFAULT '' COMMENT '连接处理类',
   `dsn` varchar(128) NOT NULL DEFAULT '' COMMENT 'dsn',
   `login` varchar(16) NOT NULL DEFAULT '' COMMENT '登录账号',
@@ -27,15 +17,4 @@ class m201009_124742_create_db_config_table extends Migration
   `updated_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_partner_env` (`partner_id`,`environment`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-        $this->execute($sql);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function safeDown()
-    {
-        $this->dropTable('{{%db_config}}');
-    }
-}
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
