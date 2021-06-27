@@ -232,7 +232,7 @@ use yii\helpers\Url;
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                        <span class="hidden-xs"><?=app()->user->getIdentity()->profile->real_name;?></span>
+                        <span class="hidden-xs"><?=app()->user->getIdentity()->profile->username;?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -241,7 +241,7 @@ use yii\helpers\Url;
                                  alt="User Image"/>
 
                             <p>
-                                <?=app()->user->getIdentity()->profile->real_name;?> - Web Developer
+                                <?=app()->user->getIdentity()->profile->username;?> - Web Developer
                                 <small>Member since Nov. 2012</small>
                             </p>
                         </li>

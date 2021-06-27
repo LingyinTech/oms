@@ -1,5 +1,8 @@
 <?php
 
+use lingyin\admin\models\User;
+use lingyin\admin\models\UserInfo;
+
 $params = require __DIR__ . '/params.php';
 
 $config = [
@@ -31,9 +34,31 @@ $config = [
             'cookieValidationKey' => 'OQU4_eWEuJ2HnvLfgRgNXS8I4FtVOKLo',
         ],
         'user' => [
-            'identityClass' => \lingyin\admin\models\User::class,
+            'identityClass' => User::class,
             'enableAutoLogin' => true,
             'loginUrl' => ['user/login'],
+            'on afterLogin' => function ($event) {
+                if (empty(CURRENT_COMPANY_ID) || CURRENT_COMPANY_ID == $event->identity->current_partner_id) {
+                    return;
+                }
+
+                UserInfo::$shouldCheckPartner = false;
+                $userInfo = UserInfo::findOne(
+                    [
+                        'user_id' => $event->identity->getId(),
+                        'partner_id' => CURRENT_COMPANY_ID,
+                    ]
+                );
+                if (!empty($userInfo)) {
+                    $event->identity->current_partner_id = CURRENT_COMPANY_ID;
+                    $event->identity->saveData(
+                        [
+                            'id' => $event->identity->getId(),
+                            'current_partner_id' => CURRENT_COMPANY_ID,
+                        ]
+                    );
+                }
+            },
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -61,7 +86,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<module:(admin)>/<controller:[\w-]+>/<action:[\w-]+><nouse:(.*)>' => '<module>/<controller>/<action>',
+                '<module:(admin|api)>/<controller:[\w-]+>/<action:[\w-]+><nouse:(.*)>' => '<module>/<controller>/<action>',
                 '<controller:(order)>/<action:[\w-]+>/<viewId:([\d]+)>' => '<controller>/<action>',
                 '<controller:[\w-]+>/<action:[\w-]+><nouse:(.*)>' => '<controller>/<action>',
                 '<controller:[\w-]+><nouse:(.*)>' => '<controller>/index',

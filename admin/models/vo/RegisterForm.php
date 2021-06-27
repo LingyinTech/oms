@@ -35,6 +35,9 @@ class RegisterForm extends Model
             $user = new User();
             $user->email = $this->email;
             $user->setPassword($this->password);
+            if (!empty(CURRENT_COMPANY_ID)) {
+                $user->current_partner_id = CURRENT_COMPANY_ID;
+            }
             $trans = app()->db->beginTransaction();
             try {
                 if ($user->save()) {
@@ -42,6 +45,7 @@ class RegisterForm extends Model
                     $userInfo->setShouldCheckPartnerSave(false);
                     $userInfo->user_id = $user->getId();
                     $userInfo->username = $this->username;
+                    $userInfo->partner_id = CURRENT_COMPANY_ID;
                     if ($userInfo->save()) {
                         $trans->commit();
                         return $user;
