@@ -60,7 +60,8 @@ class Partner extends ActiveRecord
             new PartnerJob(
                 [
                     'partner_id' => $this->id,
-                    'event' => 'active'
+                    'event' => 'active',
+                    'database' => [],
                 ]
             )
         );

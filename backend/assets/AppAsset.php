@@ -25,11 +25,22 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/layer-3.1.1/dist/layer.js',
-        'js/main.js'
+        'js/main.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         AdminLteAsset::class,
     ];
+
+    public function __construct($config = [])
+    {
+        parent::__construct($config);
+        if (!empty(app()->params['domain.static'])) {
+            $this->baseUrl = app()->params['domain.static'];
+        }
+        if (!empty(app()->params['domain.static.version'])) {
+            $this->baseUrl .= app()->params['domain.static.version'];
+        }
+    }
 }

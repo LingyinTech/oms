@@ -16,6 +16,8 @@ class PartnerJob extends Job
      */
     public $partner_id;
 
+    public $database;
+
     /**
      * @var string 事件类型，active 激活 | inactive 失效
      */
@@ -33,15 +35,23 @@ class PartnerJob extends Job
             $dbConfigForm = new DbConfigForm();
             $data = [
                 'partner_id' => $this->partner_id,
-                'environment' => YII_ENV
+                'environment' => YII_ENV,
             ];
+
+            if (!empty($this->database)) {
+                $data = array_merge($this->database, $data);
+            }
+
             $db = $dbConfigForm->createDbConfigByTemplate($data, 10001);
 
             if (empty($db)) {
                 throw new Exception('创建数据库连接配配失败');
             }
 
-            app()->runAction('system/init-db', ['db' => $db, 'interactive' => false]);
+            app()->runAction(
+                'system/init-db',
+                ['db' => $db, 'interactive' => false]
+            );
 
             $data = [
                 'name' => '管理员',
@@ -51,8 +61,6 @@ class PartnerJob extends Job
             $model = new RoleForm();
             $model->load($data);
             $model->saveRole();
-
-
         } catch (Exception $e) {
         }
     }
