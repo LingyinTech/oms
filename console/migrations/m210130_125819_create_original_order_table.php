@@ -7,10 +7,12 @@ use console\base\Migration;
  */
 class m210130_125819_create_original_order_table extends Migration
 {
+    public $testStatus = false;
+
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function up()
     {
         $this->createTable('{{%original_order}}', [
             'id' => $this->primaryKey(),
@@ -20,7 +22,7 @@ class m210130_125819_create_original_order_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('{{%original_order}}');
     }

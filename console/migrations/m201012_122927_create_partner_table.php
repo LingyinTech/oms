@@ -12,7 +12,7 @@ class m201012_122927_create_partner_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function up()
     {
         $sql = "CREATE TABLE IF NOT EXISTS {{%partner}} (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -27,14 +27,14 @@ class m201012_122927_create_partner_table extends Migration
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_code` (`code`) USING BTREE,
   UNIQUE KEY `uniq_short` (`short_code`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8mb4;";
         $this->execute($sql);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('{{%partner}}');
     }

@@ -25,14 +25,30 @@ class PartnerForm extends Model
             [['code', 'name'], 'filter', 'filter' => 'trim'],
             [['code', 'name'], 'required'],
             [
-                ['code', 'short_code'], 'unique', 'targetClass' => Partner::class,
+                ['code', 'short_code'],
+                'unique',
+                'targetClass' => Partner::class,
                 'filter' => function ($query) {
                     $query->andWhere(['not', ['id' => $this->id]]);
-                }
+                },
             ],
             ['status', 'default', 'value' => Partner::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [Partner::STATUS_INACTIVE, Partner::STATUS_DELETE, Partner::STATUS_LIMITED, Partner::STATUS_ACTIVE]],
-            [['active_start', 'active_end'], 'filter', 'filter' => 'strtotime', 'skipOnEmpty' => true],
+            [
+                'status',
+                'in',
+                'range' => [
+                    Partner::STATUS_INACTIVE,
+                    Partner::STATUS_DELETE,
+                    Partner::STATUS_LIMITED,
+                    Partner::STATUS_ACTIVE,
+                ],
+            ],
+            [
+                ['active_start', 'active_end'],
+                'filter',
+                'filter' => 'strtotime',
+                'skipOnEmpty' => true,
+            ],
         ];
     }
 

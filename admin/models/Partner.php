@@ -61,7 +61,6 @@ class Partner extends ActiveRecord
                 [
                     'partner_id' => $this->id,
                     'event' => 'active',
-                    'database' => [],
                 ]
             )
         );

@@ -11,7 +11,8 @@ class Migration extends \yii\db\Migration
 
     public $dbExcludeList = [];
 
-    public $testStatus = false;
+    // 是否通过验证，未通过生产环境不执行
+    public $testStatus = true;
 
     public function checkStatus()
     {

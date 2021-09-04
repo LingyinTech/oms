@@ -9,8 +9,6 @@ class m201009_120945_create_user_table extends Migration
 {
     public $dbAllowList = ['db'];
 
-    public $testStatus = true;
-
     public function up()
     {
         $sql = "CREATE TABLE IF NOT EXISTS {{%user}} (

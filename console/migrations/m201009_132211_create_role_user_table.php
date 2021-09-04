@@ -10,7 +10,7 @@ class m201009_132211_create_role_user_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function up()
     {
         $sql = "CREATE TABLE IF NOT EXISTS {{%role_user}} (
   `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '用户ID',
@@ -25,7 +25,7 @@ class m201009_132211_create_role_user_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('{{%role_user}}');
     }

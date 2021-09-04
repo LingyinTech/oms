@@ -7,10 +7,12 @@ use console\base\Migration;
  */
 class m210130_123722_create_order_table extends Migration
 {
+    public $testStatus = false;
+
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function up()
     {
         $sql = "";
         $this->execute($sql);
@@ -19,7 +21,7 @@ class m210130_123722_create_order_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('{{%order}}');
     }

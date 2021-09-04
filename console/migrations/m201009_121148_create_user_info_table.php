@@ -7,8 +7,6 @@ use console\base\Migration;
  */
 class m201009_121148_create_user_info_table extends Migration
 {
-    public $testStatus = true;
-
     /**
      * {@inheritdoc}
      */

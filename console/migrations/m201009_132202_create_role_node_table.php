@@ -10,7 +10,7 @@ class m201009_132202_create_role_node_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function up()
     {
         $sql = "CREATE TABLE IF NOT EXISTS {{%role_node}} (
   `role_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
@@ -25,7 +25,7 @@ class m201009_132202_create_role_node_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('{{%role_node}}');
     }

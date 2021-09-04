@@ -7,10 +7,12 @@ use console\base\Migration;
  */
 class m210119_130346_create_field_config_table extends Migration
 {
+    public $testStatus = false;
+
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function up()
     {
         $sql = "CREATE TABLE {{%field_config}} (
   `id` bigint(20) NOT NULL COMMENT '主键ID',
@@ -32,7 +34,7 @@ class m210119_130346_create_field_config_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('{{%field_config}}');
     }

@@ -14,10 +14,12 @@ use yii\helpers\Console;
 class SystemController extends Controller
 {
 
+    public $partnerId;
+
     public function options($actionID)
     {
         $options = [
-            'db'
+            'partnerId'
         ];
         return ArrayHelper::merge(parent::options($actionID), $options);
     }
@@ -61,7 +63,7 @@ class SystemController extends Controller
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
   `environment` varchar(8) NOT NULL DEFAULT '' COMMENT '环境',
-  `config_name` varchar(32) NOT NULL DEFAULT '' COMMENT '连接名字|尽量重用',
+  `config_name` varchar(32) NOT NULL DEFAULT '' COMMENT '数据库名称',
   `class` varchar(32) NOT NULL DEFAULT '' COMMENT '连接处理类',
   `dsn` varchar(128) NOT NULL DEFAULT '' COMMENT 'dsn',
   `login` varchar(16) NOT NULL DEFAULT '' COMMENT '登录账号',
@@ -75,6 +77,13 @@ class SystemController extends Controller
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
             $conn->exec($initSql);
 
+            $sql = "INSERT IGNORE INTO `{$env['db']}`.`db_config` VALUES ('1', '10000', '".YII_ENV."', '{$env['db']}', '', 'mysql:host={$env['host']};dbname={$env['db']}', '{$env['user']}', '{$env['pass']}', '', '0', '0', '0');";
+            $conn->exec($sql);
+
+            app()->runAction(
+                'system/init-company',
+                ['partnerId' => 10000, 'interactive' => false]
+            );
         } catch (\Exception $e) {
             $this->stdout("*** 数据库 {$env['db']} 创建失败，{$e->getMessage()}\n\n", Console::FG_RED);
         }
@@ -82,57 +91,73 @@ class SystemController extends Controller
     }
 
     /**
-     * 创建新库，待重构
-     * @param string $db
+     * 初始化新公司
+     * ./yii system/init-company --partnerId=10002
      */
-    public function actionInitDb($db = 'db')
+    public function actionInitCompany()
     {
         if (!isset(app()->params['db.env'])) {
             $this->stdout("*** 数据库边接配置不存在，直接跳过\n", Console::FG_YELLOW);
             return;
         }
-
+        $partnerId = $this->partnerId;
+        $partnerMap = (new DbConfig())->getAll(
+            [
+                'partner_id' => $partnerId,
+                'status' => DbConfig::STATUS_INACTIVE,
+            ]
+        );
+        if (empty($partnerMap[$partnerId])) {
+            $this->stdout("*** 数据库边接配置不存在或已经初始化完成，直接跳过\n", Console::FG_YELLOW);
+            return;
+        }
         $env = app()->params['db.env'];
 
+        $config = $partnerMap[$partnerId];
+        $dsn = str_replace(";dbname={$config['db_name']}", '', $config['connection']['dsn']);
         try {
-            $conn = new PDO("mysql:host={$env['host']}", 'root', $env['root.pass']);
+            $conn = new PDO("{$dsn}", 'root', $env['root.pass']);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $sql = "show databases;";
             $res = $conn->query($sql);
             $res = $res->fetchAll(PDO::FETCH_ASSOC);
             $dbExist = false;
             foreach ($res as $k => $v) {
-                if ($v['Database'] === $db) {
-                    $this->stdout("*** 数据库 {$db} 已存在\n\n", Console::FG_GREEN);
+                if ($v['Database'] === $config['db_name']) {
+                    $this->stdout("*** 数据库 {$config['db_name']} 已存在\n\n", Console::FG_GREEN);
                     $dbExist = true;
                     break;
                 }
             }
 
             if (!$dbExist) {
-                $sql = "CREATE DATABASE IF NOT EXISTS {$db} DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci";
+                $sql = "CREATE DATABASE IF NOT EXISTS {$config['db_name']} DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci";
                 $conn->exec($sql);
-                $this->stdout("*** 数据库 {$db} 创建成功\n\n", Console::FG_GREEN);
+                $this->stdout("*** 数据库 {$config['db_name']} 创建成功\n\n", Console::FG_GREEN);
             }
 
-            if ('root' !== $env['user']) {
-                $sql = "GRANT ALL ON `{$db}`.* TO '{$env['user']}'@'%' IDENTIFIED BY '{$env['pass']}';flush privileges;";
+            if ('root' !== $config['connection']['username']) {
+                $sql = "GRANT ALL ON `{$config['db_name']}`.* TO '{$config['connection']['username']}'@'%' IDENTIFIED BY '{$config['connection']['password']}';flush privileges;";
                 $conn->exec($sql);
                 $this->stdout("*** 用户权限更新成功\n\n", Console::FG_GREEN);
             }
 
-            if ('db' !== $db) {
-                $dbList = (new DbConfig())->getAll(['config_name' => $db]);
-                $components = [];
-                foreach ($dbList as $config) {
-                    $components[$config['db_name']] = $config['connection'];
-                }
-                app()->setComponents($components);
-            }
+            $dbConfig = DbConfig::findOne(
+                [
+                    'partner_id' => $partnerId,
+                    'status' => DbConfig::STATUS_INACTIVE,
+                    'environment' => YII_ENV,
+                ]
+            );
+            $dbConfig->status = DbConfig::STATUS_ACTIVE;
+            $dbConfig->save();
+
+            $components[$config['db_name']] = $config['connection'];
+            app()->setComponents($components);
 
             app()->runAction('oms-migrate/up', ['interactive' => false]);
         } catch (\Exception $e) {
-            $this->stdout("*** 数据库 {$db} 创建失败，{$e->getMessage()}\n\n", Console::FG_RED);
+            $this->stdout("*** 数据库 {$config['db_name']} 创建失败，{$e->getMessage()}\n\n", Console::FG_RED);
         }
     }
 

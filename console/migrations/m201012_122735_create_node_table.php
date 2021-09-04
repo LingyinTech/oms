@@ -9,7 +9,7 @@ class m201012_122735_create_node_table extends Migration
 {
     public $dbAllowList = ['db'];
 
-    public function safeUp()
+    public function up()
     {
         $sql = "CREATE TABLE IF NOT EXISTS {{%node}} (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -31,7 +31,7 @@ class m201012_122735_create_node_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('{{%node}}');
     }

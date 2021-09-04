@@ -7,12 +7,14 @@ use console\base\Migration;
  */
 class m210131_080802_create_view_config_table extends Migration
 {
+    public $testStatus = false;
+
     /**
      * {@inheritdoc}
      */
-    public function safeUp()
+    public function up()
     {
-        $sql = "CREATE TABLE `{{%view_config}}` (
+        $sql = "CREATE TABLE {{%view_config}} (
   `id` bigint(20) unsigned NOT NULL COMMENT '主键ID',
   `partner_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
   `sys_view_id`  bigint(20) NOT NULL DEFAULT 0 COMMENT '系统视图',
@@ -37,7 +39,7 @@ class m210131_080802_create_view_config_table extends Migration
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->dropTable('{{%view_config}}');
     }
