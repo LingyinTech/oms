@@ -22,9 +22,67 @@ class SystemController extends Controller
         return ArrayHelper::merge(parent::options($actionID), $options);
     }
 
+    public function actionInitCommonDb()
+    {
+        if (!isset(app()->params['db.env'])) {
+            $this->stdout("*** 数据库边接配置不存在，直接跳过\n", Console::FG_YELLOW);
+            return;
+        }
+        $env = app()->params['db.env'];
+
+        try {
+            $conn = new PDO("mysql:host={$env['host']}", 'root', $env['root.pass']);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "show databases;";
+            $res = $conn->query($sql);
+            $res = $res->fetchAll(PDO::FETCH_ASSOC);
+            $dbExist = false;
+            foreach ($res as $k => $v) {
+                if ($v['Database'] === $env['db']) {
+                    $this->stdout("*** 数据库 {$env['db']} 已存在\n\n", Console::FG_GREEN);
+                    $dbExist = true;
+                    break;
+                }
+            }
+
+            if (!$dbExist) {
+                $sql = "CREATE DATABASE IF NOT EXISTS {$env['db']} DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci";
+                $conn->exec($sql);
+                $this->stdout("*** 数据库 {$env['db']} 创建成功\n\n", Console::FG_GREEN);
+            }
+
+            if ('root' !== $env['user']) {
+                $sql = "GRANT ALL ON `{$env['db']}`.* TO '{$env['user']}'@'%' IDENTIFIED BY '{$env['pass']}';flush privileges;";
+                $conn->exec($sql);
+                $this->stdout("*** 用户权限更新成功\n\n", Console::FG_GREEN);
+            }
+
+            $initSql = "CREATE TABLE IF NOT EXISTS `{$env['db']}`.`db_config` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `partner_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0' COMMENT '合作伙伴ID',
+  `environment` varchar(8) NOT NULL DEFAULT '' COMMENT '环境',
+  `config_name` varchar(32) NOT NULL DEFAULT '' COMMENT '连接名字|尽量重用',
+  `class` varchar(32) NOT NULL DEFAULT '' COMMENT '连接处理类',
+  `dsn` varchar(128) NOT NULL DEFAULT '' COMMENT 'dsn',
+  `login` varchar(16) NOT NULL DEFAULT '' COMMENT '登录账号',
+  `password` varchar(32) NOT NULL DEFAULT '0' COMMENT '密码',
+  `extra_config`  text NOT NULL COMMENT '补充配置|如从库配置',
+  `status`  smallint(3) NOT NULL DEFAULT 0 COMMENT '状态|0数据库未初始化，1删除，10有效',
+  `created_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `updated_at` bigint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_partner_env` (`partner_id`,`environment`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+            $conn->exec($initSql);
+
+        } catch (\Exception $e) {
+            $this->stdout("*** 数据库 {$env['db']} 创建失败，{$e->getMessage()}\n\n", Console::FG_RED);
+        }
+
+    }
+
     /**
-     * 创建新库
-     * 目前所有数据库共用一个账号和密码，后续再考虑独立
+     * 创建新库，待重构
      * @param string $db
      */
     public function actionInitDb($db = 'db')
