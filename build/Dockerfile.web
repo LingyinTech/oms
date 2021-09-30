@@ -1,13 +1,6 @@
 FROM actors315/oms
 
 MAINTAINER actors315 <actors315@gmail.com>
-
-# 创建一些目录
-RUN useradd www-data \
-    && mkdir -p /var/log/nginx/ && chown -R www-data:www-data /var/log/nginx \
-	&& touch /var/run/nginx.pid && chown -R www-data:www-data /var/run/nginx.pid \
-	&& mkdir -p /usr/local/nginx/conf.d/ \
-	&& mkdir -p /data/www/oms/
 	
 # 源码
 COPY --chown=www-data:www-data . /data/www/oms/ 
